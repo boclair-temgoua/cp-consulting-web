@@ -109,4 +109,16 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contributors/:organizationId`,
     method: DELETE,
   },
+  getOneProject: {
+    endpoint: `${baseUrl}/projects/:projectsId`,
+    method: GET,
+  },
+  getProjectsContributes: {
+    endpoint: `${baseUrl}/projects/contributes`,
+    method: GET,
+  },
+  getContributorsProject: {
+    endpoint: `${baseUrl}/contributors/project`,
+    method: GET,
+  },
 }

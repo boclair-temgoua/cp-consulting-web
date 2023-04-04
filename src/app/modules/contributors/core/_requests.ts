@@ -13,6 +13,17 @@ export const getContributorsOrganization = async (
   })
 }
 
+export const getContributorsProject = async (
+  payload: {
+    projectId: string
+  } & PaginationRequest
+): Promise<{data: ResponseContributorModel}> => {
+  return await makeApiCall({
+    action: 'getContributorsProject',
+    queryParams: payload,
+  })
+}
+
 export const getOneContributor = async (payload: {
   contributorId: string
 }): Promise<OneContributorModel> => {

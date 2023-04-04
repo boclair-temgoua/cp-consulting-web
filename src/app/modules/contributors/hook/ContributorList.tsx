@@ -31,7 +31,7 @@ const ContributorList: React.FC<Props> = ({ item, organization }) => {
             reverseButtons: true,
         }).then(async (result) => {
             if (result.value) {
-                console.log('item ======>',item)
+                console.log('item ======>', item)
                 //Envoyer la requet au serve
                 // const payloadSave = { code: voucher?.code }
                 // eslint-disable-next-line no-lone-blocks
@@ -74,7 +74,7 @@ const ContributorList: React.FC<Props> = ({ item, organization }) => {
                     </div>
                 </td>
                 <td>
-                    <span className={`badge badge-light-${item?.profile?.color} fw-bolder`}>
+                    <span className={`badge badge-light-${item?.role?.name === 'ADMIN' ? 'danger' : 'primary'} fw-bolder`}>
                         {item?.role?.name}
                     </span>
                 </td>

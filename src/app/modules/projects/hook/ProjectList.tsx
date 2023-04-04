@@ -3,29 +3,29 @@ import React, { useEffect, useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ContributorModel } from '../../contributors/core/_models'
-import { getContributorsOrganization } from '../../contributors/core/_requests'
+import { getContributorsOrganization, getContributorsProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
 
 type Props = {
     item?: ContributorModel;
 }
 
-const OrganizationList: React.FC<Props> = ({ item }) => {
+const ProjectList: React.FC<Props> = ({ item }) => {
     const navigate = useNavigate();
     const [contributors, setContributors] = useState<any>([])
 
     useEffect(() => {
         const loadItem = async () => {
-            const { data } = await getContributorsOrganization({
+            const { data } = await getContributorsProject({
                 take: 10,
                 page: 1,
                 sort: 'ASC',
-                organizationId: String(item?.organizationId)
+                projectId: String(item?.projectId)
             })
             setContributors(data as any)
         }
         loadItem()
-    }, [item?.organizationId])
+    }, [item?.projectId])
 
     const dataTable = (contributors?.total <= 0) ? ('') :
         contributors?.value?.map((item: ContributorModel, index: number) => (
@@ -38,12 +38,16 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
             <tr key={item?.id}>
                 <td>
                     <div className='d-flex align-items-center'>
+                        <div className='symbol symbol-35px me-5'>
+                            <img src="/media/svg/files/folder-document.svg" alt="" />
+                            {/* <img src={toAbsoluteUrl('/media/avatars/300-14.jpg')} alt='' /> */}
+                        </div>
                         <div className='d-flex justify-content-start flex-column'>
-                            <Link to={`/organizations/${item?.organizationId}`} className='text-dark fw-bold text-hover-primary fs-6'>
-                                {item?.organization?.name}
+                            <Link to={`/projects/${item?.projectId}`} className='text-dark fw-bold text-hover-primary fs-6'>
+                                {item?.project?.name}
                             </Link>
                             <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                {item?.organization?.email}
+                                {item?.project?.description}
                             </span>
                         </div>
                     </div>
@@ -53,7 +57,7 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
 
                         {dataTable}
 
-                        <Link to={`/organizations/${item?.organizationId}/contributors`} className="symbol symbol-30px symbol-circle">
+                        <Link to={`/projects/${item?.projectId}/contributors`} className="symbol symbol-30px symbol-circle">
                             {calculContributors >= contributors?.total_value &&
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
                                     +{calculContributors}
@@ -77,4 +81,4 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
     )
 }
 
-export default OrganizationList
+export default ProjectList

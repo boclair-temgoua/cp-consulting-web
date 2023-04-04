@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
-import { HelmetSite } from '../../modules/utils'
+import { HelmetSite } from '../utils'
 import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
 import { Link, useParams } from 'react-router-dom'
 

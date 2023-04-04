@@ -52,7 +52,7 @@ export type ContributorModel = {
     firstName: string
   }
   role: {
-    name: string
+    name: 'ADMIN' | 'MODERATOR'
   }
 }
 

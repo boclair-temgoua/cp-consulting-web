@@ -23,7 +23,7 @@ const ContributorsOrganizationWrapper: FC = () => {
   const [filter, setFilter] = useState<string>('')
 
   const fetchOneOrganization = async () => await getOneOrganization({ organizationId: String(organizationId) })
-  const { data: organizationItem } = useQuery({
+  const { data: organizationItem, isError: isErrorOrganization, isLoading: isLoadingOrganization } = useQuery({
     queryKey: ['organization', organizationId],
     queryFn: () => fetchOneOrganization(),
   })
@@ -65,8 +65,8 @@ const ContributorsOrganizationWrapper: FC = () => {
     setPageItem(pageItem)
   }
 
-  const dataTable = isLoading ? (<tr><td><strong>Loading...</strong></td></tr>) :
-    isError ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
+  const dataTable = isLoadingOrganization || isLoading ? (<tr><td><strong>Loading...</strong></td></tr>) :
+    isErrorOrganization || isError ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
       (data?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
         (
           data?.data?.value?.map((item: ContributorModel, index: number) => (
@@ -86,7 +86,11 @@ const ContributorsOrganizationWrapper: FC = () => {
       <div className={`card mb-5 mb-xl-8`}>
 
         {/* begin::Header */}
-        <div className="card-header border-0 pt-6">
+        <div className="card-header border-0 pt-5">
+          <h3 className='card-title align-items-start flex-column'>
+            <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
+            <span className='text-muted mt-1 fw-semibold fs-7'>Over {data?.data?.total || 0} contributors</span>
+          </h3>
           <SearchInput className='d-flex align-items-center position-relative my-1'
             classNameInput='form-control form-control-solid w-250px ps-14'
             onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}

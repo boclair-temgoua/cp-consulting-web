@@ -7,8 +7,8 @@ import { MenuTestPage } from '../pages/MenuTestPage'
 import { getCSSVariableValue } from '../../_metronic/assets/ts/_utils'
 import { WithChildren } from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
-import ProjectPageWrapperShow from '../pages/projects/ProjectPageWrapperShow'
-import ProjectPageWrapperCreate from '../pages/projects/ProjectPageWrapperCreate'
+import ProjectPageWrapperShow from '../modules/projects/ProjectPageWrapperShow'
+import ProjectPageWrapperCreate from '../modules/projects/ProjectPageWrapperCreate'
 import ContributorsOrganizationWrapper from '../modules/contributors/ContributorsOrganizationWrapper'
 import ContributorsProjectWrapper from '../modules/contributors/ContributorsProjectWrapper'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
@@ -16,7 +16,7 @@ import ContributorsProjectWrapper from '../modules/contributors/ContributorsProj
 const PrivateRoutes = () => {
   const OrganizationWrapper = lazy(() => import('../modules/organizations/OrganizationWrapper'))
   const ApplicationsWrapper = lazy(() => import('../pages/applications/ApplicationsWrapper'))
-  const ProjectsWrapper = lazy(() => import('../pages/projects/ProjectsWrapper'))
+  const ProjectsWrapper = lazy(() => import('../modules/projects/ProjectsWrapper'))
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))

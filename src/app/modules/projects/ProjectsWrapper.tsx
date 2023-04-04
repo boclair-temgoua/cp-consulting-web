@@ -1,21 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
+import { KTSVG } from '../../../_metronic/helpers'
 import { useSearchParams } from 'react-router-dom'
 import { HelmetSite } from '../utils'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getOrganizationsContributes } from './core/_requests'
-import { useDebounce } from '../utils/use-debounce';
-import { PaginationItem } from '../utils/pagination-item'
-import OrganizationList from './hook/OrganizationList'
 import { useAuth } from '../auth'
-import { ContributorModel } from '../contributors/core/_models'
+import { useDebounce } from '../utils/use-debounce'
+import { getProjectsContributes } from './core/_requests'
+import { PaginationItem } from '../utils/pagination-item'
 import { EmptyTable } from '../utils/empty-table'
-import { SearchInput } from '../utils/forms/SearchInput'
-import { KTSVG } from '../../../_metronic/helpers'
+import ProjectList from './hook/ProjectList'
+import { ContributorModel } from '../contributors/core/_models'
 
-
-const OrganizationWrapper: React.FC = () => {
+const ProjectsWrapper: FC = () => {
   const { organization } = useAuth() as any
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams();
@@ -25,7 +23,7 @@ const OrganizationWrapper: React.FC = () => {
   const debouncedFilter = useDebounce(filter, 500);
   const isEnabled = Boolean(debouncedFilter)
   const fetchData = async (pageItem = 1, debouncedFilter: string) => await
-    getOrganizationsContributes({
+    getProjectsContributes({
       search: debouncedFilter,
       take: 5,
       page: Number(pageItem || 1),
@@ -36,7 +34,7 @@ const OrganizationWrapper: React.FC = () => {
     isError,
     data,
     isPreviousData,
-  } = useQuery(['organizations', pageItem, debouncedFilter], () => fetchData(pageItem, debouncedFilter), {
+  } = useQuery(['projects', pageItem, debouncedFilter], () => fetchData(pageItem, debouncedFilter), {
     enabled: filter ? isEnabled : !isEnabled,
     keepPreviousData: true,
     staleTime: 5000
@@ -46,7 +44,7 @@ const OrganizationWrapper: React.FC = () => {
   useEffect(() => {
     if (data?.data?.total_page !== pageItem) {
       queryClient.prefetchQuery
-        (['organizations', pageItem + 1], () =>
+        (['projects', pageItem + 1], () =>
           fetchData(pageItem + 1, debouncedFilter)
         )
     }
@@ -61,43 +59,40 @@ const OrganizationWrapper: React.FC = () => {
       (data?.data?.total <= 0) ? (<EmptyTable name='organization' />) :
         (
           data?.data?.value?.map((item: ContributorModel, index: number) => (
-            <OrganizationList item={item} key={index} />
+            <ProjectList item={item} key={index} />
           )))
-
 
   return (
     <>
-      <HelmetSite title={`${organization?.name || 'Organization'}`} />
+      <HelmetSite title={`Projects ${organization?.name || ''}`} />
       <PageTitle breadcrumbs={[{
-        title: `${organization?.name} |`,
-        path: '/organizations',
+        title: `${organization?.name || ''} |`,
+        path: '/projects',
         isSeparator: false,
         isActive: false,
-      },]}>Organizations</PageTitle>
+      }]}>Projects</PageTitle>
+
 
       <div className={`card mb-5 mb-xl-8`}>
         {/* begin::Header */}
-        <div className="card-header border-0 pt-5">
+        <div className='card-header border-0 pt-5'>
           <h3 className='card-title align-items-start flex-column'>
-            <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
-            <span className='text-muted mt-1 fw-semibold fs-7'>Over {data?.data?.total || 0} organizations</span>
+            <span className='card-label fw-bold fs-3 mb-1'>Projects</span>
+            <span className='text-muted mt-1 fw-semibold fs-7'>Over {data?.data?.total || 0} projects</span>
           </h3>
-          
-          <SearchInput className='d-flex align-items-center position-relative my-1'
-            classNameInput='form-control form-control-solid w-250px ps-14'
-            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
-            placeholder='Search contributor' />
-
-
-          <div className='card-toolbar' title='Click to add a user'>
-            <a href='#' className='btn btn-sm btn-primary'>
-              <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-              New Contributor
+          <div
+            className='card-toolbar'
+            title='Click to add a user'
+          >
+            <a
+              href='#'
+              className='btn btn-sm btn-primary'
+            >
+              <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+              New Project
             </a>
           </div>
-
         </div>
-
         {/* end::Header */}
         {/* begin::Body */}
         <div className='card-body py-3'>
@@ -116,9 +111,7 @@ const OrganizationWrapper: React.FC = () => {
               {/* end::Table head */}
               {/* begin::Table body */}
               <tbody>
-
                 {dataTable}
-
               </tbody>
               {/* end::Table body */}
             </table>
@@ -143,4 +136,4 @@ const OrganizationWrapper: React.FC = () => {
   )
 }
 
-export default OrganizationWrapper
+export default ProjectsWrapper
