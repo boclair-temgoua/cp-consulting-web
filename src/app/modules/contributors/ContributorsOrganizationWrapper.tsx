@@ -45,7 +45,7 @@ const ContributorsOrganizationWrapper: FC = () => {
     data,
     isPreviousData,
   } = useQuery({
-    queryKey: ['contributors', pageItem, debouncedFilter],
+    queryKey: ['contributorsOrganization', pageItem, debouncedFilter, organizationId],
     queryFn: () => fetchData(pageItem, debouncedFilter),
     enabled: filter ? isEnabled : !isEnabled,
     keepPreviousData: true,
@@ -55,7 +55,7 @@ const ContributorsOrganizationWrapper: FC = () => {
   useEffect(() => {
     if (data?.data?.total_page !== pageItem) {
       queryClient.prefetchQuery
-        (['contributors', pageItem + 1], () =>
+        (['contributorsOrganization', pageItem + 1], () =>
           fetchData(pageItem + 1, debouncedFilter)
         )
     }
@@ -70,7 +70,7 @@ const ContributorsOrganizationWrapper: FC = () => {
       (data?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
         (
           data?.data?.value?.map((item: ContributorModel, index: number) => (
-            <ContributorList item={item} key={index} organization={organization} />
+            <ContributorList item={item} key={index} contributor={organization} />
           )))
 
   return (

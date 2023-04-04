@@ -32,7 +32,7 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
             <ContributorMiniList item={item} key={index} index={index} />
         ))
 
-    const calculContributors: number = Number(contributors?.total) - Number(contributors?.total_value)
+    const calculatedContributors: number = Number(contributors?.total) - Number(contributors?.total_value)
     return (
         <>
             <tr key={item?.id}>
@@ -54,9 +54,9 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
                         {dataTable}
 
                         <Link to={`/organizations/${item?.organizationId}/contributors`} className="symbol symbol-30px symbol-circle">
-                            {calculContributors >= contributors?.total_value &&
+                            {calculatedContributors >= contributors?.total_value &&
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
-                                    +{calculContributors}
+                                    +{calculatedContributors}
                                 </span>
                             }
                         </Link>

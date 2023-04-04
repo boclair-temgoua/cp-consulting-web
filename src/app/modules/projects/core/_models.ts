@@ -10,4 +10,7 @@ export type ProjectModel = {
     color: string
     userId: string
   }
+  role: {
+    name: string
+  }
 }

@@ -11,10 +11,10 @@ import Swal from 'sweetalert2';
 
 type Props = {
     item?: ContributorModel;
-    organization?: OrganizationModel
+    contributor?: any
 }
 
-const ContributorList: React.FC<Props> = ({ item, organization }) => {
+const ContributorList: React.FC<Props> = ({ item, contributor }) => {
 
     const deleteItem = async (voucher: any) => {
         Swal.fire({
@@ -84,7 +84,7 @@ const ContributorList: React.FC<Props> = ({ item, organization }) => {
                     </a>
                 </td>
                 <td>
-                    {organization?.role?.name === 'ADMIN' && (
+                    {contributor?.role?.name === 'ADMIN' && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
                             <a
                                 href='#'
