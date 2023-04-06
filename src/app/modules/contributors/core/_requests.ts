@@ -1,10 +1,11 @@
 import {makeApiCall} from '../../utils/get-url-end-point'
-import {PaginationRequest} from '../../utils/pagination-item'
+import {FilterTypeModel, PaginationRequest} from '../../utils/pagination-item'
 import {OneContributorModel, ResponseContributorModel} from './_models'
 
 export const getContributorsOrganization = async (
   payload: {
     organizationId: string
+    type: FilterTypeModel
   } & PaginationRequest
 ): Promise<{data: ResponseContributorModel}> => {
   return await makeApiCall({

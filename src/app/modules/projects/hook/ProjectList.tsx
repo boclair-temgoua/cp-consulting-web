@@ -1,45 +1,62 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ContributorModel } from '../../contributors/core/_models'
-import { getContributorsOrganization, getContributorsProject } from '../../contributors/core/_requests'
+import { getContributorsProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
+import ContactMiniList from '../../contacts/hook/ContactMiniList'
+import { OneContactModel } from '../../contacts/core/_models'
+import { getContactsBy } from '../../contacts/core/_requests'
 
 type Props = {
     item?: ContributorModel;
 }
 
 const ProjectList: React.FC<Props> = ({ item }) => {
-    const navigate = useNavigate();
     const [contributors, setContributors] = useState<any>([])
+    const [contacts, setContacts] = useState<any>([])
 
     useEffect(() => {
         const loadItem = async () => {
-            const { data } = await getContributorsProject({
-                take: 10,
+            const { data: dataCcntributors } = await getContributorsProject({
+                take: 6,
                 page: 1,
                 sort: 'ASC',
                 projectId: String(item?.projectId)
             })
-            setContributors(data as any)
+            setContributors(dataCcntributors as any)
+
+            const { data: dataProject } = await getContactsBy({
+                take: 6,
+                page: 1,
+                sort: 'ASC',
+                type: 'PROJECT',
+                projectId: String(item?.projectId)
+            })
+            setContacts(dataProject as any)
         }
         loadItem()
     }, [item?.projectId])
 
-    const dataTable = (contributors?.total <= 0) ? ('') :
+    const dataContributorsTable = (contributors?.total <= 0) ? ('') :
         contributors?.value?.map((item: ContributorModel, index: number) => (
             <ContributorMiniList item={item} key={index} index={index} />
         ))
 
-    const calculatedContributors: number = Number(contributors?.total) - Number(contributors?.total_value)
+
+    const dataContactsTable = (contacts?.total <= 0) ? ('') :
+        contacts?.value?.map((item: OneContactModel, index: number) => (
+            <ContactMiniList item={item} key={index} index={index} />
+        ))
+
     return (
         <>
             <tr key={item?.id}>
                 <td>
                     <div className='d-flex align-items-center'>
                         <div className='symbol symbol-35px me-5'>
-                            <img src="/media/svg/files/folder-document.svg" alt="" />
+                            <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg" alt="" />
                             {/* <img src={toAbsoluteUrl('/media/avatars/300-14.jpg')} alt='' /> */}
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
@@ -55,17 +72,25 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                 <td>
                     <div className='symbol-group symbol-hover flex-nowrap'>
 
-                        {dataTable}
+                        {dataContributorsTable}
 
-                        <Link to={`/projects/${item?.projectId}/contributors`} className="symbol symbol-30px symbol-circle">
-                            {calculatedContributors >= contributors?.total_value &&
-                                <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
-                                    +{calculatedContributors}
-                                </span>
-                            }
-                        </Link>
                     </div>
                 </td>
+
+                <td>
+                    <div className='symbol-group symbol-hover flex-nowrap'>
+
+                        {dataContactsTable}
+
+                    </div>
+                </td>
+
+                <td>
+                    <span className={`badge badge-light-${item?.organization?.color} fw-bolder`}>
+                        {item?.organization?.name}
+                    </span>
+                </td>
+
                 <td>
                     <div className='d-flex justify-content-end flex-shrink-0'>
                         <a

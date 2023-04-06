@@ -37,6 +37,7 @@ const ContributorsOrganizationWrapper: FC = () => {
       take: 10,
       page: Number(pageItem || 1),
       sort: 'DESC',
+      type: 'ORGANIZATION',
       organizationId: String(organizationId)
     })
   const {

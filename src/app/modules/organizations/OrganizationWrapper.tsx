@@ -69,7 +69,7 @@ const OrganizationWrapper: React.FC = () => {
     <>
       <HelmetSite title={`${organization?.name || 'Organization'}`} />
       <PageTitle breadcrumbs={[{
-        title: `${organization?.name} |`,
+        title: `${organization?.name || 'Organization'} |`,
         path: '/organizations',
         isSeparator: false,
         isActive: false,

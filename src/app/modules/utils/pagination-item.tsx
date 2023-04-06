@@ -10,6 +10,8 @@ interface Props {
 
 export type SortModel =  'ASC' | 'DESC'
 
+export type FilterTypeModel =  'ORGANIZATION' | 'PROJECT' | 'SUBPROJECT'
+
 export type PaginationRequest = {
     search?: string
     sort: SortModel

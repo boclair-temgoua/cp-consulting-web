@@ -56,7 +56,7 @@ const ProjectsWrapper: FC = () => {
 
   const dataTable = isLoading ? (<tr><td><strong>Loading...</strong></td></tr>) :
     isError ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-      (data?.data?.total <= 0) ? (<EmptyTable name='organization' />) :
+      (data?.data?.total <= 0) ? (<EmptyTable name='project' />) :
         (
           data?.data?.value?.map((item: ContributorModel, index: number) => (
             <ProjectList item={item} key={index} />
@@ -64,9 +64,9 @@ const ProjectsWrapper: FC = () => {
 
   return (
     <>
-      <HelmetSite title={`Projects ${organization?.name || ''}`} />
+      <HelmetSite title={`${organization?.name || ''}`} />
       <PageTitle breadcrumbs={[{
-        title: `${organization?.name || ''} |`,
+        title: `${organization?.name || 'Projects'} |`,
         path: '/projects',
         isSeparator: false,
         isActive: false,
@@ -88,7 +88,7 @@ const ProjectsWrapper: FC = () => {
               href='#'
               className='btn btn-sm btn-primary'
             >
-              <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+              <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
               New Project
             </a>
           </div>
@@ -104,7 +104,9 @@ const ProjectsWrapper: FC = () => {
               <thead>
                 <tr className="fw-bolder fs-6 text-gray-800">
                   <th>Name</th>
-                  <th>Contributors</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
                   <th className="text-end min-w-100px"></th>
                 </tr>
               </thead>

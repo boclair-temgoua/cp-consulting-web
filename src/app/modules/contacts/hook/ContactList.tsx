@@ -1,20 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
-import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
+import React, {  } from 'react'
+import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
-import { ContributorModel } from '../core/_models'
+import { OneContactModel } from '../core/_models'
 import { capitalizeFirstLetter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
-import { OrganizationModel } from '../../organizations/core/_models'
 import Swal from 'sweetalert2';
 
 type Props = {
-    item?: ContributorModel;
-    contributor?: any
+    item?: OneContactModel;
 }
 
-const ContributorList: React.FC<Props> = ({ item, contributor }) => {
+const ContactList: React.FC<Props> = ({ item }) => {
 
     const deleteItem = async (voucher: any) => {
         Swal.fire({
@@ -53,41 +50,56 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                     <div className='d-flex align-items-center'>
                         <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">
                             <a href={void (0)}>
-                                {item?.profile?.image ?
+                                {item?.image ?
                                     <div className="symbol-label">
-                                        <img src={item?.profile?.image} alt="Emma Smith" className="w-100" />
+                                        <img src={item?.image} alt="Emma Smith" className="w-100" />
                                     </div> :
-                                    <div className={`symbol-label fs-3 bg-light-${item?.profile?.color} text-${item?.profile?.color}`}>
-                                        {capitalizeFirstLetter(String(item?.profile?.lastName), String(item?.profile?.firstName))}
+                                    <div className={`symbol-label fs-3 bg-light-${item?.color} text-${item?.color}`}>
+                                        {capitalizeFirstLetter(String(item?.lastName), String(item?.firstName))}
                                     </div>
                                 }
                             </a>
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
-                            <Link to='/projects/192817273' className='text-dark fw-bold text-hover-primary fs-6'>
-                                {item?.profile?.lastName} {item?.profile?.firstName}
-                            </Link>
+                            <a href={void (0)} className='text-dark fw-bold text-hover-primary fs-6'>
+                                {item?.lastName} {item?.firstName}
+                            </a>
                             <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                {item?.profile?.email}
+                                {item?.email}
                             </span>
                         </div>
                     </div>
                 </td>
-                {contributor?.role?.name === 'ADMIN' && (
-                    <td>
-                        <span className={`badge badge-light-${item?.role?.name === 'ADMIN' ? 'danger' : 'primary'} fw-bolder`}>
-                            {item?.role?.name}
-                        </span>
-                    </td>
-
-                )}
+                <td>
+                    <div className='d-flex align-items-center'>
+                        <div className='d-flex justify-content-start flex-column'>
+                            <a href={void (0)} className='text-dark fw-bold text-hover-primary fs-6'>
+                                {item?.category?.name}
+                            </a>
+                            <span className='text-muted fw-semibold text-muted d-block fs-7'>
+                                {item?.phone} {item?.address}
+                            </span>
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
                         {formateDateDayjs(item?.createdAt as Date)}
                     </a>
                 </td>
                 <td>
-                    {contributor?.role?.name === 'ADMIN' && (
+                    <div className='d-flex justify-content-end flex-shrink-0'>
+                        <a
+                            href='#'
+                            className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
+                        >
+                            <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
+                        </a>
+                        <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
+                            <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
+                        </button>
+                    </div>
+                    {/* {contributor?.role?.name === 'ADMIN' && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
                             <a
                                 href='#'
@@ -99,7 +111,7 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                                 <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                             </button>
                         </div>
-                    )}
+                    )} */}
                 </td>
             </tr>
 
@@ -107,4 +119,4 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
     )
 }
 
-export default ContributorList
+export default ContactList

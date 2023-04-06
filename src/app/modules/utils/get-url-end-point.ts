@@ -1,4 +1,7 @@
 import axios from 'axios'
+
+export type PageType = 'SUBPROJECT' | 'ORGANIZATION' | 'PROJECT'
+
 export interface ClientApiMethods {
   [key: string]: {
     endpoint: string
@@ -120,5 +123,21 @@ export const apiEndpoints: ClientApiMethods = {
   getContributorsProject: {
     endpoint: `${baseUrl}/contributors/project`,
     method: GET,
+  },
+  getContactsBy: {
+    endpoint: `${baseUrl}/contacts`,
+    method: GET,
+  },
+  getOneContact: {
+    endpoint: `${baseUrl}/contacts/show/:contactId`,
+    method: GET,
+  },
+  deleteOneContact: {
+    endpoint: `${baseUrl}/contacts/:contactId`,
+    method: DELETE,
+  },
+  createOneContact: {
+    endpoint: `${baseUrl}/contacts`,
+    method: POST,
   },
 }
