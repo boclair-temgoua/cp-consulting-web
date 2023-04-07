@@ -86,9 +86,9 @@ const ProjectsWrapper: FC = () => {
           >
             <a
               href='#'
-              className='btn btn-sm btn-primary'
+              className='btn btn-sm btn-light-primary'
             >
-              <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+              <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
               New Project
             </a>
           </div>
@@ -106,8 +106,7 @@ const ProjectsWrapper: FC = () => {
                   <th>Name</th>
                   <th></th>
                   <th></th>
-                  <th></th>
-                  <th className="text-end min-w-100px"></th>
+                  {/* <th></th> */}
                 </tr>
               </thead>
               {/* end::Table head */}

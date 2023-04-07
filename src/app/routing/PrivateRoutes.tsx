@@ -11,6 +11,7 @@ import ProjectPageWrapperShow from '../modules/projects/ProjectPageWrapperShow'
 import ProjectPageWrapperCreate from '../modules/projects/ProjectPageWrapperCreate'
 import ContributorsOrganizationWrapper from '../modules/contributors/ContributorsOrganizationWrapper'
 import ContributorsProjectWrapper from '../modules/contributors/ContributorsProjectWrapper'
+import SubProjectPageWrapperShow from '../modules/sub-projects/SubProjectPageWrapperShow'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -37,6 +38,7 @@ const PrivateRoutes = () => {
         <Route path='organizations/:organizationId/contributors' element={<ContributorsOrganizationWrapper />} />
         <Route path='projects/:projectId/contributors' element={<ContributorsProjectWrapper />} />
         <Route path='projects/:projectId' element={<ProjectPageWrapperShow />} />
+        <Route path='projects/:projectId/:subProjectId' element={<SubProjectPageWrapperShow />} />
         <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}

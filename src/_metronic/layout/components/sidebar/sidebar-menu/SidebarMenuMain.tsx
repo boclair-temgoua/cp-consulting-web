@@ -30,7 +30,7 @@ const SidebarMenuMain = () => {
       </div>
       <SidebarMenuItem
         to='/projects'
-        icon='/media/icons/duotune/general/gen028.svg'
+        icon='/media/icons/duotune/files/fil012.svg'
         title='Projects'
         fontIcon='bi-layers'
       />

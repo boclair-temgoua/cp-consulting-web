@@ -13,26 +13,6 @@ type Props = {
 
 const OrganizationList: React.FC<Props> = ({ item }) => {
     const navigate = useNavigate();
-    // const [contributors, setContributors] = useState<any>([])
-
-    // useEffect(() => {
-    //     const loadItem = async () => {
-    //         const { data } = await getContributorsOrganization({
-    //             take: 10,
-    //             page: 1,
-    //             sort: 'ASC',
-    //             type: 'ORGANIZATION',
-    //             organizationId: String(item?.organizationId)
-    //         })
-    //         setContributors(data as any)
-    //     }
-    //     loadItem()
-    // }, [item?.organizationId])
-
-    // const dataTable = (contributors?.total <= 0) ? ('') :
-    //     contributors?.value?.map((item: ContributorModel, index: number) => (
-    //         <ContributorMiniList item={item} key={index} index={index} />
-    //     ))
 
     const fetchDataContributorMini = async () => await getContributorsOrganization({ take: 5, page: 1, sort: 'ASC', type: 'ORGANIZATION', organizationId: String(item?.organizationId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
@@ -41,14 +21,14 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
     })
 
     const datataContributorMiniTable = isLoadingContributor ? (<strong>Loading...</strong>) :
-        isErrorContributor ? ('') :
+        isErrorContributor ? (<strong>Error find data please try again...</strong>) :
             (dataContributorMini?.data?.total <= 0) ? ('') :
                 (
                     dataContributorMini?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <OrganizationList item={item} key={index} />
+                        <ContributorMiniList item={item} key={index} />
                     )))
 
-    const calculatedContributors: number = Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value)
+    const calculatedContributors: number = Number(Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value))
     return (
         <>
             <tr key={item?.id}>
@@ -70,7 +50,7 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
                         {datataContributorMiniTable}
 
                         <Link to={`/organizations/${item?.organizationId}/contributors`} className="symbol symbol-30px symbol-circle">
-                            {calculatedContributors >= Number(dataContributorMini?.data?.total_value) &&
+                            {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
                                     +{calculatedContributors}
                                 </span>

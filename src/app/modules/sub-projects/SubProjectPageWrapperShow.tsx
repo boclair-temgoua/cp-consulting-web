@@ -6,7 +6,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDebounce } from '../utils/use-debounce'
 import { getContributorsProject } from '../contributors/core/_requests'
-import { getOneProject } from './core/_requests'
+import { getOneSubProject } from './core/_requests'
 import { EmptyTable } from '../utils/empty-table'
 import { ContributorModel } from '../contributors/core/_models'
 import ContributorList from '../contributors/hook/ContributorList'
@@ -14,71 +14,59 @@ import { getContactsBy } from '../contacts/core/_requests'
 import { OneContactModel } from '../contacts/core/_models'
 import ContactList from '../contacts/hook/ContactList'
 import { useAuth } from '../auth'
-import SubProjectRow from '../sub-projects/hook/SubProjectRow'
-import SubProjectRowComponent from '../sub-projects/hook/SubProjectRowComponent'
-import SubProjectTableMini from '../sub-projects/SubProjectTableMini'
 
-const ProjectPageWrapperShow: FC = () => {
-  const takeValue: number = 5
+const SubProjectPageWrapperShow: FC = () => {
   const { role } = useAuth() as any
-  const { projectId } = useParams<string>()
+  const { projectId, subProjectId } = useParams<string>()
 
-  const fetchOneProject = async () => await getOneProject({ projectId: String(projectId) })
-  const { data: projectItem, isError: isErrorProject, isLoading: isLoadingProject } = useQuery({
-    queryKey: ['project', projectId],
-    queryFn: () => fetchOneProject(),
+  const fetchOneSubProject = async () => await getOneSubProject({ projectId: String(projectId), subProjectId: String(subProjectId) })
+  const { data: subProjectItem, isError: isErrorSubProject, isLoading: isLoadingProject } = useQuery({
+    queryKey: ['subProjectId', subProjectId],
+    queryFn: () => fetchOneSubProject(),
   })
 
 
-  const fetchDataContributor = async () => await getContributorsProject({ take: takeValue, page: 1, sort: 'DESC', projectId: String(projectId) })
-  const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
-    queryKey: ['contributorsProject', projectId],
-    queryFn: () => fetchDataContributor(),
-  })
-  const dataTableContributor = isLoadingProject || isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
-    isErrorProject || isErrorContributor ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-      (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
-        (
-          dataContributor?.data?.value?.map((item: ContributorModel, index: number) => (
-            <ContributorList item={item} key={index} contributor={projectItem?.data} />
-          )))
+  // const fetchDataContributor = async () => await getContributorsProject({ take: 5, page: 1, sort: 'DESC', subProjectId: String(subProjectId) })
+  // const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
+  //   queryKey: ['contributorsSubProject', subProjectId],
+  //   queryFn: () => fetchDataContributor(),
+  // })
+  // const dataTableContributor = isLoadingProject || isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
+  //   isErrorProject || isErrorContributor ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
+  //     (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
+  //       (
+  //         dataContributor?.data?.value?.map((item: ContributorModel, index: number) => (
+  //           <ContributorList item={item} key={index} contributor={projectItem?.data} />
+  //         )))
 
 
-  const fetchDataContact = async () => await getContactsBy({ take: takeValue, page: 1, sort: 'DESC', type: 'PROJECT', projectId: String(projectId) })
-  const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContact } = useQuery({
-    queryKey: ['contactsProject', projectId],
-    queryFn: () => fetchDataContact(),
-  })
-  const dataTableContact = isLoadingProject || isLoadingContact ? (<tr><td><strong>Loading...</strong></td></tr>) :
-    isErrorProject || isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-      (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
-        (
-          dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
-            <ContactList item={item} key={index} />
-          )))
+  // const fetchDataContact = async () => await getContactsBy({ take: 5, page: 1, sort: 'DESC', type: 'PROJECT', projectId: String(projectId) })
+  // const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContact } = useQuery({
+  //   queryKey: ['contactsProject', projectId],
+  //   queryFn: () => fetchDataContact(),
+  // })
+  // const dataTableContact = isLoadingProject || isLoadingContact ? (<tr><td><strong>Loading...</strong></td></tr>) :
+  //   isErrorProject || isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
+  //     (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
+  //       (
+  //         dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
+  //           <ContactList item={item} key={index} />
+  //         )))
 
 
   return (
     <>
-      <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />
+      <HelmetSite title={`${subProjectItem?.data?.name || 'Project'}`} />
       <PageTitle breadcrumbs={[{
-        title: `${projectItem?.data?.name || 'Project'} |`,
-        path: `/projects/${projectId}`,
+        title: `${subProjectItem?.data?.name || 'Project'} |`,
+        path: `/projects/${projectId}/${subProjectId}`,
         isSeparator: false,
         isActive: false,
       }]}>Project</PageTitle>
 
-      {/* <div className={`card mb-5 mb-xl-8`}> */}
+      <div className={`card mb-5 mb-xl-8`}>
 
-
-      {/* <SubProjectRow />
-
-      <SubProjectRow />
-
-      <SubProjectRowComponent /> */}
-
-      {/* <div className={`card mb-5 mb-xl-8`}>
-
+        {/* begin::Header */}
         <div className="card-header border-0 pt-6">
           <div className="card-title">
             <div className="d-flex align-items-center position-relative my-1">
@@ -92,19 +80,19 @@ const ProjectPageWrapperShow: FC = () => {
             </div>
           </div>
           <div className='card-toolbar' title='Click to add a user'>
-            <Link to={`/projects/${projectId}/new-file`} className='btn btn-sm btn-primary'>
+            <Link to={`/sub-projects/${subProjectId}/new-file`} className='btn btn-sm btn-primary'>
               <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
               New File
             </Link>
           </div>
         </div>
-
+        {/* end::Header */}
 
         <div className='card-body py-3'>
-
+          {/* begin::Table container */}
           <div className='table-responsive'>
 
-            <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+            {/* <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
               <thead>
                 <tr className="fw-bolder fs-6 text-gray-800">
                   <th>Name</th>
@@ -313,184 +301,37 @@ const ProjectPageWrapperShow: FC = () => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
 
           </div>
 
-        </div>
-
-      </div> */}
-
-
-      {/* <div className="row gy-5 gx-xl-8">
-
-        <div className={`col-xxl-12`}>
-
-          <SubProjectRowComponent />
-
-        </div>
-
-      </div> */}
-
-
-      {projectItem?.data?.subProjectTotal && (
-        <div className="row gy-5 gx-xl-8">
-
-          <div className={`col-xxl-12`}>
-
-            <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-          </div>
-        </div>
-      )}
-
-
-      <div className='row g-5 gx-xxl-8'>
-
-
-        {projectItem?.data?.contactTotal && (
-
-          <div className="col-xxl-6">
-            <div className={`card card-xxl-stretch mb-xl-3`}>
-
-
-              <div className='card-header border-0 pt-5'>
-                <h3 className='card-title align-items-start flex-column'>
-                  <span className='card-label fw-bold fs-3 mb-1'>Contacts</span>
-                  <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContact?.data?.total || 0} contacts</span>
-                </h3>
-
-                {projectItem?.data?.role?.name === 'ADMIN' && (
-                  <div className="card-toolbar">
-                    <div className="d-flex justify-content-end">
-
-                      <button type="button" className="btn btn-sm btn-light-primary me-1">
-                        <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                        New Contact
-                      </button>
-
-                    </div>
-                  </div>
-                )}
-
-              </div>
-
-              <div className='card-body py-3'>
-
-                <div className='table-responsive'>
-
-                  <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                    <thead>
-                      <tr className="fw-bolder fs-6 text-gray-800">
-                        <th>Profile</th>
-                        <th></th>
-                        <th></th>
-                        <th className="text-end min-w-100px"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      {dataTableContact}
-
-                    </tbody>
-                  </table>
-                </div>
-
-                {Number(dataContact?.data?.total) > takeValue && (
-                  <Link to={`/projects/${projectId}/contributors`} className="btn btn-light-primary w-100 py-3">
-                    Show More
-                  </Link>
-                )}
-
-
-              </div>
-
-
-
-            </div>
-          </div>
-
-        )}
-
-
-        <div className={`col-xxl-${projectItem?.data?.contactTotal ? '6' : '12'}`}>
-
-          <div className={`card card-xxl-stretch mb-5 mb-xl-8`}>
-
-            <div className='card-header border-0 pt-5'>
-              <h3 className='card-title align-items-start flex-column'>
-                <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
-                <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContributor?.data?.total || 0} contributors</span>
-              </h3>
-
-              <div className="card-toolbar">
-                <div className="d-flex justify-content-end">
-                  
-                  {!projectItem?.data?.contactTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                      New Contact
-                    </button>
-                  )}
-
-                  {!projectItem?.data?.subProjectTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-                      New Folder
-                    </button>
-
-                  )}
-
-                  {!projectItem?.data?.documentTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
-                      New File
-                    </button>
-
-                  )}
-
-                  <button type="button" className="btn btn-sm btn-light-primary me-1">
-                    <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                    New Contributor
-                  </button>
-
-                </div>
-              </div>
-
-            </div>
-
-            <div className='card-body py-3'>
-
-              <div className='table-responsive'>
-
-                <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                  <thead>
-                    <tr className="fw-bolder fs-6 text-gray-800">
-                      <th>Profile</th>
-                      <th>Start date</th>
-                      {projectItem?.data?.role?.name === 'ADMIN' && (
-                        <>
-                          <th>Role</th>
-                          <th className="text-end min-w-100px"></th>
-                        </>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dataTableContributor}
-                  </tbody>
-                </table>
-              </div>
-
-              {Number(dataContributor?.data?.total) > takeValue && (
-                <Link to={`/projects/${projectId}/contributors`} className="btn btn-light-primary w-100 py-3">
-                  Show More
-                </Link>
-              )}
-
-            </div>
-
-          </div>
+          {/* <ul className="pagination">
+            <li className="page-item previous disabled">
+              <a href="#" className="page-link">
+                <i className="previous"></i>
+              </a>
+            </li>
+            <li className="page-item">
+              <a href="#" className="page-link">
+                1
+              </a>
+            </li>
+            <li className="page-item active">
+              <a href="#" className="page-link">
+                2
+              </a>
+            </li>
+            <li className="page-item">
+              <a href="#" className="page-link">
+                3
+              </a>
+            </li>
+            <li className="page-item next">
+              <a href="#" className="page-link">
+                <i className="next"></i>
+              </a>
+            </li>
+          </ul> */}
 
         </div>
 
@@ -498,10 +339,115 @@ const ProjectPageWrapperShow: FC = () => {
 
 
 
-      {/* </div> */}
+      <div className="row gy-5 gx-xl-8">
+        {/* col-xxl-4 */}
+        <div className="col-xxl-6">
+          <div className={`card card-xxl-stretch mb-xl-3`}>
 
+
+            <div className='card-header border-0 pt-5'>
+              <h3 className='card-title align-items-start flex-column'>
+                <span className='card-label fw-bold fs-3 mb-1'>Contacts</span>
+                {/* <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContact?.data?.total || 0} contacts</span> */}
+              </h3>
+              {role?.name === 'ADMIN' && (
+                <div className='card-toolbar'
+                  title='Click to add a user'>
+                  <a href={void (0)} className='btn btn-sm btn-primary'>
+                    <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
+                    New Contact
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <div className='card-body py-3'>
+              {/* begin::Table container */}
+              <div className='table-responsive'>
+
+                <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                  <thead>
+                    <tr className="fw-bolder fs-6 text-gray-800">
+                      <th>Profile</th>
+                      <th></th>
+                      <th></th>
+                      <th className="text-end min-w-100px"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {/* {dataTableContact} */}
+
+                  </tbody>
+                </table>
+              </div>
+
+              {/* <ul className="pagination">
+                <Link to={`/projects/${projectId}/contributors`} >
+                  Show More Contacts
+                </Link>
+              </ul> */}
+
+            </div>
+
+
+
+          </div>
+        </div>
+
+
+        <div className="col-xxl-6">
+
+          <div className={`card card-xxl-stretch mb-5 mb-xl-8`}>
+
+            <div className='card-header border-0 pt-5'>
+              <h3 className='card-title align-items-start flex-column'>
+                <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
+                {/* <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContributor?.data?.total || 0} contributors</span> */}
+              </h3>
+            </div>
+
+            <div className='card-body py-3'>
+              {/* begin::Table container */}
+              <div className='table-responsive'>
+
+                <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                  <thead>
+                    <tr className="fw-bolder fs-6 text-gray-800">
+                      <th>Profile</th>
+                      <th>Start date</th>
+                      {/* {projectItem?.data?.role?.name === 'ADMIN' && (
+                        <>
+                          <th>Role</th>
+                          <th className="text-end min-w-100px"></th>
+                        </>
+                      )} */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {dataTableContributor} */}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* <ul className="pagination">
+                <Link to={`/projects/${projectId}/contributors`} >
+                  Show More Contributors
+                </Link>
+              </ul> */}
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      {/* <ProjectPage /> */}
     </>
   )
 }
 
-export default ProjectPageWrapperShow
+export default SubProjectPageWrapperShow

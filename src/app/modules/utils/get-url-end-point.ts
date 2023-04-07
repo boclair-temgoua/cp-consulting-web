@@ -124,6 +124,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contributors/project`,
     method: GET,
   },
+  getContributorsSubProject: {
+    endpoint: `${baseUrl}/contributors/sub-project`,
+    method: GET,
+  },
   getContactsBy: {
     endpoint: `${baseUrl}/contacts`,
     method: GET,
@@ -139,5 +143,13 @@ export const apiEndpoints: ClientApiMethods = {
   createOneContact: {
     endpoint: `${baseUrl}/contacts`,
     method: POST,
+  },
+  getOneSubProject: {
+    endpoint: `${baseUrl}/sub-projects/show`,
+    method: GET,
+  },
+  getSubProjectsContributes: {
+    endpoint: `${baseUrl}/sub-projects/contributes`,
+    method: GET,
   },
 }
