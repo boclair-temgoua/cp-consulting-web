@@ -8,6 +8,7 @@ import { getSubProjectsContributes } from './core/_requests';
 import { useQuery } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import SubsubProjectList from './hook/SubProjectList';
+import { SubProjectCreateFormModal } from './hook/SubProjectCreateFormModal';
 
 type Props = {
     takeValue: number
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
     const fetchDataSubProject = async () => await getSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', projectId: String(project?.id) })
     const { isLoading: isLoadingSubProject, isError: isErrorSubProject, data: dataSubProject } = useQuery({
@@ -50,9 +52,10 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                                         <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
                                         New File
                                     </button>
+
                                 )}
 
-                                <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
                                     <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
                                     New Project
                                 </button>
@@ -98,8 +101,9 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
 
             }
 
+            {openCreateOrUpdateModal && (<SubProjectCreateFormModal project={project} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }
 
-export  {SubProjectTableMini}
+export { SubProjectTableMini }

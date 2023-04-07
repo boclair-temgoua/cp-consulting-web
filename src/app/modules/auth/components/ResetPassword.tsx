@@ -85,7 +85,7 @@ export function ResetPassword() {
                         labelFlex="New Password"
                         register={register}
                         errors={errors}
-                        name="password"
+                        inputName="password"
                         type="password"
                         autoComplete="off"
                         placeholder="Enter your password"
@@ -100,7 +100,7 @@ export function ResetPassword() {
                         labelFlex="Confirm Password"
                         register={register}
                         errors={errors}
-                        name="passwordConfirm"
+                        inputName="passwordConfirm"
                         type="password"
                         autoComplete="off"
                         placeholder="Confirm your password"

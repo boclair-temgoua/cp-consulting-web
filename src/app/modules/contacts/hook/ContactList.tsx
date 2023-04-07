@@ -73,7 +73,7 @@ const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
                             className="form-check-input widget-9-check"
                             register={register}
                             errors={errors}
-                            name="contacts"
+                            inputName="contacts"
                             type={'checkbox'}
                             value={value}
                             validation={{ required: true }}
@@ -136,19 +136,6 @@ const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
                             <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                         </button>
                     </div>
-                    {/* {contributor?.role?.name === 'ADMIN' && (
-                        <div className='d-flex justify-content-end flex-shrink-0'>
-                            <a
-                                href='#'
-                                className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
-                            >
-                                <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                            </a>
-                            <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
-                                <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
-                            </button>
-                        </div>
-                    )} */}
                 </td>
             </tr>
 

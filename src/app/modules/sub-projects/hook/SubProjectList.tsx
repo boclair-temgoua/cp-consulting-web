@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { } from 'react'
+import React, { useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ContributorModel } from '../../contributors/core/_models'
@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { deleteOneSubProject } from '../core/_requests'
 import { AlertDangerNotification, AlertSuccessNotification } from '../../utils'
 import { DeleteOneSubProjectMutation } from '../core/_models'
+import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
 
 type Props = {
     takeValue?: number
@@ -20,6 +21,7 @@ type Props = {
 }
 
 const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
@@ -122,11 +124,9 @@ const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
                 <td>
                     {project?.role?.name === 'ADMIN' && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
-                            <a href='#'
-                                className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                            >
+                            <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                            </a>
+                            </button>
                             <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                             </button>
@@ -135,6 +135,7 @@ const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
                     )}
                 </td>
             </tr>
+            {openCreateOrUpdateModal && (<SubProjectCreateFormModal subProject={item?.subProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }

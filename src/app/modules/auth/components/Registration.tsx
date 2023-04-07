@@ -110,7 +110,7 @@ export function Registration() {
             labelFlex="First name"
             register={register}
             errors={errors}
-            name="firstName"
+            inputName="firstName"
             type="text"
             autoComplete="one"
             placeholder="Enter first name"
@@ -125,7 +125,7 @@ export function Registration() {
             labelFlex="Last name"
             register={register}
             errors={errors}
-            name="lastName"
+            inputName="lastName"
             type="text"
             autoComplete="one"
             placeholder="Enter last name"
@@ -143,7 +143,7 @@ export function Registration() {
             labelFlex="Email address"
             register={register}
             errors={errors}
-            name="email"
+            inputName="email"
             type="email"
             autoComplete="one"
             placeholder="Enter your email address"
@@ -159,7 +159,7 @@ export function Registration() {
             labelFlex="Password"
             register={register}
             errors={errors}
-            name="password"
+            inputName="password"
             type="password"
             autoComplete="off"
             placeholder={intl.formatMessage({ id: 'AUTH.INPUT.PASSWORD' })}
@@ -175,7 +175,7 @@ export function Registration() {
             labelFlex="Confirm password"
             register={register}
             errors={errors}
-            name="passwordConfirm"
+            inputName="passwordConfirm"
             type="password"
             autoComplete="off"
             placeholder={intl.formatMessage({ id: 'AUTH.INPUT.PASSWORD' })}

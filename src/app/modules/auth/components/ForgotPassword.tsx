@@ -92,7 +92,7 @@ export function ForgotPassword() {
             labelFlex="Email"
             register={register}
             errors={errors}
-            name="email"
+            inputName="email"
             type="email"
             autoComplete="off"
             placeholder={'Email address'}

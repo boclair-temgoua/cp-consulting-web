@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 interface Props {
     register: UseFormRegister<any>;
-    name: string;
+    inputName: string;
     isRequired: boolean;
     label?: string;
     labelFlex?: string;
@@ -25,7 +25,7 @@ interface Props {
 
 export const TextInput: React.FC<Props> = ({
     register,
-    name,
+    inputName,
     label,
     labelFlex,
     isRequired,
@@ -51,9 +51,10 @@ export const TextInput: React.FC<Props> = ({
             )}
 
             <input
-                {...register(name, { valueAsNumber: isNumber })}
-                className={clsx(className)}
-                id={name}
+                {...register(inputName, { valueAsNumber: isNumber })}
+                className={`${clsx(className)} ${errors?.inputName ? "is-invalid" : ""
+                    }`}
+                id={inputName}
                 type={type}
                 value={value}
                 pattern={pattern}
@@ -62,19 +63,16 @@ export const TextInput: React.FC<Props> = ({
                 inputMode={inputMode}
                 placeholder={placeholder}
                 autoComplete={autoComplete}
-                aria-invalid={errors?.name ? "true" : "false"}
+                aria-invalid={errors?.inputName ? "true" : "false"}
                 required={isRequired}
             />
-            {errors?.name && (
+            {errors?.inputName && (
                 <div className='fv-plugins-message-container'>
                     <div className='fv-help-block'>
-                        <span role='alert'>{errors?.name.message}</span>
+                        <span role='alert'>{errors?.inputName.message}</span>
                     </div>
                 </div>
             )}
-
-            {/* {label && (<label htmlFor={name} className={`${required} form-label text-dark`}>{label}</label>)} */}
-
         </>
     );
 };

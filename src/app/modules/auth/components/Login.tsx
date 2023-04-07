@@ -91,7 +91,7 @@ export function Login() {
             labelFlex="Email"
             register={register}
             errors={errors}
-            name="email"
+            inputName="email"
             type="email"
             autoComplete="off"
             placeholder={'Email address'}
@@ -110,7 +110,7 @@ export function Login() {
             labelFlex="Password"
             register={register}
             errors={errors}
-            name="password"
+            inputName="password"
             type={'password'}
             autoComplete="off"
             placeholder={'Password'}
