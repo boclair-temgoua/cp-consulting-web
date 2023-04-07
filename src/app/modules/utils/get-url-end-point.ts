@@ -140,6 +140,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contacts/:contactId`,
     method: DELETE,
   },
+  deleteMultipleContact: {
+    endpoint: `${baseUrl}/contacts/delete/multiples`,
+    method: DELETE,
+  },
   createOneContact: {
     endpoint: `${baseUrl}/contacts`,
     method: POST,
@@ -151,5 +155,9 @@ export const apiEndpoints: ClientApiMethods = {
   getSubProjectsContributes: {
     endpoint: `${baseUrl}/sub-projects/contributes`,
     method: GET,
+  },
+  deleteOneSubProject: {
+    endpoint: `${baseUrl}/sub-projects/:subProjectId`,
+    method: DELETE,
   },
 }

@@ -18,7 +18,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
 
     const fetchDataSubProject = async () => await getSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', projectId: String(project?.id) })
     const { isLoading: isLoadingSubProject, isError: isErrorSubProject, data: dataSubProject } = useQuery({
-        queryKey: ['subProject', project?.id],
+        queryKey: ['subProjects', project?.id],
         queryFn: () => fetchDataSubProject(),
     })
     const dataTableSubProject = isLoadingSubProject ? (<tr><td><strong>Loading...</strong></td></tr>) :
@@ -26,7 +26,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
             (dataSubProject?.data?.total <= 0) ? (<EmptyTable name='SubProject' />) :
                 (
                     dataSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <SubsubProjectList item={item} key={index} projectItem={project} takeValue={takeValue} />
+                        <SubsubProjectList item={item} key={index} project={project} takeValue={takeValue} />
                     )))
 
 
@@ -43,14 +43,24 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubProject?.data?.total || 0} projects - {project?.name}</span>
                         </h3>
 
-                        <div className='card-toolbar' title='Click to add a user'>
-                            {project?.role?.name === 'ADMIN' && (
+                        {project?.role?.name === 'ADMIN' && (
+                            <div className='card-toolbar' title='Click to add a user'>
+                                {!project?.documentTotal && (
+                                    <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                        <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
+                                        New File
+                                    </button>
+                                )}
+
                                 <button type="button" className="btn btn-sm btn-light-primary me-1">
                                     <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
                                     New Project
                                 </button>
-                            )}
-                        </div>
+                            </div>
+
+                        )}
+
+
 
                     </div>
                     {/* end::Header */}
@@ -81,9 +91,6 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <Link to={`/projects/${project?.id}`} className="btn btn-light-primary w-100 py-3">
                                 Show More
                             </Link>
-                            // <Link to={`/projects/${project?.id}/sub-projects`} className="btn btn-light-primary w-100 py-3">
-                            //     Show More Contacts
-                            // </Link>
                         )}
 
                     </div>
@@ -95,4 +102,4 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
     )
 }
 
-export default SubProjectTableMini
+export  {SubProjectTableMini}

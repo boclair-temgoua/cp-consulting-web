@@ -1,25 +1,25 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from 'react'
+import React, { } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ContributorModel } from '../../contributors/core/_models'
 // import { getContributorssubProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
-import ContactMiniList from '../../contacts/hook/ContactMiniList'
-import { OneContactModel } from '../../contacts/core/_models'
-import { getContactsBy } from '../../contacts/core/_requests'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getContributorsSubProject } from '../../contributors/core/_requests'
 import { ProjectModel } from '../../projects/core/_models'
 import Swal from 'sweetalert2';
+import { deleteOneSubProject } from '../core/_requests'
+import { AlertDangerNotification, AlertSuccessNotification } from '../../utils'
+import { DeleteOneSubProjectMutation } from '../core/_models'
 
 type Props = {
     takeValue?: number
     item?: ContributorModel;
-    projectItem?: ProjectModel;
+    project?: ProjectModel;
 }
 
-const SubsubProjectList: React.FC<Props> = ({ item, projectItem, takeValue }) => {
+const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
     const navigate = useNavigate();
 
 
@@ -37,33 +37,49 @@ const SubsubProjectList: React.FC<Props> = ({ item, projectItem, takeValue }) =>
                     )))
 
 
-    const deleteItem = async (voucher: any) => {
+    const actionDeleteOneSubProjectMutation = DeleteOneSubProjectMutation({
+        onSuccess: () => { },
+        onError: (error) => { }
+    });
+
+
+    const deleteItem = async (item: any) => {
         Swal.fire({
             title: 'Delete?',
-            text: 'Are you sure you want to perform this action?',
+            html: `<b>${item?.subProject?.name}</b><br/><br/>
+            <b>Confirm with your password</b> `,
             confirmButtonText: 'Yes, Deleted',
             cancelButtonText: 'No, Cancel',
+            footer: `<b>Delete: ${item?.subProject?.name}</b>`,
             buttonsStyling: false,
             customClass: {
-                confirmButton: 'btn btn-primary',
-                cancelButton: 'btn btn-outline-default',
+                confirmButton: 'btn btn-sm btn-danger',
+                cancelButton: 'btn btn-sm btn-primary',
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off',
+                required: 'true'
             },
             showCancelButton: true,
             reverseButtons: true,
-        }).then(async (result) => {
-            if (result.value) {
-                console.log('item ======>', item)
-                //Envoyer la requet au serve
-                // const payloadSave = { code: voucher?.code }
-                // eslint-disable-next-line no-lone-blocks
-                // {
-                //   voucher?.voucherType === 'COUPON' ?
-                //     actionDeleteCouponMutation.mutateAsync(payloadSave) :
-                //     actionDeleteVoucherMutation.mutateAsync(payloadSave)
-                // }
-
-            }
-        });
+            showLoaderOnConfirm: true,
+            inputPlaceholder: 'Confirm password',
+            preConfirm: async (password) => {
+                try {
+                    await actionDeleteOneSubProjectMutation.mutateAsync({ password, subProjectId: String(item?.subProjectId) })
+                    AlertSuccessNotification({
+                        text: 'Project deleted successfully',
+                        className: 'info',
+                        position: 'center',
+                    })
+                } catch (error: any) {
+                    Swal.showValidationMessage(`${error?.response?.data?.message}`)
+                    AlertDangerNotification({ text: `${error?.response?.data?.message}`, className: 'info', position: 'center' })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
 
     }
 
@@ -104,7 +120,7 @@ const SubsubProjectList: React.FC<Props> = ({ item, projectItem, takeValue }) =>
                 </td>
 
                 <td>
-                    {projectItem?.role?.name === 'ADMIN' && (
+                    {project?.role?.name === 'ADMIN' && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
                             <a href='#'
                                 className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'

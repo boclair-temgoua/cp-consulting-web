@@ -32,11 +32,23 @@ export const createOneContact = async (payload: RequestContactModel): Promise<On
 }
 
 export const deleteOneContact = async (payload: {
-  contributorId: string
-}): Promise<OneContactModel> => {
-  const {contributorId} = payload
+  contactId: string
+  password: string
+}): Promise<any> => {
+  const {contactId, password} = payload
   return await makeApiCall({
     action: 'deleteOneContact',
-    urlParams: {contributorId},
+    urlParams: {contactId},
+    body: {password},
+  })
+}
+
+export const deleteMultipleContact = async (payload: {
+  password: string
+  contacts: string[]
+}): Promise<any> => {
+  return await makeApiCall({
+    action: 'deleteMultipleContact',
+    body: payload,
   })
 }

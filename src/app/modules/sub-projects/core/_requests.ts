@@ -23,3 +23,15 @@ export const getOneSubProject = async (payload: {
     queryParams: payload,
   })
 }
+
+export const deleteOneSubProject = async (payload: {
+  password: string
+  subProjectId: string
+}): Promise<{data: SubProjectModel}> => {
+  const {subProjectId, password} = payload
+  return await makeApiCall({
+    action: 'deleteOneSubProject',
+    urlParams: {subProjectId},
+    body: {password},
+  })
+}

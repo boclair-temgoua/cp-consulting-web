@@ -43,7 +43,7 @@ export function ForgotPassword() {
       setHasErrors(true)
       setLoading(false)
       setHasErrors(error.response.data.message);
-      AlertDangerNotification({ text: 'An error has occurred.', className: 'info' })
+      AlertDangerNotification({ text: 'An error has occurred.', className: 'info', position: 'center' })
     }
   }
 

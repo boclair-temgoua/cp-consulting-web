@@ -1,51 +1,88 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {  } from 'react'
+import React, { } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
-import { OneContactModel } from '../core/_models'
-import { capitalizeFirstLetter } from '../../utils'
+import { DeleteOneContactMutation, OneContactModel } from '../core/_models'
+import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import Swal from 'sweetalert2';
+import { UseFormRegister } from 'react-hook-form'
+import { TextInput } from '../../utils/forms'
 
 type Props = {
+    errors: { [key: string]: any };
+    register: UseFormRegister<any>;
+    value: string;
     item?: OneContactModel;
 }
 
-const ContactList: React.FC<Props> = ({ item }) => {
+const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
 
-    const deleteItem = async (voucher: any) => {
+    const actionDeleteOneContactMutation = DeleteOneContactMutation({
+        onSuccess: () => { },
+        onError: (error) => { }
+    });
+
+    const deleteItem = async (item: any) => {
         Swal.fire({
             title: 'Delete?',
-            text: 'Are you sure you want to perform this action?',
+            html: `<b>${item?.lastName} ${item?.firstName}</b><br/><br/>
+            <b>Confirm with your password</b> `,
             confirmButtonText: 'Yes, Deleted',
             cancelButtonText: 'No, Cancel',
+            footer: `<b>Delete: ${item?.lastName} ${item?.firstName}</b>`,
             buttonsStyling: false,
             customClass: {
-                confirmButton: 'btn btn-primary',
-                cancelButton: 'btn btn-outline-default',
+                confirmButton: 'btn btn-sm btn-danger',
+                cancelButton: 'btn btn-sm btn-primary',
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off',
+                required: 'true'
             },
             showCancelButton: true,
             reverseButtons: true,
-        }).then(async (result) => {
-            if (result.value) {
-                console.log('item ======>', item)
-                //Envoyer la requet au serve
-                // const payloadSave = { code: voucher?.code }
-                // eslint-disable-next-line no-lone-blocks
-                // {
-                //   voucher?.voucherType === 'COUPON' ?
-                //     actionDeleteCouponMutation.mutateAsync(payloadSave) :
-                //     actionDeleteVoucherMutation.mutateAsync(payloadSave)
-                // }
-
-            }
-        });
+            showLoaderOnConfirm: true,
+            inputPlaceholder: 'Confirm password',
+            preConfirm: async (password) => {
+                try {
+                    await actionDeleteOneContactMutation.mutateAsync({ password, contactId: String(item?.id) })
+                    AlertSuccessNotification({
+                        text: 'Contact deleted successfully',
+                        className: 'info',
+                        position: 'center',
+                    })
+                } catch (error: any) {
+                    Swal.showValidationMessage(`${error?.response?.data?.message}`)
+                    AlertDangerNotification({ text: `${error?.response?.data?.message}`, className: 'info', position: 'center' })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
 
     }
 
     return (
         <>
             <tr key={item?.id}>
+                <td>
+                    <div className="form-check form-check-sm form-check-custom form-check-solid">
+
+                        <TextInput
+                            className="form-check-input widget-9-check"
+                            register={register}
+                            errors={errors}
+                            name="contacts"
+                            type={'checkbox'}
+                            value={value}
+                            validation={{ required: true }}
+                            isRequired={true}
+                            required="required"
+                        />
+                    </div>
+                </td>
+
                 <td>
                     <div className='d-flex align-items-center'>
                         <div className="symbol symbol-circle symbol-40px overflow-hidden me-3">

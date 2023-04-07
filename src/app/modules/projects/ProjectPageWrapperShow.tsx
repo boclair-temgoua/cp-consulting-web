@@ -1,25 +1,16 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useDebounce } from '../utils/use-debounce'
-import { getContributorsProject } from '../contributors/core/_requests'
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { getOneProject } from './core/_requests'
-import { EmptyTable } from '../utils/empty-table'
-import { ContributorModel } from '../contributors/core/_models'
-import ContributorList from '../contributors/hook/ContributorList'
-import { getContactsBy } from '../contacts/core/_requests'
-import { OneContactModel } from '../contacts/core/_models'
-import ContactList from '../contacts/hook/ContactList'
 import { useAuth } from '../auth'
-import SubProjectRow from '../sub-projects/hook/SubProjectRow'
-import SubProjectRowComponent from '../sub-projects/hook/SubProjectRowComponent'
-import SubProjectTableMini from '../sub-projects/SubProjectTableMini'
+import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
+import { ContactProjectTableMini } from '../contacts/ContactProjectTableMini'
+import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
 
 const ProjectPageWrapperShow: FC = () => {
-  const takeValue: number = 5
+  const takeValue: number = 6
   const { role } = useAuth() as any
   const { projectId } = useParams<string>()
 
@@ -29,33 +20,6 @@ const ProjectPageWrapperShow: FC = () => {
     queryFn: () => fetchOneProject(),
   })
 
-
-  const fetchDataContributor = async () => await getContributorsProject({ take: takeValue, page: 1, sort: 'DESC', projectId: String(projectId) })
-  const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
-    queryKey: ['contributorsProject', projectId],
-    queryFn: () => fetchDataContributor(),
-  })
-  const dataTableContributor = isLoadingProject || isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
-    isErrorProject || isErrorContributor ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-      (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
-        (
-          dataContributor?.data?.value?.map((item: ContributorModel, index: number) => (
-            <ContributorList item={item} key={index} contributor={projectItem?.data} />
-          )))
-
-
-  const fetchDataContact = async () => await getContactsBy({ take: takeValue, page: 1, sort: 'DESC', type: 'PROJECT', projectId: String(projectId) })
-  const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContact } = useQuery({
-    queryKey: ['contactsProject', projectId],
-    queryFn: () => fetchDataContact(),
-  })
-  const dataTableContact = isLoadingProject || isLoadingContact ? (<tr><td><strong>Loading...</strong></td></tr>) :
-    isErrorProject || isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-      (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
-        (
-          dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
-            <ContactList item={item} key={index} />
-          )))
 
 
   return (
@@ -350,149 +314,18 @@ const ProjectPageWrapperShow: FC = () => {
 
         {projectItem?.data?.contactTotal && (
 
-          <div className="col-xxl-6">
-            <div className={`card card-xxl-stretch mb-xl-3`}>
+          <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
 
 
-              <div className='card-header border-0 pt-5'>
-                <h3 className='card-title align-items-start flex-column'>
-                  <span className='card-label fw-bold fs-3 mb-1'>Contacts</span>
-                  <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContact?.data?.total || 0} contacts</span>
-                </h3>
+        )}
 
-                {projectItem?.data?.role?.name === 'ADMIN' && (
-                  <div className="card-toolbar">
-                    <div className="d-flex justify-content-end">
+        {projectItem?.data?.id && (
 
-                      <button type="button" className="btn btn-sm btn-light-primary me-1">
-                        <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                        New Contact
-                      </button>
-
-                    </div>
-                  </div>
-                )}
-
-              </div>
-
-              <div className='card-body py-3'>
-
-                <div className='table-responsive'>
-
-                  <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                    <thead>
-                      <tr className="fw-bolder fs-6 text-gray-800">
-                        <th>Profile</th>
-                        <th></th>
-                        <th></th>
-                        <th className="text-end min-w-100px"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      {dataTableContact}
-
-                    </tbody>
-                  </table>
-                </div>
-
-                {Number(dataContact?.data?.total) > takeValue && (
-                  <Link to={`/projects/${projectId}/contributors`} className="btn btn-light-primary w-100 py-3">
-                    Show More
-                  </Link>
-                )}
-
-
-              </div>
-
-
-
-            </div>
-          </div>
+          <ContributorSubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
 
         )}
 
 
-        <div className={`col-xxl-${projectItem?.data?.contactTotal ? '6' : '12'}`}>
-
-          <div className={`card card-xxl-stretch mb-5 mb-xl-8`}>
-
-            <div className='card-header border-0 pt-5'>
-              <h3 className='card-title align-items-start flex-column'>
-                <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
-                <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContributor?.data?.total || 0} contributors</span>
-              </h3>
-
-              <div className="card-toolbar">
-                <div className="d-flex justify-content-end">
-                  
-                  {!projectItem?.data?.contactTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                      New Contact
-                    </button>
-                  )}
-
-                  {!projectItem?.data?.subProjectTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-                      New Folder
-                    </button>
-
-                  )}
-
-                  {!projectItem?.data?.documentTotal && (
-                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                      <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
-                      New File
-                    </button>
-
-                  )}
-
-                  <button type="button" className="btn btn-sm btn-light-primary me-1">
-                    <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
-                    New Contributor
-                  </button>
-
-                </div>
-              </div>
-
-            </div>
-
-            <div className='card-body py-3'>
-
-              <div className='table-responsive'>
-
-                <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                  <thead>
-                    <tr className="fw-bolder fs-6 text-gray-800">
-                      <th>Profile</th>
-                      <th>Start date</th>
-                      {projectItem?.data?.role?.name === 'ADMIN' && (
-                        <>
-                          <th>Role</th>
-                          <th className="text-end min-w-100px"></th>
-                        </>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dataTableContributor}
-                  </tbody>
-                </table>
-              </div>
-
-              {Number(dataContributor?.data?.total) > takeValue && (
-                <Link to={`/projects/${projectId}/contributors`} className="btn btn-light-primary w-100 py-3">
-                  Show More
-                </Link>
-              )}
-
-            </div>
-
-          </div>
-
-        </div>
 
       </div>
 

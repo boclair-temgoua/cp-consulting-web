@@ -1,4 +1,6 @@
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SortModel} from '../../utils/pagination-item'
+import {deleteMultipleContact, deleteOneContact} from './_requests'
 
 export type ResponseContactModel = {
   total: number
@@ -45,4 +47,84 @@ export type RequestContactModel = {
   categoryId: string
   projectId: string
   description: string
+}
+
+export const DeleteOneContactMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contacts']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: {password: string; contactId: string}): Promise<any> => {
+      const {password, contactId} = payload
+      const {data} = await deleteOneContact({password, contactId})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
+}
+
+export const DeleteMultipleContactMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contacts']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: {password: string; contacts: string[]}): Promise<any> => {
+      const {password, contacts} = payload
+      const {data} = await deleteMultipleContact({password, contacts})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
 }

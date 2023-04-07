@@ -8,6 +8,7 @@ export type InputType =
   | 'email'
   | 'date'
   | 'url'
+  | 'checkbox'
   | 'hidden'
 
 export type InputInputMode = 'numeric'
