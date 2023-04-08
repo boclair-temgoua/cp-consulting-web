@@ -1,3 +1,6 @@
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {createOneProject, updateOneProject} from './_requests'
+
 export type ProjectModel = {
   id: string
   slug: string
@@ -16,4 +19,52 @@ export type ProjectModel = {
     userId: string
   }
   role: {name: 'ADMIN' | 'MODERATOR'}
+}
+
+export type ProjectRequestModel = {
+  name: string
+  projectId?: string
+  description: string
+}
+
+export const CreateOrUpdateOneProjectMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['projects']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: ProjectRequestModel): Promise<any> => {
+      const {projectId, name, description} = payload
+      const {data} = projectId
+        ? await updateOneProject({projectId, name, description})
+        : await createOneProject({name, description})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
 }

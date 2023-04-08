@@ -44,7 +44,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
                 (
                     dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
-                        <ContactList item={item} key={index} register={register} value={item?.id} errors={errors} />
+                        <ContactList project={project} item={item} key={index} register={register} value={item?.id} errors={errors} />
                     )))
 
     const actionDeleteMultipleContactMutation = DeleteMultipleContactMutation({
@@ -93,7 +93,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
 
     return (
         <>
-            <div className="col-xxl-6">
+            <div className="card mb-5 mb-xl-8">
                 <div className={`card card-xxl-stretch mb-xl-3`}>
 
 
@@ -136,11 +136,10 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
                                 <thead>
                                     <tr className="fw-bolder fs-6 text-gray-800">
+                                        {project?.role?.name === 'ADMIN' && ( 
                                         <th className="w-25px">
-                                            {/* <div className="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input className="form-check-input" type="checkbox" value="1" />
-                                            </div> */}
                                         </th>
+                                        )}
                                         <th>Profile</th>
                                         <th></th>
                                         <th></th>

@@ -5,44 +5,40 @@ import { KTSVG } from '../../../../_metronic/helpers'
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import DatePicker from 'react-datepicker';
-import dayjs from 'dayjs';
-import { useQuery } from '@tanstack/react-query';
 import { TextInput } from '../../utils/forms';
 import { TextareaInput } from '../../utils/forms/TextareaInput';
-import { CreateOrUpdateOneSubProjectMutation, SubProjectModel, SubProjectRequestModel } from '../core/_models';
+import { CreateOrUpdateOneProjectMutation, ProjectRequestModel } from '../core/_models';
 import { AlertDangerNotification, AlertSuccessNotification } from '../../utils';
-import { ProjectModel } from '../../projects/core/_models';
+import { ProjectModel } from '../core/_models';
 
 interface Props {
   setOpenCreateOrUpdateModal: any,
-  project?: ProjectModel
-  subProject?: any
+  project?: any
 }
 
 const schema = yup.object({
   name: yup.string().min(3, 'Minimum 3 symbols').required(),
 });
 
-export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, project, subProject }) => {
+export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, project }) => {
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | string | undefined>(undefined)
   const { register, handleSubmit, setValue, reset,
     formState: { errors, isDirty, isValid }
-  } = useForm<SubProjectRequestModel>({ resolver: yupResolver(schema), mode: "onChange" });
+  } = useForm<ProjectRequestModel>({ resolver: yupResolver(schema), mode: "onChange" });
 
 
   useEffect(() => {
-    if (subProject) {
-      const fields = ['name', 'description', 'projectId', 'organizationId'];
-      fields?.forEach((field: any) => setValue(field, subProject[field]));
+    if (project) {
+      const fields = ['name', 'description', 'organizationId'];
+      fields?.forEach((field: any) => setValue(field, project[field]));
     }
-  }, [subProject]);
+  }, [project]);
 
-  const saveMutation = CreateOrUpdateOneSubProjectMutation({
+  const saveMutation = CreateOrUpdateOneProjectMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!subProject) { reset() }
+      if (!project) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -52,11 +48,11 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
   });
 
 
-  const onSubmit = async (data: SubProjectRequestModel) => {
+  const onSubmit = async (data: ProjectRequestModel) => {
     setLoading(true);
     setHasErrors(undefined)
     try {
-      await saveMutation.mutateAsync({ ...data, projectId: String(project?.id), subProjectId: subProject?.id })
+      await saveMutation.mutateAsync({ ...data, projectId: project?.id })
       AlertSuccessNotification({
         text: 'Project save successfully',
         className: 'info',
@@ -92,7 +88,7 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
             {/* begin::Modal body */}
             <div className="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
-                <h1 className="mb-3">{subProject?.id ? `${subProject?.name || ''}` : 'Create Project'}</h1>
+                <h1 className="mb-3">{project?.id ? `${project?.name || ''}` : 'Create Project'}</h1>
                 <div className="text-muted fw-bold fs-5">If you need more info, please check
                   <a href="#" className="link-primary fw-bolder"></a>.
                 </div>

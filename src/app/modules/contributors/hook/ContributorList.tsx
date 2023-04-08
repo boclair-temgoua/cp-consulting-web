@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
 import { ContributorModel } from '../core/_models'
-import { capitalizeFirstLetter } from '../../utils'
+import { capitalizeFirstLetter, colorRole } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { OrganizationModel } from '../../organizations/core/_models'
 import Swal from 'sweetalert2';
@@ -81,7 +81,7 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                 {contributor?.role?.name === 'ADMIN' && (
                     <>
                         <td>
-                            <span className={`badge badge-light-${item?.role?.name === 'ADMIN' ? 'danger' : 'primary'} fw-bolder`}>
+                            <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
                                 {item?.role?.name}
                             </span>
                         </td>

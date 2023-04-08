@@ -9,12 +9,17 @@ import ContactMiniList from '../../contacts/hook/ContactMiniList'
 import { OneContactModel } from '../../contacts/core/_models'
 import { getContactsBy } from '../../contacts/core/_requests'
 import { useQuery } from '@tanstack/react-query'
+import { ProjectCreateFormModal } from './ProjectCreateFormModal'
+import { useAuth } from '../../auth'
+import { colorRole } from '../../utils'
 
 type Props = {
     item?: ContributorModel;
 }
 
 const ProjectList: React.FC<Props> = ({ item }) => {
+    const { organization, role } = useAuth() as any
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
@@ -32,7 +37,7 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                     )))
 
 
-                    
+
     const fetchDataContactMini = async () => await getContactsBy({ take: 5, page: 1, sort: 'ASC', type: 'PROJECT', projectId: String(item?.projectId) })
     const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContactMini } = useQuery({
         queryKey: ['contactsProjectMini', item?.projectId],
@@ -52,7 +57,7 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                 <td>
                     <div className='d-flex align-items-center' onClick={() => navigate(`/projects/${item?.projectId}`, { replace: true })}>
                         <div className='symbol symbol-35px me-5'>
-                            <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg" alt="" />
+                            <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg" alt={item?.project?.name} />
                             {/* <img src={toAbsoluteUrl('/media/avatars/300-14.jpg')} alt='' /> */}
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
@@ -71,6 +76,11 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                     </span>
                 </td>
                 <td>
+                    <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
+                        {item?.role?.name}
+                    </span>
+                </td>
+                <td>
                     <div className='symbol-group symbol-hover flex-nowrap'>
 
                         {datataContributorMiniTable}
@@ -78,14 +88,26 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                     </div>
                 </td>
 
-                {/* <td>
-                    <div className='symbol-group symbol-hover flex-nowrap'>
+                <td>
+                    {/* <div className='symbol-group symbol-hover flex-nowrap'>
 
                         {datataContactMiniTable}
 
-                    </div>
-                </td> */}
+                    </div> */}
+                </td>
+
+                <td>
+                    {role?.name === 'ADMIN' && organization?.id === item?.organizationId && (
+                        <div className='d-flex justify-content-end flex-shrink-0'>
+                            <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
+                            </button>
+                        </div>
+                    )}
+                </td>
             </tr>
+
+            {openCreateOrUpdateModal && (<ProjectCreateFormModal project={item?.project} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }

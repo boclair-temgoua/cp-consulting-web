@@ -8,15 +8,17 @@ import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import Swal from 'sweetalert2';
 import { UseFormRegister } from 'react-hook-form'
 import { TextInput } from '../../utils/forms'
+import { ProjectModel } from '../../projects/core/_models'
 
 type Props = {
     errors: { [key: string]: any };
     register: UseFormRegister<any>;
     value: string;
     item?: OneContactModel;
+    project?: ProjectModel
 }
 
-const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
+const ContactList: React.FC<Props> = ({ item, register, value, errors, project }) => {
 
     const actionDeleteOneContactMutation = DeleteOneContactMutation({
         onSuccess: () => { },
@@ -66,22 +68,25 @@ const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
     return (
         <>
             <tr key={item?.id}>
-                <td>
-                    <div className="form-check form-check-sm form-check-custom form-check-solid">
+                {project?.role?.name === 'ADMIN' && (
+                    <td>
 
-                        <TextInput
-                            className="form-check-input widget-9-check"
-                            register={register}
-                            errors={errors}
-                            inputName="contacts"
-                            type={'checkbox'}
-                            value={value}
-                            validation={{ required: true }}
-                            isRequired={true}
-                            required="required"
-                        />
-                    </div>
-                </td>
+                        <div className="form-check form-check-sm form-check-custom form-check-solid">
+
+                            <TextInput
+                                className="form-check-input widget-9-check"
+                                register={register}
+                                errors={errors}
+                                inputName="contacts"
+                                type={'checkbox'}
+                                value={value}
+                                validation={{ required: true }}
+                                isRequired={true}
+                                required="required"
+                            />
+                        </div>
+                    </td>
+                )}
 
                 <td>
                     <div className='d-flex align-items-center'>
@@ -125,17 +130,19 @@ const ContactList: React.FC<Props> = ({ item, register, value,errors }) => {
                     </a>
                 </td>
                 <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                        <a
-                            href='#'
-                            className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
-                        >
-                            <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                        </a>
-                        <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
-                            <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
-                        </button>
-                    </div>
+                    {project?.role?.name === 'ADMIN' && (
+                        <div className='d-flex justify-content-end flex-shrink-0'>
+                            <a
+                                href='#'
+                                className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
+                            >
+                                <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
+                            </a>
+                            <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
+                            </button>
+                        </div>
+                    )}
                 </td>
             </tr>
 

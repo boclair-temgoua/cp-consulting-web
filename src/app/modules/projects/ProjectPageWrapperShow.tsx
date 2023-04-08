@@ -8,6 +8,7 @@ import { useAuth } from '../auth'
 import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
 import { ContactProjectTableMini } from '../contacts/ContactProjectTableMini'
 import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
+import { KTSVG } from '../../../_metronic/helpers'
 
 const ProjectPageWrapperShow: FC = () => {
   const takeValue: number = 6
@@ -286,52 +287,51 @@ const ProjectPageWrapperShow: FC = () => {
       </div> */}
 
 
-      {/* <div className="row gy-5 gx-xl-8">
-
-        <div className={`col-xxl-12`}>
-
-          <SubProjectRowComponent />
-
-        </div>
-
-      </div> */}
-
 
       {projectItem?.data?.subProjectTotal && (
-        <div className="row gy-5 gx-xl-8">
 
-          <div className={`col-xxl-12`}>
+        <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+      )}
 
-            <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+      {projectItem?.data?.contactTotal && (
 
+        <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+
+      )}
+
+
+
+      {projectItem?.data?.id && (
+
+        <ContributorSubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+
+      )}
+
+
+
+      {projectItem?.data?.role?.name === 'ADMIN' && (
+        <div className="card  ">
+
+          <div className="card-header border-0 cursor-pointer">
+            <div className="card-title m-0">
+              <h3 className="fw-bold m-0">Delete: {projectItem?.data?.name || 'Project'}</h3>
+            </div>
+          </div>
+          <div id="kt_account_settings_deactivate" className="collapse show">
+            <form id="kt_account_deactivate_form" className="form fv-plugins-bootstrap5 fv-plugins-framework">
+
+
+              <div className="card-footer d-flex justify-content-end py-6 px-9">
+                <button type="submit" className="btn btn-sm btn-danger fw-semibold">
+                  <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' /> Delete
+                </button>
+              </div>
+
+              <input type="hidden" /></form>
           </div>
         </div>
       )}
 
-
-      <div className='row g-5 gx-xxl-8'>
-
-
-        {projectItem?.data?.contactTotal && (
-
-          <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-
-        )}
-
-        {projectItem?.data?.id && (
-
-          <ContributorSubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-        )}
-
-
-
-      </div>
-
-
-
-      {/* </div> */}
 
     </>
   )

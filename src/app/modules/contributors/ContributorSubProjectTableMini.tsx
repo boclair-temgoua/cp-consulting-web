@@ -32,7 +32,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ project, takeValue })
 
     return (
         <>
-            <div className={`col-xxl-${project?.contactTotal ? '6' : '12'}`}>
+            <div className={`card mb-5 mb-xl-8`}>
 
                 <div className={`card card-xxl-stretch mb-5 mb-xl-8`}>
 

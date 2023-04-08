@@ -12,8 +12,10 @@ import { PaginationItem } from '../utils/pagination-item'
 import { EmptyTable } from '../utils/empty-table'
 import ProjectList from './hook/ProjectList'
 import { ContributorModel } from '../contributors/core/_models'
+import { ProjectCreateFormModal } from './hook/ProjectCreateFormModal'
 
 const ProjectsWrapper: FC = () => {
+  const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
   const { organization } = useAuth() as any
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams();
@@ -84,13 +86,17 @@ const ProjectsWrapper: FC = () => {
             className='card-toolbar'
             title='Click to add a user'
           >
-            <a
+            {/* <a
               href='#'
               className='btn btn-sm btn-light-primary'
             >
               <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
               New Project
-            </a>
+            </a> */}
+            <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+              <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
+              New Project
+            </button>
           </div>
         </div>
         {/* end::Header */}
@@ -106,7 +112,9 @@ const ProjectsWrapper: FC = () => {
                   <th>Name</th>
                   <th></th>
                   <th></th>
-                  {/* <th></th> */}
+                  <th></th>
+                  <th></th>
+                  <th></th>
                 </tr>
               </thead>
               {/* end::Table head */}
@@ -129,6 +137,7 @@ const ProjectsWrapper: FC = () => {
             pageItem={pageItem}
           />
 
+          {openCreateOrUpdateModal && (<ProjectCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
           {/* end::Table container */}
         </div>
         {/* begin::Body */}

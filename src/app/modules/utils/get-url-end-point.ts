@@ -156,6 +156,14 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/sub-projects/show`,
     method: GET,
   },
+  createOneProject: {
+    endpoint: `${baseUrl}/projects`,
+    method: POST,
+  },
+  updateOneProject: {
+    endpoint: `${baseUrl}/projects/:projectId`,
+    method: PUT,
+  },
   getSubProjectsContributes: {
     endpoint: `${baseUrl}/sub-projects/contributes`,
     method: GET,
