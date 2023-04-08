@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { KTSVG } from '../../../_metronic/helpers';
 import { ContributorModel } from './core/_models';
@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import ContributorList from './hook/ContributorList';
 import { getContributorsProject } from './core/_requests';
+import { SubProjectCreateFormModal } from '../sub-projects/hook/SubProjectCreateFormModal';
 
 type Props = {
     takeValue: number
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const ContributorSubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
     const fetchDataContributor = async () => await getContributorsProject({ take: takeValue, page: 1, sort: 'DESC', projectId: String(project?.id) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
@@ -55,9 +57,9 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ project, takeValue })
                                     )}
 
                                     {!project?.subProjectTotal && (
-                                        <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                        <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
                                             <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-                                            New Folder
+                                            New Project
                                         </button>
 
                                     )}
@@ -116,6 +118,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ project, takeValue })
 
             </div>
 
+            {openCreateOrUpdateModal && (<SubProjectCreateFormModal project={project} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
 
         </>
     )

@@ -36,6 +36,17 @@ export const getContributorsSubProject = async (
   })
 }
 
+export const getContributorsSubSubProject = async (
+  payload: {
+    subSubProjectId: string
+  } & PaginationRequest
+): Promise<{data: ResponseContributorModel}> => {
+  return await makeApiCall({
+    action: 'getContributorsSubSubProject',
+    queryParams: payload,
+  })
+}
+
 export const getOneContributor = async (payload: {
   contributorId: string
 }): Promise<OneContributorModel> => {

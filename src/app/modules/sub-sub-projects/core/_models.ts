@@ -1,8 +1,9 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {createOneSubProject, deleteOneSubProject, updateOneSubProject} from './_requests'
+import {createOneSubSubProject, deleteOneSubSubProject, updateOneSubSubProject} from './_requests'
 import {ProjectRequestModel} from '../../projects/core/_models'
+// import {createOneSubProject, deleteOneSubProject, updateOneSubProject} from './_requests'
 
-export type SubProjectModel = {
+export type SubSubProjectModel = {
   id: string
   slug: string
   name: string
@@ -10,36 +11,37 @@ export type SubProjectModel = {
   image: string
   projectId: string
   organizationId: string
+  subProjectId: string
   contributorTotal: number
   contactTotal: number
   documentTotal: number
-  subSubProjectTotal: number
-  organization: {
-    id: string
-    name: string
-    color: string
-    userId: string
-  }
   role: {
     name: 'ADMIN' | 'MODERATOR'
   }
 }
 
-export const CreateOrUpdateOneSubProjectMutation = ({
+export type SubSubProjectRequestModel = {
+  name: string
+  projectId: string
+  subProjectId?: string
+  description: string
+}
+
+export const CreateOrUpdateOneSubSubProjectMutation = ({
   onSuccess,
   onError,
 }: {
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['subProjects']
+  const queryKey = ['subSubProjects']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (payload: ProjectRequestModel): Promise<any> => {
-      const {subProjectId, projectId, name, description} = payload
-      const {data} = subProjectId
-        ? await updateOneSubProject({subProjectId, projectId, name, description})
-        : await createOneSubProject({projectId, name, description})
+      const {subProjectId, subSubProjectId, name, description} = payload
+      const {data} = subSubProjectId
+        ? await updateOneSubSubProject({subSubProjectId, name, description})
+        : await createOneSubSubProject({subProjectId, name, description})
       return data
     },
     {
@@ -67,19 +69,19 @@ export const CreateOrUpdateOneSubProjectMutation = ({
   return result
 }
 
-export const DeleteOneSubProjectMutation = ({
+export const DeleteOneSubSubProjectMutation = ({
   onSuccess,
   onError,
 }: {
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['subProjects']
+  const queryKey = ['subSubProjects']
   const queryClient = useQueryClient()
   const result = useMutation(
-    async (payload: {password: string; subProjectId: string}): Promise<any> => {
-      const {password, subProjectId} = payload
-      const {data} = await deleteOneSubProject({password, subProjectId})
+    async (payload: {password: string; subSubProjectId: string}): Promise<any> => {
+      const {password, subSubProjectId} = payload
+      const {data} = await deleteOneSubSubProject({password, subSubProjectId})
       return data
     },
     {

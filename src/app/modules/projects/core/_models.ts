@@ -24,6 +24,8 @@ export type ProjectModel = {
 export type ProjectRequestModel = {
   name: string
   projectId?: string
+  subProjectId?: string
+  subSubProjectId?: string
   description: string
 }
 

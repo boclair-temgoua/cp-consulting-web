@@ -20,6 +20,7 @@ export type ContributorModel = {
   organizationId: string
   projectId: string
   subProjectId: string
+  subSubProjectId: string
   userCreatedId: string
   organization: {
     id: string
@@ -41,6 +42,16 @@ export type ContributorModel = {
     color: string
     projectId: string
     description: string
+    organizationId: string
+  }
+  subSubProject: {
+    id: string
+    name: string
+    slug: string
+    color: string
+    projectId: string
+    description: string
+    subProjectId: string
     organizationId: string
   }
   profile: {

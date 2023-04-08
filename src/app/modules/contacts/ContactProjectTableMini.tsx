@@ -27,6 +27,7 @@ const schema = yup.object().shape({
 })
 
 const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
+
     const { register, handleSubmit,
         formState: { errors, isDirty, isValid }
     } = useForm<string[]>({ resolver: yupResolver(schema), mode: "onChange" });

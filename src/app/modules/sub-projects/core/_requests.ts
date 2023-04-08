@@ -1,7 +1,8 @@
 import {ResponseContributorModel} from '../../contributors/core/_models'
+import {ProjectRequestModel} from '../../projects/core/_models'
 import {makeApiCall} from '../../utils/get-url-end-point'
 import {PaginationRequest} from '../../utils/pagination-item'
-import {SubProjectModel, SubProjectRequestModel} from './_models'
+import {SubProjectModel} from './_models'
 
 export const getSubProjectsContributes = async (
   payload: {
@@ -15,7 +16,6 @@ export const getSubProjectsContributes = async (
 }
 
 export const getOneSubProject = async (payload: {
-  projectId: string
   subProjectId: string
 }): Promise<{data: SubProjectModel}> => {
   return await makeApiCall({
@@ -37,7 +37,7 @@ export const deleteOneSubProject = async (payload: {
 }
 
 export const createOneSubProject = async (
-  payload: SubProjectRequestModel
+  payload: ProjectRequestModel
 ): Promise<{data: SubProjectModel}> => {
   return await makeApiCall({
     action: 'createOneSubProject',
@@ -46,7 +46,7 @@ export const createOneSubProject = async (
 }
 
 export const updateOneSubProject = async (
-  payload: SubProjectRequestModel
+  payload: ProjectRequestModel
 ): Promise<{data: SubProjectModel}> => {
   const {subProjectId, name, description} = payload
   return await makeApiCall({
