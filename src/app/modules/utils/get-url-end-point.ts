@@ -212,6 +212,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contributors/sub-sub-project`,
     method: GET,
   },
+  getContributorsSubSubSubProject: {
+    endpoint: `${baseUrl}/contributors/sub-sub-sub-project`,
+    method: GET,
+  },
   getUsers: {
     endpoint: `${baseUrl}/users`,
     method: GET,
@@ -220,12 +224,32 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/sub-sub-projects`,
     method: POST,
   },
+  createOneSubSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects`,
+    method: POST,
+  },
   updateOneSubSubProject: {
-    endpoint: `${baseUrl}/sub-sub-projects/:subSubProjectId`,
+    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubProjectId`,
+    method: PUT,
+  },
+  deleteOneSubSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
+    method: DELETE,
+  },
+  updateOneSubSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
     method: PUT,
   },
   updateRoleContributor: {
     endpoint: `${baseUrl}/contributors/role`,
     method: PUT,
+  },
+  getSubSubSubProjectsContributes: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects/contributes`,
+    method: GET,
+  },
+  getOneSubSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects/show`,
+    method: GET,
   },
 }

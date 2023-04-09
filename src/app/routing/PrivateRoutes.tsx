@@ -13,6 +13,7 @@ import ContributorsOrganizationWrapper from '../modules/contributors/Contributor
 import ContributorsProjectWrapper from '../modules/contributors/ContributorsProjectWrapper'
 import SubProjectPageWrapperShow from '../modules/sub-projects/SubProjectPageWrapperShow'
 import SubSubProjectPageWrapperShow from '../modules/sub-sub-projects/SubSubProjectPageWrapperShow'
+import SubSubSubProjectPageWrapperShow from '../modules/sub-sub-sub-projects/SubSubSubProjectPageWrapperShow'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -41,6 +42,7 @@ const PrivateRoutes = () => {
         <Route path='projects/:projectId' element={<ProjectPageWrapperShow />} />
         <Route path='projects/sb-p/:subProjectId' element={<SubProjectPageWrapperShow />} />
         <Route path='projects/sb-sb-p/:subSubProjectId' element={<SubSubProjectPageWrapperShow />} />
+        <Route path='projects/sb-sb-sb-p/:subSubSubProjectId' element={<SubSubSubProjectPageWrapperShow />} />
         <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}

@@ -13,6 +13,7 @@ import { deleteOneSubProject } from '../core/_requests'
 import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
 import { DeleteOneSubProjectMutation } from '../core/_models'
 import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
+import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 
 type Props = {
     takeValue?: number
@@ -110,7 +111,7 @@ const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
 
                         {dataContributorMiniTable}
 
-                        <Link to={`/projects/${item?.projectId}`} className="symbol symbol-30px symbol-circle">
+                        <Link to={`/projects`} className="symbol symbol-30px symbol-circle">
                             {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
                                     +{calculatedContributors}
@@ -121,11 +122,14 @@ const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
                     </div>
                 </td>
                 <td>
-                    {arrayAuthorized.includes(`${project?.role?.name}`) && (
-                        <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
-                            {item?.role?.name}
-                        </span>
-                    )}
+                    <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
+                        {item?.role?.name}
+                    </span>
+                </td>
+                <td>
+                    <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
+                        {formateDateDayjs(item?.createdAt as Date)}
+                    </a>
                 </td>
                 <td>
                     {arrayAuthorized.includes(`${project?.role?.name}`) && (

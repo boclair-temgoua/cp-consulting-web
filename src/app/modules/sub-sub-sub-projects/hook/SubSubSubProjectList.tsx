@@ -6,31 +6,32 @@ import { ContributorModel, arrayAuthorized } from '../../contributors/core/_mode
 // import { getContributorssubProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getContributorsSubProject, getContributorsSubSubProject } from '../../contributors/core/_requests'
+import { getContributorsSubProject, getContributorsSubSubSubProject } from '../../contributors/core/_requests'
 import { ProjectModel } from '../../projects/core/_models'
 import Swal from 'sweetalert2';
+// import { deleteOneSubProject } from '../core/_requests'
 import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
-
+// import { DeleteOneSubProjectMutation } from '../core/_models'
 // import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
-import { SubProjectModel } from '../../sub-projects/core/_models'
-import { SubSubProjectCreateFormModal } from './SubSubProjectCreateFormModal'
-import { DeleteOneSubSubProjectMutation } from '../core/_models'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
+import { SubSubProjectModel } from '../../sub-sub-projects/core/_models'
+import { SubSubSubProjectCreateFormModal } from './SubSubSubProjectCreateFormModal'
+import { CreateOrUpdateOneSubSubSubProjectMutation, DeleteOneSubSubSubProjectMutation } from '../core/_models'
 
 type Props = {
     takeValue?: number
     item?: ContributorModel;
-    subProject?: SubProjectModel;
+    subSubProject?: SubSubProjectModel;
 }
 
-const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => {
+const SubSubSubProjectList: React.FC<Props> = ({ item, subSubProject, takeValue }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
-    const fetchDataContributorMini = async () => await getContributorsSubSubProject({ take: Number(takeValue), page: 1, sort: 'ASC', subSubProjectId: String(item?.subSubProjectId) })
+    const fetchDataContributorMini = async () => await getContributorsSubSubSubProject({ take: Number(takeValue), page: 1, sort: 'ASC', subSubSubProjectId: String(item?.subSubSubProjectId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
-        queryKey: ['contributorSubSubProjectMini', item?.subSubProjectId, 1, 'ASC'],
+        queryKey: ['contributorSubSubSubProjectMini', item?.subSubSubProjectId, 1, 'ASC'],
         queryFn: () => fetchDataContributorMini(),
     })
     const dataContributorMiniTable = isLoadingContributor ? (<strong>Loading...</strong>) :
@@ -42,7 +43,7 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                     )))
 
 
-    const actionDeleteOneSubSubProjectMutation = DeleteOneSubSubProjectMutation({
+    const actionMutation = DeleteOneSubSubSubProjectMutation({
         onSuccess: () => { },
         onError: (error) => { }
     });
@@ -51,11 +52,11 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
     const deleteItem = async (item: any) => {
         Swal.fire({
             title: 'Delete?',
-            html: `<b>${item?.subSubProject?.name}</b><br/><br/>
+            html: `<b>${item?.subProject?.name}</b><br/><br/>
             <b>Confirm with your password</b> `,
             confirmButtonText: 'Yes, Deleted',
             cancelButtonText: 'No, Cancel',
-            footer: `<b>Delete: ${item?.subSubProject?.name}</b>`,
+            footer: `<b>Delete: ${item?.subProject?.name}</b>`,
             buttonsStyling: false,
             customClass: {
                 confirmButton: 'btn btn-sm btn-danger',
@@ -72,7 +73,7 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
             inputPlaceholder: 'Confirm password',
             preConfirm: async (password) => {
                 try {
-                    await actionDeleteOneSubSubProjectMutation.mutateAsync({ password, subSubProjectId: String(item?.subSubProjectId) })
+                    await actionMutation.mutateAsync({ password, subSubSubProjectId: String(item?.subSubSubProjectId) })
                     AlertSuccessNotification({
                         text: 'Project deleted successfully',
                         className: 'info',
@@ -93,17 +94,17 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
         <>
             <tr key={item?.id}>
                 <td>
-                    <div className='d-flex align-items-center' onClick={() => navigate(`/projects/sb-sb-p/${item?.subSubProjectId}`, { replace: true })}>
+                    <div className='d-flex align-items-center' onClick={() => navigate(`/projects/sb-sb-sb-p/${item?.subSubSubProjectId}`, { replace: true })}>
                         <div className='symbol symbol-35px me-5'>
                             <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg" alt="" />
                             {/* <img src={toAbsoluteUrl('/media/avatars/300-14.jpg')} alt='' /> */}
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
-                            <Link to={`/projects/sb-sb-p/${item?.subSubProjectId}`} className='text-dark fw-bold text-hover-primary fs-6'>
-                                {item?.subSubProject?.name}
+                            <Link to={`/projects/sb-sb-sb-p/${item?.subSubSubProjectId}`} className='text-dark fw-bold text-hover-primary fs-6'>
+                                {item?.subSubSubProject?.name}
                             </Link>
                             <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                                {item?.subSubProject?.description}
+                                {item?.subSubSubProject?.description}
                             </span>
                         </div>
                     </div>
@@ -123,13 +124,10 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
 
                     </div>
                 </td>
-
                 <td>
-                    {arrayAuthorized.includes(`${subProject?.role?.name}`) && (
-                        <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
-                            {item?.role?.name}
-                        </span>
-                    )}
+                    <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
+                        {item?.role?.name}
+                    </span>
                 </td>
                 <td>
                     <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
@@ -137,7 +135,7 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                     </a>
                 </td>
                 <td>
-                    {arrayAuthorized.includes(`${subProject?.role?.name}`) && (
+                    {arrayAuthorized.includes(`${subSubProject?.role?.name}`) && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
                             <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
@@ -146,12 +144,13 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                                 <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                             </button>
                         </div>
+
                     )}
                 </td>
             </tr>
-            {openCreateOrUpdateModal && (<SubSubProjectCreateFormModal subSubProject={item?.subSubProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
+            {openCreateOrUpdateModal && (<SubSubSubProjectCreateFormModal subSubSubProject={item?.subSubSubProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }
 
-export default SubSubProjectList
+export default SubSubSubProjectList

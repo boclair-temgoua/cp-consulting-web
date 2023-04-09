@@ -6,29 +6,34 @@ import { ContributorModel, arrayAuthorized } from '../contributors/core/_models'
 import { useQuery } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import { SubProjectModel } from '../sub-projects/core/_models';
-import SubSubProjectList from './hook/SubSubProjectList';
-import { getSubSubProjectsContributes } from './core/_requests';
-import { SubSubProjectCreateFormModal } from './hook/SubSubProjectCreateFormModal';
+import { SubSubProjectModel } from '../sub-sub-projects/core/_models';
+import SubSubProjectList from '../sub-sub-projects/hook/SubSubProjectList';
+import SubSubSubProjectList from './hook/SubSubSubProjectList';
+import { getSubSubSubProjectsContributes } from './core/_requests';
+import { SubSubSubProjectCreateFormModal } from './hook/SubSubSubProjectCreateFormModal';
+// import SubSubProjectList from './hook/SubSubProjectList';
+// import { getSubSubProjectsContributes } from './core/_requests';
+// import { SubSubProjectCreateFormModal } from './hook/SubSubProjectCreateFormModal';
 
 type Props = {
     takeValue: number
-    subProject?: SubProjectModel;
+    subSubProject?: SubSubProjectModel;
 }
 
-const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
+const SubSubSubProjectTableMini: React.FC<Props> = ({ subSubProject, takeValue }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
-    const fetchDataSubSubProject = async () => await getSubSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
-    const { isLoading: isLoadingSubSubProject, isError: isErrorSubSubProject, data: dataSubSubProject } = useQuery({
-        queryKey: ['subSubProjects', subProject?.id],
-        queryFn: () => fetchDataSubSubProject(),
+    const fetchDataSubSubSubProject = async () => await getSubSubSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', subSubProjectId: String(subSubProject?.id) })
+    const { isLoading: isLoadingSubSubSubProject, isError: isErrorSubSubSubProject, data: dataSubSubSubProject } = useQuery({
+        queryKey: ['subSubSubProjects', subSubProject?.id],
+        queryFn: () => fetchDataSubSubSubProject(),
     })
-    const dataTableSubSubProject = isLoadingSubSubProject ? (<tr><td><strong>Loading...</strong></td></tr>) :
-        isErrorSubSubProject ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-            (dataSubSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
+    const dataTableSubSubSubProject = isLoadingSubSubSubProject ? (<tr><td><strong>Loading...</strong></td></tr>) :
+        isErrorSubSubSubProject ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
+            (dataSubSubSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
                 (
-                    dataSubSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <SubSubProjectList item={item} key={index} subProject={subProject} takeValue={takeValue} />
+                    dataSubSubSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
+                        <SubSubSubProjectList item={item} key={index} subSubProject={subSubProject} takeValue={takeValue} />
                     )))
 
 
@@ -39,19 +44,19 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
                 {/* begin::Header */}
                 <div className="card-header border-0 pt-5">
                     <h3 className='card-title align-items-start flex-column'>
-                        <span className='card-label fw-bold fs-3 mb-1'>{subProject?.name || ''}</span>
-                        <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubSubProject?.data?.total || 0} projects - {subProject?.name}</span>
+                        <span className='card-label fw-bold fs-3 mb-1'>{subSubProject?.name || ''}</span>
+                        <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubSubSubProject?.data?.total || 0} projects - {subSubProject?.name}</span>
                     </h3>
 
-                    {arrayAuthorized.includes(`${subProject?.role?.name}`) && (
+                    {arrayAuthorized.includes(`${subSubProject?.role?.name}`) && (
                         <div className='card-toolbar' title='Click to add a user'>
-                            {!subProject?.documentTotal && (
+                            {/* {!subSubProject?.documentTotal && (
                                 <button type="button" className="btn btn-sm btn-light-primary me-1">
                                     <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
                                     New File
                                 </button>
 
-                            )}
+                            )} */}
 
                             <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
                                 <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
@@ -83,25 +88,26 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
                             <tbody>
 
 
-                                {dataTableSubSubProject}
+                                {dataTableSubSubSubProject}
 
 
                             </tbody>
                         </table>
                     </div>
 
-                    {Number(dataSubSubProject?.data?.total) > takeValue && (
+                    {/* {Number(dataSubSubSubProject?.data?.total) > takeValue && (
                         <Link to={`/projects/sb-sb-p/${subProject?.id}`} className="btn btn-light-primary w-100 py-3">
                             Show More
                         </Link>
-                    )}
+                    )} */}
 
                 </div>
             </div>
 
-            {openCreateOrUpdateModal && (<SubSubProjectCreateFormModal subProject={subProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
+            {openCreateOrUpdateModal && (<SubSubSubProjectCreateFormModal subSubProject={subSubProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }
 
-export { SubSubProjectTableMini }
+export { SubSubSubProjectTableMini }
+

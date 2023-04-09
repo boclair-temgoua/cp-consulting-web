@@ -19,7 +19,6 @@ import { ContributorSubProjectTableMini } from '../contributors/ContributorSubPr
 
 const SubProjectPageWrapperShow: FC = () => {
   const takeValue: number = 6
-  const { role } = useAuth() as any
   const { subProjectId } = useParams<string>()
 
   const fetchOneSubProject = async () => await getOneSubProject({ subProjectId: String(subProjectId) })
@@ -27,35 +26,6 @@ const SubProjectPageWrapperShow: FC = () => {
     queryKey: ['subProject', subProjectId],
     queryFn: () => fetchOneSubProject(),
   })
-
-
-  // const fetchDataContributor = async () => await getContributorsProject({ take: 5, page: 1, sort: 'DESC', subProjectId: String(subProjectId) })
-  // const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
-  //   queryKey: ['contributorsSubProject', subProjectId],
-  //   queryFn: () => fetchDataContributor(),
-  // })
-  // const dataTableContributor = isLoadingProject || isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
-  //   isErrorProject || isErrorContributor ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-  //     (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
-  //       (
-  //         dataContributor?.data?.value?.map((item: ContributorModel, index: number) => (
-  //           <ContributorList item={item} key={index} contributor={projectItem?.data} />
-  //         )))
-
-
-  // const fetchDataContact = async () => await getContactsBy({ take: 5, page: 1, sort: 'DESC', type: 'PROJECT', projectId: String(projectId) })
-  // const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContact } = useQuery({
-  //   queryKey: ['contactsProject', projectId],
-  //   queryFn: () => fetchDataContact(),
-  // })
-  // const dataTableContact = isLoadingProject || isLoadingContact ? (<tr><td><strong>Loading...</strong></td></tr>) :
-  //   isErrorProject || isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-  //     (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
-  //       (
-  //         dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
-  //           <ContactList item={item} key={index} />
-  //         )))
-
 
   return (
     <>

@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ProjectCreateFormModal } from './ProjectCreateFormModal'
 import { useAuth } from '../../auth'
 import { colorRole } from '../../utils'
+import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 
 type Props = {
     item?: ContributorModel;
@@ -36,21 +37,6 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                 (
                     dataContributorMini?.data?.value?.map((item: ContributorModel, index: number) => (
                         <ContributorMiniList item={item} key={index} />
-                    )))
-
-
-
-    const fetchDataContactMini = async () => await getContactsBy({ take: 5, page: 1, sort: 'ASC', type: 'PROJECT', projectId: String(item?.projectId) })
-    const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContactMini } = useQuery({
-        queryKey: ['contactsProjectMini', item?.projectId],
-        queryFn: () => fetchDataContactMini(),
-    })
-    const datataContactMiniTable = isLoadingContact ? (<strong>Loading...</strong>) :
-        isErrorContact ? (<strong>Error find data please try again...</strong>) :
-            (dataContactMini?.data?.total <= 0) ? ('') :
-                (
-                    dataContactMini?.data?.value?.map((item: OneContactModel, index: number) => (
-                        <ContactMiniList item={item} key={index} index={index} />
                     )))
 
     return (
@@ -91,11 +77,9 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                 </td>
 
                 <td>
-                    {/* <div className='symbol-group symbol-hover flex-nowrap'>
-
-                        {datataContactMiniTable}
-
-                    </div> */}
+                    <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
+                        {formateDateDayjs(item?.createdAt as Date)}
+                    </a>
                 </td>
 
                 <td>

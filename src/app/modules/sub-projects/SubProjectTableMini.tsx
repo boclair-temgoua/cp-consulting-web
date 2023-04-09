@@ -76,6 +76,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                                     <th>Name</th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th className="text-end min-w-100px"></th>
                                 </tr>
                             </thead>
