@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { KTSVG } from '../../../_metronic/helpers';
-import { ContributorModel } from '../contributors/core/_models';
+import { ContributorModel, arrayAuthorized } from '../contributors/core/_models';
 import { ProjectModel } from '../projects/core/_models';
 import { getSubProjectsContributes } from './core/_requests';
 import { useQuery } from '@tanstack/react-query';
@@ -43,7 +43,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                         <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubProject?.data?.total || 0} projects - {project?.name}</span>
                     </h3>
 
-                    {project?.role?.name === 'ADMIN' && (
+                    {arrayAuthorized.includes(`${project?.role?.name}`) && (
                         <div className='card-toolbar' title='Click to add a user'>
                             {/* {!project?.documentTotal && (
                                 <button type="button" className="btn btn-sm btn-light-primary me-1">
@@ -74,6 +74,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <thead>
                                 <tr className="fw-bolder fs-6 text-gray-800">
                                     <th>Name</th>
+                                    <th></th>
                                     <th></th>
                                     <th className="text-end min-w-100px"></th>
                                 </tr>

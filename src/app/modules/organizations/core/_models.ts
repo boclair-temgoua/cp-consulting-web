@@ -1,3 +1,5 @@
+import {ContributorRoleModel} from '../../contributors/core/_models'
+
 export type OrganizationModel = {
   id: string
   name: string
@@ -18,6 +20,6 @@ export type OrganizationModel = {
     profileId: string
   }
   role: {
-    name: 'ADMIN' | 'MODERATOR'
+    name: ContributorRoleModel
   }
 }

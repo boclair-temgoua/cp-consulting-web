@@ -78,3 +78,53 @@ export const updateRoleContributor = async (payload: {
     body: payload,
   })
 }
+
+export const createOneContributorOrganization = async (payload: {
+  userId: string
+  organizationId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorOrganization',
+    queryParams: payload,
+  })
+}
+
+export const createOneContributorProject = async (payload: {
+  userId: string
+  projectId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorProject',
+    queryParams: payload,
+  })
+}
+
+export const createOneContributorSubProject = async (payload: {
+  userId: string
+  subProjectId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorSubProject',
+    queryParams: payload,
+  })
+}
+
+export const createOneContributorSubSubProject = async (payload: {
+  userId: string
+  subSubProjectId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorSubSubProject',
+    queryParams: payload,
+  })
+}
+
+export const createOneContributorSubSubSubProject = async (payload: {
+  userId: string
+  subSubSubProjectId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorSubSubSubProject',
+    queryParams: payload,
+  })
+}

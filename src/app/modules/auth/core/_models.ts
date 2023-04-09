@@ -1,3 +1,5 @@
+import {SortModel} from '../../utils/pagination-item'
+
 export interface LoginModel {
   email: string
   password: string
@@ -59,7 +61,19 @@ export interface UserSocialNetworksModel {
   instagram: string
 }
 
-export interface OnUserModel {
+export type ResponseUserModel = {
+  total: number
+  per_page: number
+  current_page: number
+  last_next: number
+  skip: number
+  sort: SortModel
+  total_page: number
+  total_value: number
+  value: Array<OneUserModel>
+}
+
+export interface OneUserModel {
   id: string
   confirmedAt: Date
   email: string

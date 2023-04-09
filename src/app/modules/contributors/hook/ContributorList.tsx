@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
-import { ContributorModel } from '../core/_models'
+import { ContributorModel, arrayAuthorized } from '../core/_models'
 import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter, colorRole } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import Swal from 'sweetalert2';
@@ -94,25 +94,25 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                         {formateDateDayjs(item?.createdAt as Date)}
                     </a>
                 </td>
-                {contributor?.role?.name === 'ADMIN' && (
-                    <>
-                        <td>
-                            <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
-                                {item?.role?.name}
-                            </span>
-                        </td>
-                        <td>
-                            <div className='d-flex justify-content-end flex-shrink-0'>
-                                <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
-                                    <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                                </button>
-                                <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
-                                    <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
-                                </button>
-                            </div>
-                        </td>
-                    </>
-                )}
+                <td>
+                    {arrayAuthorized.includes(`${contributor?.role?.name}`) && (
+                        <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
+                            {item?.role?.name}
+                        </span>
+                    )}
+                </td>
+                <td>
+                    {arrayAuthorized.includes(`${contributor?.role?.name}`) && (
+                        <div className='d-flex justify-content-end flex-shrink-0'>
+                            <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
+                            </button>
+                            <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
+                            </button>
+                        </div>
+                    )}
+                </td>
             </tr>
 
             {openCreateOrUpdateModal && (<ContributorUpdateFormModal contributor={item} setOpenModal={setOpenCreateOrUpdateModal} />)}

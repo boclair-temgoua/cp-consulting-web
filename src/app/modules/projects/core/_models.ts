@@ -1,5 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {createOneProject, updateOneProject} from './_requests'
+import {ContributorRoleModel} from '../../contributors/core/_models'
 
 export type ProjectModel = {
   id: string
@@ -18,7 +19,7 @@ export type ProjectModel = {
     color: string
     userId: string
   }
-  role: {name: 'ADMIN' | 'MODERATOR'}
+  role: {name: ContributorRoleModel}
 }
 
 export type ProjectRequestModel = {

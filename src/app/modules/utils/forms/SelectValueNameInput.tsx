@@ -36,7 +36,7 @@ export const SelectValueNameInput: React.FC<Props> = ({
             {label && (<label htmlFor={inputName} className={`${required} form-label`}>{label}</label>)}
             <select className={`${className} ${errors?.[inputName] ? "is-invalid" : ""
                 }`} {...register(inputName, validation)} required={isRequired}>
-                <option value="">Choose options</option>
+                <option disabled>Choose options</option>
                 {dataItem?.map((item: any, index: number) => (
                     <option value={item?.name} key={index}>{item?.name}</option>
                 ))}

@@ -78,16 +78,16 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                     </span>
                 </td>
                 <td>
-                    <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
-                        {item?.role?.name}
-                    </span>
-                </td>
-                <td>
                     <div className='symbol-group symbol-hover flex-nowrap'>
 
                         {dataContributorMiniTable}
 
                     </div>
+                </td>
+                <td>
+                    <span className={`badge badge-light-${colorRole[String(item?.role?.name)]} fw-bolder`}>
+                        {item?.role?.name}
+                    </span>
                 </td>
 
                 <td>

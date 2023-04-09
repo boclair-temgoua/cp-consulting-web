@@ -9,7 +9,7 @@ import {
   SetStateAction,
 } from 'react'
 import { LayoutSplashScreen } from '../../../../_metronic/layout/core'
-import { OnUserModel, UserModel } from './_models'
+import { UserModel } from './_models'
 import * as authHelper from './AuthHelpers'
 import { getOneUser, getUserByToken } from './_requests'
 import { WithChildren } from '../../../../_metronic/helpers'

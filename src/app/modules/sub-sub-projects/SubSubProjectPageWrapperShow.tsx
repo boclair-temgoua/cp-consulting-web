@@ -1,20 +1,12 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useDebounce } from '../utils/use-debounce'
-import { getContributorsProject } from '../contributors/core/_requests'
-import { getOneSubProject } from '../sub-projects/core/_requests'
-import { EmptyTable } from '../utils/empty-table'
-import { ContributorModel } from '../contributors/core/_models'
-import ContributorList from '../contributors/hook/ContributorList'
-import { getContactsBy } from '../contacts/core/_requests'
-import { OneContactModel } from '../contacts/core/_models'
-import ContactList from '../contacts/hook/ContactList'
+import { KTSVG } from '../../../_metronic/helpers'
+import { Link, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../auth'
 import { getOneSubSubProject } from './core/_requests'
+import { arrayAuthorized } from '../contributors/core/_models'
 
 const SubSubProjectPageWrapperShow: FC = () => {
   const { role } = useAuth() as any
@@ -27,7 +19,7 @@ const SubSubProjectPageWrapperShow: FC = () => {
   })
 
 
-  console.log('subSubProjectItem ========>',subSubProjectItem)
+  console.log('subSubProjectItem ========>', subSubProjectItem)
   return (
     <>
       <HelmetSite title={`${subSubProjectItem?.data?.name || 'Project'}`} />
@@ -419,7 +411,7 @@ const SubSubProjectPageWrapperShow: FC = () => {
 
 
 
-      {subSubProjectItem?.data?.role?.name === 'ADMIN' && (
+      {arrayAuthorized.includes(`${subSubProjectItem?.data?.role?.name}`) && (
         <div className="card  ">
 
           <div className="card-header border-0 cursor-pointer">

@@ -1,15 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { KTSVG } from '../../../_metronic/helpers';
 import { ContributorModel } from './core/_models';
-import { ProjectModel } from '../projects/core/_models';
 import { useQuery } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import ContributorList from './hook/ContributorList';
-import { getContributorsProject, getContributorsSubProject } from './core/_requests';
-import { SubProjectCreateFormModal } from '../sub-projects/hook/SubProjectCreateFormModal';
+import { getContributorsSubProject } from './core/_requests';
 import { SubProjectModel } from '../sub-projects/core/_models';
+import { InviteContributorFormModal } from './hook/InviteContributorFormModal';
 
 type Props = {
     takeValue: number
@@ -17,7 +15,7 @@ type Props = {
 }
 
 const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
-    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
+    const [openModal, setOpenModal] = useState<boolean>(false)
 
     const fetchDataContributor = async () => await getContributorsSubProject({ take: takeValue, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
@@ -50,7 +48,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
 
-                                    <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                    <button type="button" onClick={() => { setOpenModal(true) }} className="btn btn-sm btn-light-primary me-1">
                                         <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
                                         New Contributor
                                     </button>
@@ -70,13 +68,9 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
                                 <thead>
                                     <tr className="fw-bolder fs-6 text-gray-800">
                                         <th>Profile</th>
+                                        <th></th> 
                                         <th></th>
-                                        {subProject?.role?.name === 'ADMIN' && (
-                                            <>
-                                                <th></th>
-                                                <th className="text-end min-w-100px"></th>
-                                            </>
-                                        )}
+                                        <th className="text-end min-w-100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,7 +91,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
 
             </div>
 
-            {/* {openCreateOrUpdateModal && (<SubProjectCreateFormModal project={project} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)} */}
+            {openModal && (<InviteContributorFormModal setOpenModal={setOpenModal} subProjectId={subProject?.id} />)}
 
         </>
     )

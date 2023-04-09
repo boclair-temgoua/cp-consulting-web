@@ -1,6 +1,20 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SortModel} from '../../utils/pagination-item'
-import {deleteOneContributor, updateRoleContributor} from './_requests'
+import {
+  createOneContributorOrganization,
+  createOneContributorProject,
+  createOneContributorSubProject,
+  createOneContributorSubSubProject,
+  createOneContributorSubSubSubProject,
+  deleteOneContributor,
+  updateRoleContributor,
+} from './_requests'
+
+export type ContributorRoleModel = 'ADMIN' | 'MODERATOR' | 'ANALYST'
+
+export const arrayAuthorized = ['ADMIN', 'MODERATOR']
+
+export const optionsRoles: any = [{name: 'ADMIN'}, {name: 'MODERATOR'}, {name: 'ANALYST'}]
 
 export type ResponseContributorModel = {
   total: number
@@ -65,8 +79,16 @@ export type ContributorModel = {
     firstName: string
   }
   role: {
-    name: 'ADMIN' | 'MODERATOR'
+    name: ContributorRoleModel
   }
+}
+
+export type ContributorRequestModel = {
+  projectId?: string
+  subProjectId?: string
+  subSubProjectId?: string
+  subSubSubProjectId?: string
+  organizationId?: string
 }
 
 export type OneContributorModel = {
@@ -86,11 +108,9 @@ export type OneContributorModel = {
     userId: string
   }
   role: {
-    name: 'ADMIN' | 'MODERATOR'
+    name: ContributorRoleModel
   }
 }
-
-export const optionsRoles: any = [{name: 'ADMIN'}, {name: 'MODERATOR'}, {name: 'GHOST'}]
 
 export const UpdateRoleContributorMutation = ({
   onSuccess,
@@ -146,6 +166,65 @@ export const DeleteOneContributorMutation = ({
       const {password, contributorId} = payload
       const {data} = await deleteOneContributor({password, contributorId})
       return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
+}
+
+export const CreateOneContributorMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contributors']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (
+      payload: {
+        userId: string
+      } & ContributorRequestModel
+    ): Promise<any> => {
+      const {userId, projectId, subProjectId, subSubProjectId, subSubSubProjectId, organizationId} =
+        payload
+      if (organizationId) {
+        await createOneContributorOrganization({userId, organizationId})
+      }
+      if (projectId) {
+        await createOneContributorProject({userId, projectId})
+      }
+      if (subProjectId) {
+        await createOneContributorSubProject({userId, subProjectId})
+      }
+      if (subSubProjectId) {
+        await createOneContributorSubSubProject({userId, subSubProjectId})
+      }
+      if (subSubSubProjectId) {
+        await createOneContributorSubSubSubProject({userId, subSubSubProjectId})
+      }
+      return 'contributor save'
     },
     {
       onSettled: async () => {

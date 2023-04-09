@@ -8,7 +8,7 @@ import { useDebounce } from '../utils/use-debounce'
 import { getContributorsProject } from '../contributors/core/_requests'
 import { getOneSubProject } from './core/_requests'
 import { EmptyTable } from '../utils/empty-table'
-import { ContributorModel } from '../contributors/core/_models'
+import { ContributorModel, arrayAuthorized } from '../contributors/core/_models'
 import ContributorList from '../contributors/hook/ContributorList'
 import { getContactsBy } from '../contacts/core/_requests'
 import { OneContactModel } from '../contacts/core/_models'
@@ -82,14 +82,14 @@ const SubProjectPageWrapperShow: FC = () => {
       )}
 
 
-{/* {subProjectItem?.data?.id && (
+      {/* {subProjectItem?.data?.id && (
 
 <ContactProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
 
 )} */}
 
 
-      {subProjectItem?.data?.role?.name === 'ADMIN' && (
+      {arrayAuthorized.includes(`${subProjectItem?.data?.role?.name}`) && (
         <div className="card  ">
 
           <div className="card-header border-0 cursor-pointer">

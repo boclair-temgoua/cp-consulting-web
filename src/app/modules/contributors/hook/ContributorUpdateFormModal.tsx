@@ -6,14 +6,10 @@ import * as yup from "yup";
 import { ContributorModel, UpdateRoleContributorMutation, optionsRoles } from '../core/_models';
 import { SelectValueNameInput } from '../../utils/forms/SelectValueNameInput';
 import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter } from '../../utils';
-// import { OneContributorSubscribeResponse } from '../../subscribes/core/_models';
-// import { ContributorUpdateMutation, optionsRoles, UpdateContributorRequest } from '../core/_models';
-// import { SelectValueIdInput } from '../../forms';
 
 interface Props {
     setOpenModal: any,
     contributor: ContributorModel | any
-    //   subscribeUserItem?: OneContributorSubscribeResponse | any
 }
 
 const schema = yup
@@ -61,7 +57,6 @@ export const ContributorUpdateFormModal: React.FC<Props> = ({ setOpenModal, cont
 
     };
 
-    console.log('data =======>', contributor?.role?.name)
     return (
         <>
             <div

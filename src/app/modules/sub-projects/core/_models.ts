@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {createOneSubProject, deleteOneSubProject, updateOneSubProject} from './_requests'
 import {ProjectRequestModel} from '../../projects/core/_models'
+import {ContributorRoleModel} from '../../contributors/core/_models'
 
 export type SubProjectModel = {
   id: string
@@ -21,7 +22,7 @@ export type SubProjectModel = {
     userId: string
   }
   role: {
-    name: 'ADMIN' | 'MODERATOR'
+    name: ContributorRoleModel
   }
 }
 

@@ -1,6 +1,13 @@
 import axios from 'axios'
 import {makeApiCall} from '../../utils/get-url-end-point'
-import {LoginModel, UserModel, ResetPasswordModel, RegisterModel} from './_models'
+import {
+  LoginModel,
+  UserModel,
+  ResetPasswordModel,
+  RegisterModel,
+  ResponseUserModel,
+} from './_models'
+import {PaginationRequest} from '../../utils/pagination-item'
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -53,6 +60,15 @@ export const resetPassword = async (payload: ResetPasswordModel): Promise<any> =
     action: 'resetPassword',
     body: {password, passwordConfirm},
     urlParams: {token},
+  })
+}
+
+export const getAllUsers = async (
+  payload: PaginationRequest
+): Promise<{data: ResponseUserModel}> => {
+  return await makeApiCall({
+    action: 'getUsers',
+    queryParams: payload,
   })
 }
 

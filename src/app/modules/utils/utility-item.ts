@@ -5,6 +5,6 @@ export interface KeyAsString {
 export const colorRole: KeyAsString = {
   ADMIN: 'info',
   MODERATOR: 'primary',
-  EDITOR: 'success',
+  ANALYST: 'success',
   GHOST: 'danger',
 }

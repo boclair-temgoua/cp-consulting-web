@@ -168,6 +168,26 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/sub-projects/contributes`,
     method: GET,
   },
+  createOneContributorOrganization: {
+    endpoint: `${baseUrl}/contributors/organization`,
+    method: POST,
+  },
+  createOneContributorProject: {
+    endpoint: `${baseUrl}/contributors/project`,
+    method: POST,
+  },
+  createOneContributorSubProject: {
+    endpoint: `${baseUrl}/contributors/sub-project`,
+    method: POST,
+  },
+  createOneContributorSubSubProject: {
+    endpoint: `${baseUrl}/contributors/sub-sub-project`,
+    method: POST,
+  },
+  createOneContributorSubSubSubProject: {
+    endpoint: `${baseUrl}/contributors/sub-sub-sub-project`,
+    method: POST,
+  },
   deleteOneSubProject: {
     endpoint: `${baseUrl}/sub-projects/:subProjectId`,
     method: DELETE,
@@ -190,6 +210,10 @@ export const apiEndpoints: ClientApiMethods = {
   },
   getContributorsSubSubProject: {
     endpoint: `${baseUrl}/contributors/sub-sub-project`,
+    method: GET,
+  },
+  getUsers: {
+    endpoint: `${baseUrl}/users`,
     method: GET,
   },
   createOneSubSubProject: {
