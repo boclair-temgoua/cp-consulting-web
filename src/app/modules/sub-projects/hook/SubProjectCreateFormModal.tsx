@@ -90,7 +90,7 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
               </div>
             </div>
             {/* begin::Modal body */}
-            <div className="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+            <div className="mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
                 <h1 className="mb-3">{subProject?.id ? `${subProject?.name || ''}` : 'Create Project'}</h1>
                 <div className="text-muted fw-bold fs-5">If you need more info, please check

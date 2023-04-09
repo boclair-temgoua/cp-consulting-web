@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getOneProject } from './core/_requests'
 import { useAuth } from '../auth'
 import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
 import { ContactProjectTableMini } from '../contacts/ContactProjectTableMini'
-import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
+import { ContributorProjectTableMini } from '../contributors/ContributorProjectTableMini'
 import { KTSVG } from '../../../_metronic/helpers'
 
 const ProjectPageWrapperShow: FC = () => {
@@ -288,25 +288,23 @@ const ProjectPageWrapperShow: FC = () => {
 
 
 
-      {projectItem?.data?.subProjectTotal && (
+      {projectItem?.data?.id && (
 
         <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+
       )}
 
-      {projectItem?.data?.contactTotal && (
+      {projectItem?.data?.id && (
+
+        <ContributorProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+
+      )}
+
+      {projectItem?.data?.id && (
 
         <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
 
       )}
-
-
-
-      {projectItem?.data?.id && (
-
-        <ContributorSubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-      )}
-
 
 
       {projectItem?.data?.role?.name === 'ADMIN' && (

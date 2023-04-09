@@ -36,7 +36,7 @@ const ProjectsWrapper: FC = () => {
     isError,
     data,
     isPreviousData,
-  } = useQuery(['projects', pageItem, debouncedFilter], () => fetchData(pageItem, debouncedFilter), {
+  } = useQuery(['projects', pageItem, 'DESC', debouncedFilter], () => fetchData(pageItem, debouncedFilter), {
     enabled: filter ? isEnabled : !isEnabled,
     keepPreviousData: true,
     staleTime: 5000

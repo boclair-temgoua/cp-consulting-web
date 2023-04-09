@@ -1,13 +1,12 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
-import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
+import React, { useState } from 'react'
+import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
 import { ContributorModel } from '../core/_models'
-import { capitalizeFirstLetter, colorRole } from '../../utils'
+import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter, colorRole } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
-import { OrganizationModel } from '../../organizations/core/_models'
 import Swal from 'sweetalert2';
+import { ContributorUpdateFormModal } from './ContributorUpdateFormModal'
+import { DeleteOneContributorMutation } from '../core/_models'
 
 type Props = {
     item?: ContributorModel;
@@ -15,34 +14,51 @@ type Props = {
 }
 
 const ContributorList: React.FC<Props> = ({ item, contributor }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
-    const deleteItem = async (voucher: any) => {
+    const saveMutation = DeleteOneContributorMutation({
+        onSuccess: () => { },
+        onError: (error) => { }
+    });
+
+
+    const deleteItem = async (item: any) => {
         Swal.fire({
             title: 'Delete?',
-            text: 'Are you sure you want to perform this action?',
+            html: `<b>${item?.profile?.firstName} ${item?.profile?.lastName}</b><br/><br/>
+            <b>Confirm with your password</b> `,
             confirmButtonText: 'Yes, Deleted',
             cancelButtonText: 'No, Cancel',
+            footer: `<b>Delete: ${item?.profile?.firstName} ${item?.profile?.lastName}</b>`,
             buttonsStyling: false,
             customClass: {
-                confirmButton: 'btn btn-primary',
-                cancelButton: 'btn btn-outline-default',
+                confirmButton: 'btn btn-sm btn-danger',
+                cancelButton: 'btn btn-sm btn-primary',
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off',
+                required: 'true'
             },
             showCancelButton: true,
             reverseButtons: true,
-        }).then(async (result) => {
-            if (result.value) {
-                console.log('item ======>', item)
-                //Envoyer la requet au serve
-                // const payloadSave = { code: voucher?.code }
-                // eslint-disable-next-line no-lone-blocks
-                // {
-                //   voucher?.voucherType === 'COUPON' ?
-                //     actionDeleteCouponMutation.mutateAsync(payloadSave) :
-                //     actionDeleteVoucherMutation.mutateAsync(payloadSave)
-                // }
-
-            }
-        });
+            showLoaderOnConfirm: true,
+            inputPlaceholder: 'Confirm password',
+            preConfirm: async (password) => {
+                try {
+                    await saveMutation.mutateAsync({ password, contributorId: String(item?.id) })
+                    AlertSuccessNotification({
+                        text: 'Contributor remove successfully',
+                        className: 'info',
+                        position: 'center',
+                    })
+                } catch (error: any) {
+                    Swal.showValidationMessage(`${error?.response?.data?.message}`)
+                    AlertDangerNotification({ text: `${error?.response?.data?.message}`, className: 'info', position: 'center' })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
 
     }
 
@@ -87,12 +103,9 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                         </td>
                         <td>
                             <div className='d-flex justify-content-end flex-shrink-0'>
-                                <a
-                                    href='#'
-                                    className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
-                                >
+                                <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                     <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                                </a>
+                                </button>
                                 <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
                                     <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                                 </button>
@@ -102,6 +115,7 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                 )}
             </tr>
 
+            {openCreateOrUpdateModal && (<ContributorUpdateFormModal contributor={item} setOpenModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }

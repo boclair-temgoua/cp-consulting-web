@@ -18,17 +18,19 @@ type Props = {
 }
 
 const ProjectList: React.FC<Props> = ({ item }) => {
+    const takeItem: number = 6
+    const pageItem: number = 1
     const { organization, role } = useAuth() as any
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
-    const fetchDataContributorMini = async () => await getContributorsProject({ take: 6, page: 1, sort: 'ASC', projectId: String(item?.projectId) })
+    const fetchDataContributorMini = async () => await getContributorsProject({ take: takeItem, page: pageItem, sort: 'ASC', projectId: String(item?.projectId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
-        queryKey: ['contributorsProjectMini', item?.projectId],
+        queryKey: ['contributorsProjectMini', item?.projectId, takeItem, pageItem, 'ASC',],
         queryFn: () => fetchDataContributorMini(),
     })
-    const datataContributorMiniTable = isLoadingContributor ? (<strong>Loading...</strong>) :
+    const dataContributorMiniTable = isLoadingContributor ? (<strong>Loading...</strong>) :
         isErrorContributor ? (<strong>Error find data please try again...</strong>) :
             (dataContributorMini?.data?.total <= 0) ? ('') :
                 (
@@ -83,7 +85,7 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                 <td>
                     <div className='symbol-group symbol-hover flex-nowrap'>
 
-                        {datataContributorMiniTable}
+                        {dataContributorMiniTable}
 
                     </div>
                 </td>

@@ -15,6 +15,7 @@ import { OneContactModel } from '../contacts/core/_models'
 import ContactList from '../contacts/hook/ContactList'
 import { useAuth } from '../auth'
 import { SubSubProjectTableMini } from '../sub-sub-projects/SubSubProjectTableMini'
+import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
 
 const SubProjectPageWrapperShow: FC = () => {
   const takeValue: number = 6
@@ -68,11 +69,24 @@ const SubProjectPageWrapperShow: FC = () => {
 
 
 
-      {subProjectItem?.data?.subSubProjectTotal && (
+      {subProjectItem?.data?.id && (
 
         <SubSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
-        
+
       )}
+
+      {subProjectItem?.data?.id && (
+
+        <ContributorSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+
+      )}
+
+
+{/* {subProjectItem?.data?.id && (
+
+<ContactProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+
+)} */}
 
 
       {subProjectItem?.data?.role?.name === 'ADMIN' && (

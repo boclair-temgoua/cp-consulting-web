@@ -1,4 +1,6 @@
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SortModel} from '../../utils/pagination-item'
+import {deleteOneContributor, updateRoleContributor} from './_requests'
 
 export type ResponseContributorModel = {
   total: number
@@ -86,4 +88,86 @@ export type OneContributorModel = {
   role: {
     name: 'ADMIN' | 'MODERATOR'
   }
+}
+
+export const optionsRoles: any = [{name: 'ADMIN'}, {name: 'MODERATOR'}, {name: 'GHOST'}]
+
+export const UpdateRoleContributorMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contributors']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: {contributorId: string; role: string}): Promise<any> => {
+      const {contributorId, role} = payload
+      const {data} = await updateRoleContributor({contributorId, role})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
+}
+
+export const DeleteOneContributorMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contributors']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: {password: string; contributorId: string}): Promise<any> => {
+      const {password, contributorId} = payload
+      const {data} = await deleteOneContributor({password, contributorId})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
 }

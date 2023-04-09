@@ -59,10 +59,22 @@ export const getOneContributor = async (payload: {
 
 export const deleteOneContributor = async (payload: {
   contributorId: string
-}): Promise<OneContributorModel> => {
-  const {contributorId} = payload
+  password: string
+}): Promise<{data: OneContributorModel}> => {
+  const {contributorId, password} = payload
   return await makeApiCall({
     action: 'deleteOneContributor',
     urlParams: {contributorId},
+    body: {password},
+  })
+}
+
+export const updateRoleContributor = async (payload: {
+  contributorId: string
+  role: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'updateRoleContributor',
+    body: payload,
   })
 }

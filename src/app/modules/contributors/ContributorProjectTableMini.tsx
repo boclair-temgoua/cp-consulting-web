@@ -7,21 +7,20 @@ import { ProjectModel } from '../projects/core/_models';
 import { useQuery } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import ContributorList from './hook/ContributorList';
-import { getContributorsProject, getContributorsSubProject } from './core/_requests';
+import { getContributorsProject } from './core/_requests';
 import { SubProjectCreateFormModal } from '../sub-projects/hook/SubProjectCreateFormModal';
-import { SubProjectModel } from '../sub-projects/core/_models';
 
 type Props = {
     takeValue: number
-    subProject?: SubProjectModel;
+    project?: ProjectModel;
 }
 
-const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
+const ContributorProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
-    const fetchDataContributor = async () => await getContributorsSubProject({ take: takeValue, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
+    const fetchDataContributor = async () => await getContributorsProject({ take: takeValue, page: 1, sort: 'DESC', projectId: String(project?.id) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
-        queryKey: ['contributors', subProject?.id],
+        queryKey: ['contributors', project?.id],
         queryFn: () => fetchDataContributor(),
     })
     const dataTableContributor = isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
@@ -29,7 +28,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
             (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
                 (
                     dataContributor?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <ContributorList item={item} key={index} contributor={subProject} />
+                        <ContributorList item={item} key={index} contributor={project} />
                     )))
 
 
@@ -46,9 +45,31 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
                         </h3>
 
 
-                        {subProject?.role?.name === 'ADMIN' && (
+                        {project?.role?.name === 'ADMIN' && (
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
+
+                                    {/* {!project?.contactTotal && (
+                                        <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                            <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
+                                            New Contact
+                                        </button>
+                                    )}
+
+                                    {!project?.subProjectTotal && (
+                                        <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                            <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
+                                            New Project
+                                        </button>
+
+                                    )}
+
+                                    {!project?.documentTotal && (
+                                        <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                            <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
+                                            New File
+                                        </button>
+                                    )} */}
 
                                     <button type="button" className="btn btn-sm btn-light-primary me-1">
                                         <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
@@ -71,7 +92,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
                                     <tr className="fw-bolder fs-6 text-gray-800">
                                         <th>Profile</th>
                                         <th></th>
-                                        {subProject?.role?.name === 'ADMIN' && (
+                                        {project?.role?.name === 'ADMIN' && (
                                             <>
                                                 <th></th>
                                                 <th className="text-end min-w-100px"></th>
@@ -85,11 +106,11 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
                             </table>
                         </div>
 
-                        {/* {Number(dataContributor?.data?.total) > takeValue && (
+                        {Number(dataContributor?.data?.total) > takeValue && (
                             <Link to={`/projects/${project?.id}/contributors`} className="btn btn-light-primary w-100 py-3">
                                 Show More
                             </Link>
-                        )} */}
+                        )}
 
                     </div>
 
@@ -103,4 +124,4 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue
     )
 }
 
-export { ContributorSubProjectTableMini }
+export { ContributorProjectTableMini }

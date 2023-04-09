@@ -35,72 +35,68 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
 
     return (
         <>
-            {Number(dataSubSubProject?.data?.total) > 0 &&
+            <div className={`card mb-5 mb-xl-8`}>
 
-                <div className={`card mb-5 mb-xl-8`}>
+                {/* begin::Header */}
+                <div className="card-header border-0 pt-5">
+                    <h3 className='card-title align-items-start flex-column'>
+                        <span className='card-label fw-bold fs-3 mb-1'>{subProject?.name || ''}</span>
+                        <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubSubProject?.data?.total || 0} projects - {subProject?.name}</span>
+                    </h3>
 
-                    {/* begin::Header */}
-                    <div className="card-header border-0 pt-5">
-                        <h3 className='card-title align-items-start flex-column'>
-                            <span className='card-label fw-bold fs-3 mb-1'>{subProject?.name || ''}</span>
-                            <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataSubSubProject?.data?.total || 0} projects - {subProject?.name}</span>
-                        </h3>
-
-                        {subProject?.role?.name === 'ADMIN' && (
-                            <div className='card-toolbar' title='Click to add a user'>
-                                {!subProject?.documentTotal && (
-                                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                                        <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
-                                        New File
-                                    </button>
-
-                                )}
-
-                                <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
-                                    <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-                                    New Project
+                    {subProject?.role?.name === 'ADMIN' && (
+                        <div className='card-toolbar' title='Click to add a user'>
+                            {!subProject?.documentTotal && (
+                                <button type="button" className="btn btn-sm btn-light-primary me-1">
+                                    <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
+                                    New File
                                 </button>
-                            </div>
 
-                        )}
+                            )}
 
-
-
-                    </div>
-                    {/* end::Header */}
-
-                    <div className='card-body py-3'>
-                        {/* begin::Table container */}
-                        <div className='table-responsive'>
-
-                            <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                                <thead>
-                                    <tr className="fw-bolder fs-6 text-gray-800">
-                                        <th>Name</th>
-                                        <th></th>
-                                        <th className="text-end min-w-100px"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-
-                                    {dataTableSubSubProject}
-
-
-                                </tbody>
-                            </table>
+                            <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
+                                New Project
+                            </button>
                         </div>
 
-                        {Number(dataSubSubProject?.data?.total) > takeValue && (
-                            <Link to={`/projects/sb-sb-p/${subProject?.id}`} className="btn btn-light-primary w-100 py-3">
-                                Show More
-                            </Link>
-                        )}
+                    )}
 
-                    </div>
+
+
                 </div>
+                {/* end::Header */}
 
-            }
+                <div className='card-body py-3'>
+                    {/* begin::Table container */}
+                    <div className='table-responsive'>
+
+                        <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                            <thead>
+                                <tr className="fw-bolder fs-6 text-gray-800">
+                                    <th>Name</th>
+                                    <th></th>
+                                    <th className="text-end min-w-100px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                {dataTableSubSubProject}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {Number(dataSubSubProject?.data?.total) > takeValue && (
+                        <Link to={`/projects/sb-sb-p/${subProject?.id}`} className="btn btn-light-primary w-100 py-3">
+                            Show More
+                        </Link>
+                    )}
+
+                </div>
+            </div>
 
             {openCreateOrUpdateModal && (<SubSubProjectCreateFormModal subProject={subProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>

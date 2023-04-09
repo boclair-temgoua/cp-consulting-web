@@ -78,7 +78,7 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
           {/* begin::Modal content */}
           <div className='modal-content'>
             <div className="modal-header pb-0 border-0 justify-content-end">
-              <div onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal">
+              <div onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-icon btn-sm btn-active-light-primary ms-2">
                 <KTSVG
                   path="/media/icons/duotune/arrows/arr061.svg"
                   className="svg-icon svg-icon-2x"
@@ -86,7 +86,7 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
               </div>
             </div>
             {/* begin::Modal body */}
-            <div className="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+            <div className="mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
                 <h1 className="mb-3">{project?.id ? `${project?.name || ''}` : 'Create Project'}</h1>
                 <div className="text-muted fw-bold fs-5">If you need more info, please check

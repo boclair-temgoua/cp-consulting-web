@@ -109,7 +109,7 @@ export const apiEndpoints: ClientApiMethods = {
     method: GET,
   },
   deleteOneContributor: {
-    endpoint: `${baseUrl}/contributors/:organizationId`,
+    endpoint: `${baseUrl}/contributors/delete/:contributorId`,
     method: DELETE,
   },
   getOneProject: {
@@ -198,6 +198,10 @@ export const apiEndpoints: ClientApiMethods = {
   },
   updateOneSubSubProject: {
     endpoint: `${baseUrl}/sub-sub-projects/:subSubProjectId`,
+    method: PUT,
+  },
+  updateRoleContributor: {
+    endpoint: `${baseUrl}/contributors/role`,
     method: PUT,
   },
 }
