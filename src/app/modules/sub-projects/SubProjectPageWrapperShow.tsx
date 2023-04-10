@@ -1,25 +1,20 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useDebounce } from '../utils/use-debounce'
-import { getContributorsProject } from '../contributors/core/_requests'
+import { KTSVG } from '../../../_metronic/helpers'
+import { useParams, useSearchParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { getOneSubProject } from './core/_requests'
-import { EmptyTable } from '../utils/empty-table'
-import { ContributorModel, arrayAuthorized } from '../contributors/core/_models'
-import ContributorList from '../contributors/hook/ContributorList'
-import { getContactsBy } from '../contacts/core/_requests'
-import { OneContactModel } from '../contacts/core/_models'
-import ContactList from '../contacts/hook/ContactList'
-import { useAuth } from '../auth'
+import { arrayAuthorized } from '../contributors/core/_models'
 import { SubSubProjectTableMini } from '../sub-sub-projects/SubSubProjectTableMini'
 import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
+import { DocumentTableMini } from '../documents/DocumentTableMini'
 
 const SubProjectPageWrapperShow: FC = () => {
+  const [searchParams] = useSearchParams();
   const takeValue: number = 6
   const { subProjectId } = useParams<string>()
+  // const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
 
   const fetchOneSubProject = async () => await getOneSubProject({ subProjectId: String(subProjectId) })
   const { data: subProjectItem, isError: isErrorSubProject, isLoading: isLoadingProject } = useQuery({
@@ -27,6 +22,7 @@ const SubProjectPageWrapperShow: FC = () => {
     queryFn: () => fetchOneSubProject(),
   })
 
+  console.log('fhfgaj =======',searchParams.get('tab'))
   return (
     <>
       <HelmetSite title={`${subProjectItem?.data?.name || 'Project'}`} />
@@ -39,15 +35,15 @@ const SubProjectPageWrapperShow: FC = () => {
 
 
 
-      {subProjectItem?.data?.id && (
-
-        <SubSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
-
-      )}
 
       {subProjectItem?.data?.id && (
+        <>
+          <DocumentTableMini type='SUBPROJECT' subProjectId={subProjectItem?.data?.id} />
 
-        <ContributorSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+          <SubSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+
+          <ContributorSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+        </>
 
       )}
 

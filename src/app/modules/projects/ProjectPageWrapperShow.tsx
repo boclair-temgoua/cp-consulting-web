@@ -1,28 +1,31 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getOneProject } from './core/_requests'
 import { useAuth } from '../auth'
 import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
 import { ContactProjectTableMini } from '../contacts/ContactProjectTableMini'
 import { ContributorProjectTableMini } from '../contributors/ContributorProjectTableMini'
-import { KTSVG } from '../../../_metronic/helpers'
+import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
+import { DocumentTableMini } from '../documents/DocumentTableMini'
+import { Dropdown1 } from '../../../_metronic/partials'
 
 const ProjectPageWrapperShow: FC = () => {
+  const [searchParams] = useSearchParams();
+  const location = useLocation()
   const takeValue: number = 6
-  const { role } = useAuth() as any
   const { projectId } = useParams<string>()
 
   const fetchOneProject = async () => await getOneProject({ projectId: String(projectId) })
-  const { data: projectItem, isError: isErrorProject, isLoading: isLoadingProject } = useQuery({
+  const { data: projectItem, isError, isLoading } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => fetchOneProject(),
   })
 
 
-
+  console.log('tab =======', searchParams.get('tab'))
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />
@@ -33,279 +36,169 @@ const ProjectPageWrapperShow: FC = () => {
         isActive: false,
       }]}>Project</PageTitle>
 
-      {/* <div className={`card mb-5 mb-xl-8`}> */}
 
 
-      {/* <SubProjectRow />
 
-      <SubProjectRow />
+      <div className='card mb-5 mb-xl-10'>
 
-      <SubProjectRowComponent /> */}
+        <div className="card-body pt-9 pb-0">
+          <div className="d-flex flex-wrap flex-sm-nowrap mb-6">
+            <div className='me-7 mb-4'>
+              <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
+                <img src='https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg' alt='Metornic' />
+              </div>
+            </div>
+            <div className="flex-grow-1">
+              <div className="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                <div className="d-flex flex-column">
+                  <div className="d-flex align-items-center mb-1">
+                    <span className="text-gray-800 text-hover-primary fs-2 fw-bold me-3">{projectItem?.data?.name || 'Project'}</span>
+                    {/* <span className="badge badge-light-success me-auto">In Progress</span> */}
+                  </div>
+                  <div className="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">
+                    {projectItem?.data?.description || 'Project'}
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex flex-wrap justify-content-start">
+                <div className="d-flex flex-wrap">
 
-      {/* <div className={`card mb-5 mb-xl-8`}>
+                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                    <div className='d-flex align-items-center'>
+                      <div className='fs-2 fw-bolder'>{projectItem?.data?.contributorTotal}</div>
+                    </div>
+                    <div className='fw-bold fs-6 text-gray-400'>Contributors</div>
+                  </div>
 
-        <div className="card-header border-0 pt-6">
-          <div className="card-title">
-            <div className="d-flex align-items-center position-relative my-1">
-              <span className="svg-icon svg-icon-1 position-absolute ms-6">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mh-50px">
-                  <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
-                  <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
-                </svg>
-              </span>
-              <input type="text" className="form-control form-control-solid w-250px ps-14" placeholder="Search file" value="" />
+                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                    <div className='d-flex align-items-center'>
+                      <div className='fs-2 fw-bolder'>{projectItem?.data?.documentTotal || 0}</div>
+                    </div>
+                    <div className='fw-bold fs-6 text-gray-400'>Documents</div>
+                  </div>
+
+                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                    <div className='d-flex align-items-center'>
+                      <div className='fs-2 fw-bolder'>300</div>
+                    </div>
+                    <div className='fw-bold fs-6 text-gray-400'>Projects</div>
+                  </div>
+
+                </div>
+
+                <div className="symbol-group symbol-hover mb-3">
+                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Alan Warden">
+                    <span className="symbol-label bg-warning text-inverse-warning fw-bold">BT</span>
+                  </div>
+                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood">
+                    <span className="symbol-label bg-primary text-inverse-primary fw-bold">AM</span>
+                  </div>
+                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood">
+                    <span className="symbol-label bg-info text-inverse-info fw-bold">BO</span>
+                  </div>
+                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew">
+                    <span className="symbol-label bg-primary text-inverse-primary fw-bold">TI</span>
+                  </div>
+                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew">
+                    <span className="symbol-label bg-danger text-inverse-danger fw-bold">BT</span>
+                  </div>
+
+                  <a href="#" className="symbol symbol-35px symbol-circle">
+                    <span className="symbol-label bg-dark text-inverse-dark fs-8 fw-bold">+42</span>
+                  </a>
+
+                </div>
+              </div>
             </div>
           </div>
-          <div className='card-toolbar' title='Click to add a user'>
-            <Link to={`/projects/${projectId}/new-file`} className='btn btn-sm btn-primary'>
-              <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-              New File
-            </Link>
-          </div>
+
+          <div className="separator"></div>
+
+          <ul className="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === '' && 'active')
+                }
+                to={`/projects/${projectId}`}
+              >
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === `projects` && 'active')
+                }
+                to={`/projects/${projectId}?tab=${'projects'}`}
+              >
+                Projects
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === `documents` && 'active')
+                }
+                to={`/projects/${projectId}?tab=${'documents'}`}
+              >
+                Documents
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === `contacts` && 'active')
+                }
+                to={`/projects/${projectId}?tab=${'contacts'}`}
+              >
+                Contacts
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === `contributors` && 'active')
+                }
+                to={`/projects/${projectId}?tab=${'contributors'}`}
+              >
+                Contributors
+              </Link>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link text-active-primary py-5 me-6" href="#">
+                Settings
+              </a>
+            </li>
+          </ul>
         </div>
-
-
-        <div className='card-body py-3'>
-
-          <div className='table-responsive'>
-
-            <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-              <thead>
-                <tr className="fw-bolder fs-6 text-gray-800">
-                  <th>Name</th>
-                  <th></th>
-                  <th className="text-end min-w-100px"></th>
-                </tr>
-              </thead>
-              <tbody>
-
-                <tr>
-                  <td>
-
-                    <div className='d-flex align-items-center'>
-                      <div className="symbol symbol-40px overflow-hidden me-3">
-                        <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/pdf.svg" alt="" />
-                      </div>
-                      <div className='d-flex justify-content-start flex-column'>
-                        <Link to={`/projects/${projectId}`} className='text-dark fw-bolder text-hover-primary'>
-                          Bullletin trimestre 1
-                        </Link>
-                        <span className='text-muted fw-semibold text-muted d-block fs-7'>
-                          Redux itself is a standalone library that can be used with any UI layer or framework, including React, Angular, Vue, Ember, and vanilla JS. Although Redux and
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/files/fil017.svg' className='svg-icon-3' />
-                      </a>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
-                        <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                      </a>
-                      <a
-                        href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'
-                      >
-                        <KTSVG
-                          path='/media/icons/duotune/general/gen027.svg'
-                          className='svg-icon-3'
-                        />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className='d-flex align-items-center'>
-                      <div className="symbol symbol-40px overflow-hidden me-3">
-                        <img src="/media/avatars/300-7.jpg" alt="" />
-                      </div>
-                      <div className='d-flex justify-content-start flex-column'>
-                        <Link to={`/projects/${projectId}`} className='text-dark fw-bolder text-hover-primary'>
-                          Info de la demande
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/files/fil017.svg' className='svg-icon-3' />
-                      </a>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                      </a>
-                      <a
-                        href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'
-                      >
-                        <KTSVG
-                          path='/media/icons/duotune/general/gen027.svg'
-                          className='svg-icon-3'
-                        />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className='d-flex align-items-center'>
-                      <div className="symbol symbol-40px overflow-hidden me-3">
-                        <img src="https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg" alt="" />
-                      </div>
-                      <div className='d-flex justify-content-start flex-column'>
-                        <Link to={`/projects/${projectId}`} className='text-dark fw-bolder text-hover-primary'>
-                          Bullletin trimestre 2
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/files/fil017.svg' className='svg-icon-3' />
-                      </a>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                      </a>
-                      <a
-                        href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'
-                      >
-                        <KTSVG
-                          path='/media/icons/duotune/general/gen027.svg'
-                          className='svg-icon-3'
-                        />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className='d-flex align-items-center'>
-                      <div className="symbol symbol-40px overflow-hidden me-3">
-                        <img src="/media/svg/files/doc.svg" alt="" />
-                      </div>
-                      <div className='d-flex justify-content-start flex-column'>
-                        <Link to={`/projects/${projectId}`} className='text-dark fw-bolder text-hover-primary'>
-                          Bullletin trimestre 2
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/files/fil017.svg' className='svg-icon-3' />
-                      </a>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                      </a>
-                      <a
-                        href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'
-                      >
-                        <KTSVG
-                          path='/media/icons/duotune/general/gen027.svg'
-                          className='svg-icon-3'
-                        />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className='d-flex align-items-center'>
-                      <div className="symbol symbol-40px overflow-hidden me-3">
-                        <img src="/media/svg/files/xml.svg" alt="" />
-                      </div>
-                      <div className='d-flex justify-content-start flex-column'>
-                        <Link to={`/projects/${projectId}`} className='text-dark fw-bolder text-hover-primary'>
-                          Bullletin trimestre 2
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                    <div className='d-flex justify-content-end flex-shrink-0'>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/files/fil017.svg' className='svg-icon-3' />
-                      </a>
-                      <a href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                      >
-                        <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                      </a>
-                      <a
-                        href='#'
-                        className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'
-                      >
-                        <KTSVG
-                          path='/media/icons/duotune/general/gen027.svg'
-                          className='svg-icon-3'
-                        />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-
-        </div>
-
-      </div> */}
-
-
+      </div>
 
       {projectItem?.data?.id && (
 
-        <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+        <>
+          {searchParams.get('tab') === 'projects' && (
+            <SubProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+          )}
 
+          {searchParams.get('tab') === 'documents' && (
+            <DocumentTableMini type='PROJECT' projectId={projectItem?.data?.id} />
+          )}
+
+          {searchParams.get('tab') === 'contributors' && (
+            <ContributorProjectTableMini project={projectItem?.data} />
+          )}
+
+          {searchParams.get('tab') === 'contacts' && (
+            <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
+          )}
+        </>
       )}
-
-      {projectItem?.data?.id && (
-
-        <ContributorProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-      )}
-
-      {projectItem?.data?.id && (
-
-        <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-
-      )}
-
 
       {projectItem?.data?.role?.name === 'ADMIN' && (
         <div className="card  ">

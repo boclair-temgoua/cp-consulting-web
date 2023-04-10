@@ -80,9 +80,9 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                             </a>
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
-                            <Link to='/projects/192817273' className='text-dark fw-bold text-hover-primary fs-6'>
+                            <span className='text-dark fw-bold text-hover-primary fs-6'>
                                 {item?.profile?.lastName} {item?.profile?.firstName}
-                            </Link>
+                            </span>
                             <span className='text-muted fw-semibold text-muted d-block fs-7'>
                                 {item?.profile?.email}
                             </span>
@@ -90,9 +90,9 @@ const ContributorList: React.FC<Props> = ({ item, contributor }) => {
                     </div>
                 </td>
                 <td>
-                    <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
+                    <span className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
                         {formateDateDayjs(item?.createdAt as Date)}
-                    </a>
+                    </span>
                 </td>
                 <td>
                     {arrayAuthorized.includes(`${contributor?.role?.name}`) && (

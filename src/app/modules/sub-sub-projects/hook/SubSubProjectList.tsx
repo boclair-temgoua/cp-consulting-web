@@ -134,9 +134,9 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                     )}
                 </td>
                 <td>
-                    <a href={void (0)} className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
+                    <span className='text-dark fw-bolder text-hover-primary d-block mb-1 fs-6'>
                         {formateDateDayjs(item?.createdAt as Date)}
-                    </a>
+                    </span>
                 </td>
                 <td>
                     {arrayAuthorized.includes(`${subProject?.role?.name}`) && (

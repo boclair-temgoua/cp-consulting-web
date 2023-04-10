@@ -15,6 +15,7 @@ export type SubProjectModel = {
   contactTotal: number
   documentTotal: number
   subSubProjectTotal: number
+  description: string
   organization: {
     id: string
     name: string

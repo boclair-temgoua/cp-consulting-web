@@ -252,4 +252,8 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/sub-sub-sub-projects/show`,
     method: GET,
   },
+  getDocumentsBy: {
+    endpoint: `${baseUrl}/documents`,
+    method: GET,
+  },
 }

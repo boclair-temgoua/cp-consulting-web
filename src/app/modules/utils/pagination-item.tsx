@@ -8,9 +8,9 @@ interface Props {
     pageItem: number;
 }
 
-export type SortModel =  'ASC' | 'DESC'
+export type SortModel = 'ASC' | 'DESC'
 
-export type FilterTypeModel =  'ORGANIZATION' | 'PROJECT' | 'SUBPROJECT'
+export type FilterTypeModel = 'ORGANIZATION' | 'PROJECT' | 'SUBPROJECT' | 'SUBSUBPROJECT'| 'SUBSUBSUBPROJECT'
 
 export type PaginationRequest = {
     search?: string

@@ -12,7 +12,8 @@ export type ProjectModel = {
   contributorTotal: number
   subProjectTotal: number
   contactTotal: number
-  documentTotal: null
+  documentTotal: string
+  description: string
   organization: {
     id: string
     name: string
