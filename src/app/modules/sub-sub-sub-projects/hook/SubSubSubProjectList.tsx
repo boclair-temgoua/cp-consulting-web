@@ -3,20 +3,16 @@ import React, { useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ContributorModel, arrayAuthorized } from '../../contributors/core/_models'
-// import { getContributorssubProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getContributorsSubProject, getContributorsSubSubSubProject } from '../../contributors/core/_requests'
-import { ProjectModel } from '../../projects/core/_models'
+import { useQuery } from '@tanstack/react-query'
+import { getContributorsSubSubSubProject } from '../../contributors/core/_requests'
 import Swal from 'sweetalert2';
-// import { deleteOneSubProject } from '../core/_requests'
 import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
-// import { DeleteOneSubProjectMutation } from '../core/_models'
-// import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { SubSubProjectModel } from '../../sub-sub-projects/core/_models'
 import { SubSubSubProjectCreateFormModal } from './SubSubSubProjectCreateFormModal'
-import { CreateOrUpdateOneSubSubSubProjectMutation, DeleteOneSubSubSubProjectMutation } from '../core/_models'
+import { DeleteOneSubSubSubProjectMutation } from '../core/_models'
+import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
 
 type Props = {
     takeValue?: number
@@ -25,6 +21,7 @@ type Props = {
 }
 
 const SubSubSubProjectList: React.FC<Props> = ({ item, subSubProject, takeValue }) => {
+    const [openModal, setOpenModal] = useState<boolean>(false)
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
@@ -137,6 +134,9 @@ const SubSubSubProjectList: React.FC<Props> = ({ item, subSubProject, takeValue 
                 <td>
                     {arrayAuthorized.includes(`${subSubProject?.role?.name}`) && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
+                            <button onClick={() => { setOpenModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
+                            </button>
                             <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
                             </button>
@@ -148,6 +148,7 @@ const SubSubSubProjectList: React.FC<Props> = ({ item, subSubProject, takeValue 
                     )}
                 </td>
             </tr>
+            {openModal && (<InviteContributorFormModal setOpenModal={setOpenModal} subSubSubProjectId={item?.subSubSubProject?.id} />)}
             {openCreateOrUpdateModal && (<SubSubSubProjectCreateFormModal subSubSubProject={item?.subSubSubProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )

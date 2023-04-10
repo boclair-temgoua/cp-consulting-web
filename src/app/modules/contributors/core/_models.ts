@@ -211,7 +211,10 @@ export const CreateOneContributorMutation = ({
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['contributors']
+  const queryKeyContributors = ['contributors']
+  const queryKeyContributorSubProjectMini = ['contributorSubProjectMini']
+  const queryKeyContributorSubSubProjectMini = ['contributorSubSubProjectMini']
+  const queryKeyContributorSubSubSubProjectMini = ['contributorSubSubSubProjectMini']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (
@@ -240,19 +243,28 @@ export const CreateOneContributorMutation = ({
     },
     {
       onSettled: async () => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
         if (onSuccess) {
           onSuccess()
         }
       },
       onSuccess: async () => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
         if (onSuccess) {
           onSuccess()
         }
       },
       onError: async (error: any) => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
+        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
         if (onError) {
           onError(error)
         }

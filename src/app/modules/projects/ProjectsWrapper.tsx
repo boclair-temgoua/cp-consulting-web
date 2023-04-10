@@ -27,7 +27,7 @@ const ProjectsWrapper: FC = () => {
   const fetchData = async (pageItem = 1, debouncedFilter: string) => await
     getProjectsContributes({
       search: debouncedFilter,
-      take: 5,
+      take: 10,
       page: Number(pageItem || 1),
       sort: 'DESC'
     })

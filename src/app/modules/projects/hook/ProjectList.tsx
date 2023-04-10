@@ -39,6 +39,7 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                         <ContributorMiniList item={item} key={index} />
                     )))
 
+    const calculatedContributors: number = Number(Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value))
     return (
         <>
             <tr key={item?.id}>
@@ -67,6 +68,14 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                     <div className='symbol-group symbol-hover flex-nowrap'>
 
                         {dataContributorMiniTable}
+
+                        <Link to={`/projects`} className="symbol symbol-30px symbol-circle">
+                            {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
+                                <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
+                                    +{calculatedContributors}
+                                </span>
+                            }
+                        </Link>
 
                     </div>
                 </td>

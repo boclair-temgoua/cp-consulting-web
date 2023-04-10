@@ -16,6 +16,7 @@ import { SubProjectModel } from '../../sub-projects/core/_models'
 import { SubSubProjectCreateFormModal } from './SubSubProjectCreateFormModal'
 import { DeleteOneSubSubProjectMutation } from '../core/_models'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
+import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
 
 type Props = {
     takeValue?: number
@@ -24,6 +25,7 @@ type Props = {
 }
 
 const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => {
+    const [openModal, setOpenModal] = useState<boolean>(false)
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
@@ -139,6 +141,9 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                 <td>
                     {arrayAuthorized.includes(`${subProject?.role?.name}`) && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
+                            <button onClick={() => { setOpenModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                                <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
+                            </button>
                             <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
                             </button>
@@ -149,6 +154,7 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
                     )}
                 </td>
             </tr>
+            {openModal && (<InviteContributorFormModal setOpenModal={setOpenModal} subSubProjectId={item?.subSubProject?.id} />)}
             {openCreateOrUpdateModal && (<SubSubProjectCreateFormModal subSubProject={item?.subSubProject} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
