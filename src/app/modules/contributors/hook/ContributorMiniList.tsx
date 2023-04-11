@@ -11,7 +11,7 @@ const ContributorMiniList: React.FC<Props> = ({ item, index }) => {
     return (
         <>
             <div
-                className='symbol symbol-30px symbol-circle'
+                className='symbol symbol-35px symbol-circle'
                 data-bs-toggle='tooltip'
                 title={`${item?.profile?.lastName} ${item?.profile?.firstName}`}
                 key={`cw7-item-${index}`}

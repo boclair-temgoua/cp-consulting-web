@@ -111,14 +111,13 @@ const SubSubSubProjectList: React.FC<Props> = ({ item, subSubProject, takeValue 
 
                         {dataContributorMiniTable}
 
-                        <Link to={`/projects`} className="symbol symbol-30px symbol-circle">
-                            {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
+                        {calculatedContributors > 0 && (
+                            <span className="symbol symbol-35px symbol-circle">
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
                                     +{calculatedContributors}
                                 </span>
-                            }
-                        </Link>
-
+                            </span>
+                        )}
                     </div>
                 </td>
                 <td>

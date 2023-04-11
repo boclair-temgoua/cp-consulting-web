@@ -5,9 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ContributorModel, arrayAuthorized } from '../../contributors/core/_models'
 // import { getContributorssubProject } from '../../contributors/core/_requests'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getContributorsSubProject, getContributorsSubSubProject } from '../../contributors/core/_requests'
-import { ProjectModel } from '../../projects/core/_models'
+import { useQuery } from '@tanstack/react-query'
+import { getContributorsSubSubProject } from '../../contributors/core/_requests'
 import Swal from 'sweetalert2';
 import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
 
@@ -115,13 +114,14 @@ const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => 
 
                         {dataContributorMiniTable}
 
-                        <Link to={`/projects`} className="symbol symbol-30px symbol-circle">
-                            {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
+                        {calculatedContributors > 0 && (
+                            <span className="symbol symbol-35px symbol-circle">
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
                                     +{calculatedContributors}
                                 </span>
-                            }
-                        </Link>
+                            </span>
+                        )}
+
 
                     </div>
                 </td>

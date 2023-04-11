@@ -212,6 +212,7 @@ export const CreateOneContributorMutation = ({
   onError?: (error: any) => void
 } = {}) => {
   const queryKeyContributors = ['contributors']
+  const queryKeyContributorsProjectMini = ['contributorsProjectMini']
   const queryKeyContributorSubProjectMini = ['contributorSubProjectMini']
   const queryKeyContributorSubSubProjectMini = ['contributorSubSubProjectMini']
   const queryKeyContributorSubSubSubProjectMini = ['contributorSubSubSubProjectMini']
@@ -244,6 +245,7 @@ export const CreateOneContributorMutation = ({
     {
       onSettled: async () => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
@@ -253,6 +255,7 @@ export const CreateOneContributorMutation = ({
       },
       onSuccess: async () => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
@@ -262,6 +265,7 @@ export const CreateOneContributorMutation = ({
       },
       onError: async (error: any) => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)

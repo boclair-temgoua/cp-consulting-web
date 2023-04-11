@@ -13,6 +13,7 @@ import { EmptyTable } from '../utils/empty-table'
 import ProjectList from './hook/ProjectList'
 import { ContributorModel } from '../contributors/core/_models'
 import { ProjectCreateFormModal } from './hook/ProjectCreateFormModal'
+import { SearchInput } from '../utils/forms/SearchInput'
 
 const ProjectsWrapper: FC = () => {
   const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
@@ -98,6 +99,12 @@ const ProjectsWrapper: FC = () => {
               New Project
             </button>
           </div>
+        </div>
+        <div className="card-header border-0 pt-5">
+          <SearchInput className='d-flex align-items-center position-relative my-1'
+            classNameInput='form-control w-250px ps-14'
+            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
+            placeholder='Search by name' />
         </div>
         {/* end::Header */}
         {/* begin::Body */}

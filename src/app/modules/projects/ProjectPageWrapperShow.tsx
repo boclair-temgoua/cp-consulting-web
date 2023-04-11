@@ -11,6 +11,9 @@ import { ContributorProjectTableMini } from '../contributors/ContributorProjectT
 import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
 import { DocumentTableMini } from '../documents/DocumentTableMini'
 import { Dropdown1 } from '../../../_metronic/partials'
+import ContributorMiniList from '../contributors/hook/ContributorMiniList'
+import { getContributorsProject } from '../contributors/core/_requests'
+import { ContributorModel } from '../contributors/core/_models'
 
 const ProjectPageWrapperShow: FC = () => {
   const [searchParams] = useSearchParams();
@@ -25,7 +28,21 @@ const ProjectPageWrapperShow: FC = () => {
   })
 
 
-  console.log('tab =======', searchParams.get('tab'))
+  const fetchDataContributorMini = async () => await getContributorsProject({ take: takeValue, page: 1, sort: 'ASC', projectId: String(projectId) })
+  const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
+    queryKey: ['contributorsProjectMini', String(projectId), takeValue, 1, 'ASC',],
+    queryFn: () => fetchDataContributorMini(),
+  })
+  const dataContributorMiniTable = isLoadingContributor ? (<strong>Loading...</strong>) :
+    isErrorContributor ? (<strong>Error find data please try again...</strong>) :
+      (dataContributorMini?.data?.total <= 0) ? ('') :
+        (
+          dataContributorMini?.data?.value?.map((item: ContributorModel, index: number) => (
+            <ContributorMiniList item={item} key={index} />
+          )))
+
+
+  const calculatedContributors: number = Number(Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value))
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />
@@ -79,7 +96,7 @@ const ProjectPageWrapperShow: FC = () => {
 
                   <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                     <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>300</div>
+                      <div className='fs-2 fw-bolder'>{projectItem?.data?.subProjectTotal || 0}</div>
                     </div>
                     <div className='fw-bold fs-6 text-gray-400'>Projects</div>
                   </div>
@@ -87,26 +104,16 @@ const ProjectPageWrapperShow: FC = () => {
                 </div>
 
                 <div className="symbol-group symbol-hover mb-3">
-                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Alan Warden">
-                    <span className="symbol-label bg-warning text-inverse-warning fw-bold">BT</span>
-                  </div>
-                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood">
-                    <span className="symbol-label bg-primary text-inverse-primary fw-bold">AM</span>
-                  </div>
-                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood">
-                    <span className="symbol-label bg-info text-inverse-info fw-bold">BO</span>
-                  </div>
-                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew">
-                    <span className="symbol-label bg-primary text-inverse-primary fw-bold">TI</span>
-                  </div>
-                  <div className="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew">
-                    <span className="symbol-label bg-danger text-inverse-danger fw-bold">BT</span>
-                  </div>
 
-                  <a href="#" className="symbol symbol-35px symbol-circle">
-                    <span className="symbol-label bg-dark text-inverse-dark fs-8 fw-bold">+42</span>
-                  </a>
+                  {dataContributorMiniTable}
 
+                  {calculatedContributors > 0 && (
+                    <span className="symbol symbol-35px symbol-circle">
+                      <span className="symbol-label bg-dark text-inverse-dark fs-8 fw-bold">
+                        +{calculatedContributors}
+                      </span>
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -119,9 +126,9 @@ const ProjectPageWrapperShow: FC = () => {
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === '' && 'active')
+                  (searchParams.get('tab') === 'home' && 'active')
                 }
-                to={`/projects/${projectId}`}
+                to={`/projects/${projectId}?tab=${'home'}`}
               >
                 Home
               </Link>

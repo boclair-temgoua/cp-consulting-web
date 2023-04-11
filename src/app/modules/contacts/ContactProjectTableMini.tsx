@@ -108,8 +108,8 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
 
-                                    <button type="button" className="btn btn-sm btn-light-primary me-1">
-                                        <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
+                                    <button type="button" className="btn btn-sm btn-primary me-1">
+                                        {/* <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' /> */}
                                         New Contact
                                     </button>
 
