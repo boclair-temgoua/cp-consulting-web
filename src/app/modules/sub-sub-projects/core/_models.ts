@@ -15,6 +15,7 @@ export type SubSubProjectModel = {
   contributorTotal: number
   contactTotal: number
   documentTotal: number
+  subSubSubProjectTotal: number
   description: string
   role: {
     name: ContributorRoleModel

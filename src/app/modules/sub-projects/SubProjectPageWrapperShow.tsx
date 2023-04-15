@@ -102,7 +102,7 @@ const SubProjectPageWrapperShow: FC = () => {
             </div>
             <div className='card-body d-flex flex-column justify-content-end pe-0'>
               <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Documents</div>
-              <div className='fw-semibold text-dark'>All documents {subProjectItem?.data?.name}</div>
+              <div className='fw-semibold text-dark'>Documents {subProjectItem?.data?.name}</div>
             </div>
           </Link>
         </div>
@@ -141,7 +141,7 @@ const SubProjectPageWrapperShow: FC = () => {
             </div>
             <div className='card-body d-flex flex-column justify-content-end pe-0'>
               <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Contacts</div>
-              <div className='fw-semibold text-dark'>All contacts {subProjectItem?.data?.name}</div>
+              <div className='fw-semibold text-dark'>Contacts {subProjectItem?.data?.name}</div>
             </div>
           </Link>
         </div>

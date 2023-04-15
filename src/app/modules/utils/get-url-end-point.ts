@@ -224,21 +224,21 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/sub-sub-projects`,
     method: POST,
   },
+  updateOneSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-projects/:subSubProjectId`,
+    method: PUT,
+  },
   createOneSubSubSubProject: {
     endpoint: `${baseUrl}/sub-sub-sub-projects`,
     method: POST,
   },
-  updateOneSubSubProject: {
-    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubProjectId`,
+  updateOneSubSubSubProject: {
+    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
     method: PUT,
   },
   deleteOneSubSubSubProject: {
     endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
     method: DELETE,
-  },
-  updateOneSubSubSubProject: {
-    endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
-    method: PUT,
   },
   updateRoleContributor: {
     endpoint: `${baseUrl}/contributors/role`,

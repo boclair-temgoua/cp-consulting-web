@@ -54,7 +54,7 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
                             )}
 
                             <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
-                                <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
+                                <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
                                 New Project
                             </button>
                         </div>
