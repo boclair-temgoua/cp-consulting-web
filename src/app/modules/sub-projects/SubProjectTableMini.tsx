@@ -1,14 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { KTSVG } from '../../../_metronic/helpers';
 import { ContributorModel, arrayAuthorized } from '../contributors/core/_models';
 import { ProjectModel } from '../projects/core/_models';
 import { getSubProjectsContributes } from './core/_requests';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import SubsubProjectList from './hook/SubProjectList';
 import { SubProjectCreateFormModal } from './hook/SubProjectCreateFormModal';
+import { useDebounce } from '../utils/use-debounce';
+import { SearchInput } from '../utils/forms/SearchInput';
+import { PaginationItem } from '../utils/pagination-item';
 
 type Props = {
     takeValue: number
@@ -17,12 +20,47 @@ type Props = {
 
 const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
+    const queryClient = useQueryClient()
+    const [searchParams] = useSearchParams();
+    const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
+    const [filter, setFilter] = useState<string>('')
 
-    const fetchDataSubProject = async () => await getSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', projectId: String(project?.id) })
-    const { isLoading: isLoadingSubProject, isError: isErrorSubProject, data: dataSubProject } = useQuery({
-        queryKey: ['subProjects', project?.id, 1, 'DESC'],
-        queryFn: () => fetchDataSubProject(),
+    const debouncedFilter = useDebounce(filter, 500);
+    const isEnabled = Boolean(debouncedFilter)
+    const fetchData = async (pageItem = 1, debouncedFilter: string) => await
+        getSubProjectsContributes({
+            search: debouncedFilter,
+            take: 6,
+            page: Number(pageItem || 1),
+            sort: 'DESC',
+            projectId: String(project?.id)
+        })
+    const {
+        isLoading: isLoadingSubProject,
+        isError: isErrorSubProject,
+        data: dataSubProject,
+        isPreviousData,
+    } = useQuery({
+        queryKey: ['subProjects', pageItem, debouncedFilter, project?.id, 'DESC'],
+        queryFn: () => fetchData(pageItem, debouncedFilter),
+        enabled: filter ? isEnabled : !isEnabled,
+        keepPreviousData: true,
     })
+
+    // Prefetch the next page!
+    useEffect(() => {
+        if (dataSubProject?.data?.total_page !== pageItem) {
+            queryClient.prefetchQuery
+                (['subProjects', pageItem + 1], () =>
+                    fetchData(pageItem + 1, debouncedFilter)
+                )
+        }
+    }, [dataSubProject, pageItem, queryClient, project?.id])
+
+    const paginate = (pageItem: number) => {
+        setPageItem(pageItem)
+    }
+
     const dataTableSubProject = isLoadingSubProject ? (<tr><td><strong>Loading...</strong></td></tr>) :
         isErrorSubProject ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
@@ -45,26 +83,20 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
 
                     {arrayAuthorized.includes(`${project?.role?.name}`) && (
                         <div className='card-toolbar' title='Click to add a user'>
-                            {/* {!project?.documentTotal && (
-                                <button type="button" className="btn btn-sm btn-light-primary me-1">
-                                    <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
-                                    New File
-                                </button>
-
-                            )} */}
-
-                            <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-primary me-1">
-                                {/* <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' /> */}
+                            <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
                                 New Project
                             </button>
                         </div>
-
                     )}
-
-
-
                 </div>
                 {/* end::Header */}
+                <div className="card-header border-0 pt-5">
+                    <SearchInput className='d-flex align-items-center position-relative my-1'
+                        classNameInput='form-control w-250px ps-14'
+                        onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
+                        placeholder='Search by name' />
+                </div>
 
                 <div className='card-body py-3'>
                     {/* begin::Table container */}
@@ -90,11 +122,15 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                         </table>
                     </div>
 
-                    {Number(dataSubProject?.data?.total) > takeValue && (
-                        <Link to={`/projects/${project?.id}`} className="btn btn-light-primary w-100 py-3">
-                            Show More
-                        </Link>
-                    )}
+                    <PaginationItem
+                        data={dataSubProject}
+                        setPageItem={setPageItem}
+                        setPreviewPageItem={(old: number) => Math.max(old - 1, 1)}
+                        setNextPageItem={(old: number) => old + 1}
+                        paginate={paginate}
+                        isPreviousData={isPreviousData}
+                        pageItem={pageItem}
+                    />
 
                 </div>
             </div>

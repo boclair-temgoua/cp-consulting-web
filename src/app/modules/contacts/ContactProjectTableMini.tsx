@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { KTSVG } from '../../../_metronic/helpers';
 import { ContributorModel } from '../contributors/core/_models';
 import { ProjectModel } from '../projects/core/_models';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import { getContactsBy } from './core/_requests';
 import ContactList from './hook/ContactList';
@@ -14,6 +14,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Swal from 'sweetalert2';
 import { AlertDangerNotification, AlertSuccessNotification } from '../utils';
+import { useDebounce } from '../utils/use-debounce';
+import { PaginationItem } from '../utils/pagination-item';
+import { SearchInput } from '../utils/forms/SearchInput';
 
 type Props = {
     takeValue: number
@@ -32,14 +35,49 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
         formState: { errors, isDirty, isValid }
     } = useForm<string[]>({ resolver: yupResolver(schema), mode: "onChange" });
 
+    const queryClient = useQueryClient()
+    const [searchParams] = useSearchParams();
+    const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
+    const [filter, setFilter] = useState<string>('')
 
-
-
-    const fetchDataContact = async () => await getContactsBy({ take: takeValue, page: 1, sort: 'DESC', type: 'PROJECT', projectId: String(project?.id) })
-    const { isLoading: isLoadingContact, isError: isErrorContact, data: dataContact } = useQuery({
-        queryKey: ['contacts', project?.id],
-        queryFn: () => fetchDataContact(),
+    const debouncedFilter = useDebounce(filter, 500);
+    const isEnabled = Boolean(debouncedFilter)
+    const fetchData = async (pageItem = 1, debouncedFilter: string) => await
+        getContactsBy({
+            search: debouncedFilter,
+            take: 6,
+            page: Number(pageItem || 1),
+            sort: 'DESC',
+            projectId: String(project?.id),
+            type: 'PROJECT',
+        })
+    const {
+        isLoading: isLoadingContact,
+        isError: isErrorContact,
+        data: dataContact,
+        isPreviousData,
+    } = useQuery({
+        queryKey: ['contacts', pageItem, debouncedFilter, project?.id],
+        queryFn: () => fetchData(pageItem, debouncedFilter),
+        enabled: filter ? isEnabled : !isEnabled,
+        keepPreviousData: true,
     })
+
+    // Prefetch the next page!
+    useEffect(() => {
+        if (dataContact?.data?.total_page !== pageItem) {
+            queryClient.prefetchQuery
+                (['contacts', pageItem + 1], () =>
+                    fetchData(pageItem + 1, debouncedFilter)
+                )
+        }
+    }, [dataContact, pageItem, queryClient, project?.id])
+
+    const paginate = (pageItem: number) => {
+        setPageItem(pageItem)
+    }
+
+
     const dataTableContact = isLoadingContact ? (<tr><td><strong>Loading...</strong></td></tr>) :
         isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
@@ -130,6 +168,13 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
 
                     </div>
 
+                    <div className="card-header border-0 pt-5">
+                        <SearchInput className='d-flex align-items-center position-relative my-1'
+                            classNameInput='form-control w-250px ps-14'
+                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
+                            placeholder='Search by email, first name or last name' />
+                    </div>
+
                     <div className='card-body py-3'>
 
                         <div className='table-responsive'>
@@ -137,9 +182,9 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
                                 <thead>
                                     <tr className="fw-bolder fs-6 text-gray-800">
-                                        {project?.role?.name === 'ADMIN' && ( 
-                                        <th className="w-25px">
-                                        </th>
+                                        {project?.role?.name === 'ADMIN' && (
+                                            <th className="w-25px">
+                                            </th>
                                         )}
                                         <th>Profile</th>
                                         <th></th>
@@ -155,11 +200,15 @@ const ContactProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                             </table>
                         </div>
 
-                        {Number(dataContact?.data?.total) > takeValue && (
-                            <Link to={`/projects/${project?.id}/contributors`} className="btn btn-light-primary w-100 py-3">
-                                Show More
-                            </Link>
-                        )}
+                        <PaginationItem
+                            data={dataContact}
+                            setPageItem={setPageItem}
+                            setPreviewPageItem={(old: number) => Math.max(old - 1, 1)}
+                            setNextPageItem={(old: number) => old + 1}
+                            paginate={paginate}
+                            isPreviousData={isPreviousData}
+                            pageItem={pageItem}
+                        />
 
 
                     </div>

@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from 'react'
 import {PageTitle} from '../../../_metronic/layout/core'
 import {HelmetSite} from '../utils'
-import {Link, useLocation, useParams, useSearchParams} from 'react-router-dom'
+import {Link, useLocation, useNavigate, useParams, useSearchParams} from 'react-router-dom'
 import {useQuery} from '@tanstack/react-query'
 import {getOneProject} from './core/_requests'
 import {useAuth} from '../auth'
@@ -16,8 +16,8 @@ import {getContributorsProject} from '../contributors/core/_requests'
 import {ContributorModel} from '../contributors/core/_models'
 
 const ProjectPageWrapperShow: FC = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams()
-  const location = useLocation()
   const takeValue: number = 6
   const {projectId} = useParams<string>()
 
@@ -61,6 +61,7 @@ const ProjectPageWrapperShow: FC = () => {
   const calculatedContributors: number = Number(
     Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value)
   )
+  console.log('navigate ========>',navigate)
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />
@@ -77,8 +78,16 @@ const ProjectPageWrapperShow: FC = () => {
         Project
       </PageTitle>
 
-      <div className='row g-5 g-xl-8'>
+      <div className="app-toolbar py-3 py-lg-6">
+          <button type="button" className={`btn btn-sm btn-light`} onClick={() => navigate(-1)} >
+            <KTSVG path='/media/icons/duotune/arrows/arr002.svg' className='svg-icon-3' />
+          </button>
+          <button type="button" className="btn btn-sm btn-light" onClick={() => navigate(1)}>
+            <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-3' />
+          </button>
+      </div>
 
+      <div className='row g-5 g-xl-8'>
 
         <div className='col-xl-3'>
           <Link to={`/projects/${projectId}?tab=${'projects'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
@@ -290,7 +299,7 @@ const ProjectPageWrapperShow: FC = () => {
           )}
 
           {searchParams.get('tab') === 'documents' && (
-            <DocumentTableMini type='PROJECT' projectId={projectItem?.data?.id} />
+            <DocumentTableMini type='PROJECT' projectItem={projectItem?.data} projectId={projectItem?.data?.id} />
           )}
 
           {searchParams.get('tab') === 'contributors' && (

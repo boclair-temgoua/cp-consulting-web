@@ -10,9 +10,11 @@ import DocumentList from './hook/DocumentList';
 import { getDocumentsBy } from './core/_requests';
 import { DocumentModel } from './core/_models';
 import { FilterTypeModel } from '../utils/pagination-item';
+import { SearchInput } from '../utils/forms/SearchInput';
 
 type Props = {
     organizationId?: string
+    projectItem?: any
     projectId?: string
     subProjectId?: string
     subSubProjectId?: string
@@ -20,7 +22,15 @@ type Props = {
     type: FilterTypeModel
 }
 
-const DocumentTableMini: React.FC<Props> = ({ type, subSubSubProjectId, subSubProjectId, subProjectId, projectId, organizationId }) => {
+const DocumentTableMini: React.FC<Props> = ({
+    type,
+    subSubSubProjectId,
+    subSubProjectId,
+    subProjectId,
+    projectId,
+    organizationId,
+    projectItem
+}) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
     const fetchDataDocument = async () => await getDocumentsBy({
@@ -61,30 +71,20 @@ const DocumentTableMini: React.FC<Props> = ({ type, subSubSubProjectId, subSubPr
             <div className={`card mb-5 mb-xl-8`}>
 
                 {/* begin::Header */}
-                <div className="card-header border-0 pt-6">
-                    <div className="card-title">
-                        <div className="d-flex align-items-center position-relative my-1">
-                            <span className="svg-icon svg-icon-1 position-absolute ms-6">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mh-50px">
-                                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
-                                    <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
-                                </svg>
-                            </span>
-                            <input type="text" className="form-control form-control-solid w-250px ps-14" placeholder="Search file" />
-                        </div>
-                    </div>
+                <div className="card-header border-0 pt-5">
+                    <h3 className='card-title align-items-start flex-column'>
+                        <span className='card-label fw-bold fs-3 mb-1'>{projectItem?.name || ''}</span>
+                        <span className='text-muted mt-1 fw-semibold fs-7'>Over {projectItem?.data?.total || 0} documents - {projectItem?.name}</span>
+                    </h3>
 
-                    {/* {!arrayAuthorized.includes(`${project?.role?.name}`) && (
+                    {arrayAuthorized.includes(`${projectItem?.role?.name}`) && (
                         <div className='card-toolbar' title='Click to add a user'>
-                            {!project?.documentTotal && (
-                                <button type="button" className="btn btn-sm btn-light-primary me-1">
-                                    <KTSVG path='/media/icons/duotune/communication/com008.svg' className='svg-icon-3' />
-                                    New File
-                                </button>
-
-                            )}
+                            <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
+                                New Document
+                            </button>
                         </div>
-                    )} */}
+                    )}
                 </div>
                 {/* end::Header */}
 

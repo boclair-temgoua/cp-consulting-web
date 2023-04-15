@@ -29,7 +29,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
     const fetchData = async (pageItem = 1, debouncedFilter: string) => await
         getContributorsProject({
             search: debouncedFilter,
-            take: 10,
+            take: 6,
             page: Number(pageItem || 1),
             sort: 'DESC',
             projectId: String(project?.id)
@@ -83,10 +83,10 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
                         {arrayAuthorized.includes(`${project?.role?.name}`) && (
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
-                                    <button type="button" onClick={() => { setOpenModal(true) }} className="btn btn-sm btn-primary me-1">
+                                    <button type="button" onClick={() => { setOpenModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                        <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
                                         New Contributor
                                     </button>
-
                                 </div>
                             </div>
                         )}
