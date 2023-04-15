@@ -101,7 +101,7 @@ const ProjectsWrapper: FC = () => {
           </div>
         </div>
         <div className="card-header border-0 pt-5">
-          <SearchInput className='d-flex align-items-center position-relative my-1'
+          <SearchInput className='d-flex align-items-center form-control-solid position-relative my-1'
             classNameInput='form-control w-250px ps-14'
             onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
             placeholder='Search by name' />
