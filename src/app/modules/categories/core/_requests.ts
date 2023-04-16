@@ -5,6 +5,7 @@ import {CategoryModel, CategoryRequestModel, ResponseCategoryModel} from './_mod
 export const getCategoriesBy = async (
   payload: {
     organizationId?: string
+    is_paginate: boolean
   } & PaginationRequest
 ): Promise<{data: ResponseCategoryModel}> => {
   return await makeApiCall({

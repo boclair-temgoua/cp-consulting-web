@@ -101,7 +101,7 @@ const OrganizationWrapperShow: FC = () => {
                 <div className='d-flex flex-wrap'>
                   <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                     <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>{organizationItem?.data?.contributorTotal}</div>
+                      <div className='fs-2 fw-bolder'>{organizationItem?.data?.contributorTotal || 0}</div>
                     </div>
                     <div className='fw-bold fs-6 text-gray-400'>Contributors</div>
                   </div>
@@ -237,7 +237,7 @@ const OrganizationWrapperShow: FC = () => {
           <Link to={`/organizations/${organizationId}?tab=${'contacts'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
             <div className='card-header pt-5'>
               <div className='card-title d-flex flex-column'>
-                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>0</span>
+                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{organizationItem?.data?.contactTotal || 0}</span>
                 <span className='text-gray-400 pt-1 fw-semibold fs-6'>Contacts</span>
               </div>
             </div>

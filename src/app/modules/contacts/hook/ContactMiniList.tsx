@@ -1,9 +1,9 @@
 import React, { } from 'react'
-import { OneContactModel } from '../core/_models'
+import { ContactModel } from '../core/_models'
 import { capitalizeFirstLetter } from '../../utils'
 
 type Props = {
-    item?: OneContactModel;
+    item?: ContactModel;
     index?: number
 }
 

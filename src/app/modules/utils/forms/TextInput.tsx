@@ -47,7 +47,7 @@ export const TextInput: React.FC<Props> = ({
         <>
 
             {labelFlex && (
-                <label className='form-label fs-6 fw-bolder text-dark'>{labelFlex}</label>
+                <label htmlFor={inputName} className={`form-label fs-6 fw-bolder text-dark ${isRequired ? 'required' : ''} `}>{labelFlex}</label>
             )}
 
             <input
@@ -69,7 +69,7 @@ export const TextInput: React.FC<Props> = ({
             {errors?.inputName && (
                 <div className='fv-plugins-message-container'>
                     <div className='fv-help-block'>
-                        <span role='alert'>{errors?.inputName.message}</span>
+                        <span role='alert'>{errors?.inputName?.message}</span>
                     </div>
                 </div>
             )}

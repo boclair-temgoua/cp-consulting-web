@@ -50,6 +50,7 @@ const CategoryOrganizationTableMini: React.FC<Props> = ({ organization }) => {
             take: 10,
             page: Number(pageItem || 1),
             sort: 'DESC',
+            is_paginate: true,
             organizationId: String(organization?.id),
         })
     const {

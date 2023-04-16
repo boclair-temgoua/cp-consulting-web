@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import { getContactsBy } from './core/_requests';
 import ContactList from './hook/ContactList';
-import { DeleteMultipleContactMutation, OneContactModel } from './core/_models';
+import { DeleteMultipleContactMutation, ContactModel } from './core/_models';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -82,7 +82,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
         isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
                 (
-                    dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
+                    dataContact?.data?.value?.map((item: ContactModel, index: number) => (
                         <ContactList roleItem={project?.role} item={item} key={index} register={register} value={item?.id} errors={errors} />
                     )))
 

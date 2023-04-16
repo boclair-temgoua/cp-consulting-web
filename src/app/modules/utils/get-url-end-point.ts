@@ -152,6 +152,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contacts`,
     method: POST,
   },
+  updateOneContact: {
+    endpoint: `${baseUrl}/contacts/:contactId`,
+    method: PUT,
+  },
   getOneSubProject: {
     endpoint: `${baseUrl}/sub-projects/show`,
     method: GET,

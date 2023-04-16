@@ -37,7 +37,7 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
       const fields = ['name', 'description', 'projectId', 'organizationId'];
       fields?.forEach((field: any) => setValue(field, subProject[field]));
     }
-  }, [subProject]);
+  }, [subProject, setValue]);
 
   const saveMutation = CreateOrUpdateOneSubProjectMutation({
     onSuccess: () => {

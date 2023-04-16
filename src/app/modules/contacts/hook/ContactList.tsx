@@ -1,24 +1,26 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { } from 'react'
+import React, { useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
-import { DeleteOneContactMutation, OneContactModel } from '../core/_models'
+import { DeleteOneContactMutation, ContactModel } from '../core/_models'
 import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import Swal from 'sweetalert2';
 import { UseFormRegister } from 'react-hook-form'
 import { TextInput } from '../../utils/forms'
 import { ProjectModel } from '../../projects/core/_models'
+import { ContactCreateFormModal } from './ContactCreateFormModal'
 
 type Props = {
     errors: { [key: string]: any };
     register: UseFormRegister<any>;
     value: string;
-    item?: OneContactModel;
+    item?: ContactModel;
     roleItem?: { name: string }
 }
 
 const ContactList: React.FC<Props> = ({ item, register, value, errors, roleItem }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
     const actionDeleteOneContactMutation = DeleteOneContactMutation({
         onSuccess: () => { },
@@ -132,12 +134,9 @@ const ContactList: React.FC<Props> = ({ item, register, value, errors, roleItem 
                 <td>
                     {roleItem?.name === 'ADMIN' && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
-                            <a
-                                href='#'
-                                className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'
-                            >
+                            <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
-                            </a>
+                            </button>
                             <button type='button' onClick={() => { deleteItem(item) }} className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                             </button>
@@ -146,6 +145,7 @@ const ContactList: React.FC<Props> = ({ item, register, value, errors, roleItem 
                 </td>
             </tr>
 
+            {openCreateOrUpdateModal && (<ContactCreateFormModal organizationId={String(item?.organizationId)} contact={item} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }

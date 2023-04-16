@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import { getContactsBy } from './core/_requests';
 import ContactList from './hook/ContactList';
-import { DeleteMultipleContactMutation, OneContactModel } from './core/_models';
+import { DeleteMultipleContactMutation, ContactModel } from './core/_models';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,6 +18,7 @@ import { useDebounce } from '../utils/use-debounce';
 import { PaginationItem } from '../utils/pagination-item';
 import { SearchInput } from '../utils/forms/SearchInput';
 import { OrganizationModel } from '../organizations/core/_models';
+import { ContactCreateFormModal } from './hook/ContactCreateFormModal';
 
 type Props = {
     takeValue: number
@@ -31,6 +32,7 @@ const schema = yup.object().shape({
 })
 
 const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue }) => {
+    const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
     const { register, handleSubmit,
         formState: { errors, isDirty, isValid }
@@ -58,7 +60,7 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
         data: dataContact,
         isPreviousData,
     } = useQuery({
-        queryKey: ['organizations', pageItem, debouncedFilter, organization?.id],
+        queryKey: ['contacts', pageItem, debouncedFilter, organization?.id],
         queryFn: () => fetchData(pageItem, debouncedFilter),
         enabled: filter ? isEnabled : !isEnabled,
         keepPreviousData: true,
@@ -68,7 +70,7 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
     useEffect(() => {
         if (dataContact?.data?.total_page !== pageItem) {
             queryClient.prefetchQuery
-                (['organizations', pageItem + 1], () =>
+                (['contacts', pageItem + 1], () =>
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
@@ -83,7 +85,7 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
         isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
                 (
-                    dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
+                    dataContact?.data?.value?.map((item: ContactModel, index: number) => (
                         <ContactList roleItem={organization?.role} item={item} key={index} register={register} value={item?.id} errors={errors} />
                     )))
 
@@ -147,8 +149,8 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
 
-                                    <button type="button" className="btn btn-sm btn-primary me-1">
-                                        {/* <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' /> */}
+                                    <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                        <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
                                         New Contact
                                     </button>
 
@@ -220,6 +222,7 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
             </div>
 
 
+            {openCreateOrUpdateModal && (<ContactCreateFormModal organizationId={String(organization?.id)} setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
         </>
     )
 }

@@ -1,6 +1,6 @@
 import {PageType, makeApiCall} from '../../utils/get-url-end-point'
 import {PaginationRequest} from '../../utils/pagination-item'
-import {OneContactModel, RequestContactModel, ResponseContactModel} from './_models'
+import {ContactModel, ContactRequestModel, ResponseContactModel} from './_models'
 
 export const getContactsBy = async (
   payload: {
@@ -16,7 +16,7 @@ export const getContactsBy = async (
   })
 }
 
-export const getOneContact = async (payload: {contactId: string}): Promise<OneContactModel> => {
+export const getOneContact = async (payload: {contactId: string}): Promise<ContactModel> => {
   const {contactId} = payload
   return await makeApiCall({
     action: 'getOneContact',
@@ -24,9 +24,18 @@ export const getOneContact = async (payload: {contactId: string}): Promise<OneCo
   })
 }
 
-export const createOneContact = async (payload: RequestContactModel): Promise<OneContactModel> => {
+export const createOneContact = async (payload: ContactRequestModel): Promise<ContactModel> => {
   return await makeApiCall({
     action: 'createOneContact',
+    body: payload,
+  })
+}
+
+export const updateOneContact = async (payload: ContactRequestModel): Promise<any> => {
+  const {contactId} = payload
+  return await makeApiCall({
+    action: 'updateOneContact',
+    urlParams: {contactId},
     body: payload,
   })
 }

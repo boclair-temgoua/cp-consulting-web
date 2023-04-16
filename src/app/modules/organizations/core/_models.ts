@@ -8,6 +8,7 @@ export type OrganizationModel = {
   userId: string
   contributorTotal: number
   categoryTotal: number
+  contactTotal: number
   projectTotal: number
   userAddress: string
   createdAt: Date

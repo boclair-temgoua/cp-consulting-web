@@ -34,7 +34,7 @@ export const CategoryCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdate
       const fields = ['name', 'description', 'organizationId'];
       fields?.forEach((field: any) => setValue(field, category[field]));
     }
-  }, [category]);
+  }, [category, setValue]);
 
   const saveMutation = CreateOrUpdateOneCategoryMutation({
     onSuccess: () => {
@@ -55,7 +55,7 @@ export const CategoryCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdate
     try {
       await saveMutation.mutateAsync({ ...data, categoryId: category?.id, organizationId })
       AlertSuccessNotification({
-        text: 'Category save successfully',
+        text: 'Contact save successfully',
         className: 'info',
         position: 'center',
       })

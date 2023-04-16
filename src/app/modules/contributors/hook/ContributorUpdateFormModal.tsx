@@ -30,7 +30,7 @@ export const ContributorUpdateFormModal: React.FC<Props> = ({ setOpenModal, cont
             const fields = ['role'];
             fields?.forEach((field: any) => setValue(field, contributor[field]?.name));
         }
-    }, [contributor]);
+    }, [contributor,setValue]);
 
     const saveMutation = UpdateRoleContributorMutation({
         onSuccess: () => {
@@ -122,6 +122,7 @@ export const ContributorUpdateFormModal: React.FC<Props> = ({ setOpenModal, cont
                                         inputName="role"
                                         validation={{ required: true }}
                                         isRequired={true}
+                                        isValueInt={false}
                                         required="required"
                                     />
                                 </div>

@@ -9,6 +9,7 @@ interface Props {
     required?: string;
     className: string;
     inputName: string;
+    isValueInt: boolean;
     validation?: { [key: string]: any };
     errors: { [key: string]: any };
 }
@@ -22,6 +23,7 @@ export const SelectValueNameInput: React.FC<Props> = ({
     required,
     className,
     inputName,
+    isValueInt,
     validation = {},
     errors,
 }) => {
@@ -38,7 +40,7 @@ export const SelectValueNameInput: React.FC<Props> = ({
                 }`} {...register(inputName, validation)} required={isRequired}>
                 <option disabled>Choose options</option>
                 {dataItem?.map((item: any, index: number) => (
-                    <option value={item?.name} key={index}>{item?.name}</option>
+                    <option value={isValueInt ? item?.id : item?.name} key={index}>{item?.name}</option>
                 ))}
             </select>
             {errors?.[inputName] && (

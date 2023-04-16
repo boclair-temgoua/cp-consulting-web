@@ -1,6 +1,11 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SortModel} from '../../utils/pagination-item'
-import {deleteMultipleContact, deleteOneContact} from './_requests'
+import {
+  createOneContact,
+  deleteMultipleContact,
+  deleteOneContact,
+  updateOneContact,
+} from './_requests'
 
 export type ResponseContactModel = {
   total: number
@@ -11,10 +16,10 @@ export type ResponseContactModel = {
   sort: SortModel
   total_page: number
   total_value: number
-  value: Array<OneContactModel>
+  value: Array<ContactModel>
 }
 
-export type OneContactModel = {
+export type ContactModel = {
   id: string
   createdAt: Date
   firstName: string
@@ -39,14 +44,15 @@ export type OneContactModel = {
   }
 }
 
-export type RequestContactModel = {
+export type ContactRequestModel = {
+  contactId: string
   email: string
   lastName: string
   fistName: string
   phone: string
   categoryId: string
   projectId: string
-  description: string
+  organizationId: string
 }
 
 export const DeleteOneContactMutation = ({
@@ -102,6 +108,46 @@ export const DeleteMultipleContactMutation = ({
     async (payload: {password: string; contacts: string[]}): Promise<any> => {
       const {password, contacts} = payload
       const {data} = await deleteMultipleContact({password, contacts})
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
+}
+
+export const CreateOrUpdateOneContactMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contacts']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: ContactRequestModel): Promise<any> => {
+      const {contactId} = payload
+      const {data} = contactId ? await createOneContact(payload) : await updateOneContact(payload)
       return data
     },
     {

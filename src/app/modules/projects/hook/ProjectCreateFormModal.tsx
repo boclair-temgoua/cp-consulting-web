@@ -33,7 +33,7 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
       const fields = ['name', 'description', 'organizationId'];
       fields?.forEach((field: any) => setValue(field, project[field]));
     }
-  }, [project]);
+  }, [project,setValue]);
 
   const saveMutation = CreateOrUpdateOneProjectMutation({
     onSuccess: () => {
