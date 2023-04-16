@@ -52,7 +52,6 @@ const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue
             page: Number(pageItem || 1),
             sort: 'DESC',
             organizationId: String(organization?.id),
-            type: 'ORGANIZATION',
         })
     const {
         isLoading: isLoadingContact,

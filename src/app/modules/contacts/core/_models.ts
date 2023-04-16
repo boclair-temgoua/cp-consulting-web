@@ -1,7 +1,8 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {SortModel} from '../../utils/pagination-item'
+import {FilterTypeModel, SortModel} from '../../utils/pagination-item'
 import {
   createOneContact,
+  createOneContactProject,
   deleteMultipleContact,
   deleteOneContact,
   updateOneContact,
@@ -17,6 +18,47 @@ export type ResponseContactModel = {
   total_page: number
   total_value: number
   value: Array<ContactModel>
+}
+
+export type ResponseContactProjectModel = {
+  total: number
+  per_page: number
+  current_page: number
+  last_next: number
+  skip: number
+  sort: SortModel
+  total_page: number
+  total_value: number
+  value: Array<ContactProjectModel>
+}
+
+export type ContactProjectModel = {
+  type: string
+  createdAt: Date
+  contactId: string
+  organizationId: string
+  projectId: string
+  subProjectId: string
+  subSubProjectId: string
+  subSubSubProjectId: string
+  userCreatedId: string
+  contact: {
+    id: string
+    slug: string
+    color: string
+    email: string
+    phone: string
+    address: string
+    category: string
+    lastName: string
+    countryId: string
+    firstName: string
+    categoryId: string
+    otherPhone: string
+    description: string
+    userCreatedId: string
+    organizationId: string
+  }
 }
 
 export type ContactModel = {
@@ -53,6 +95,16 @@ export type ContactRequestModel = {
   categoryId: string
   projectId: string
   organizationId: string
+}
+
+export type ContactInviteRequestModel = {
+  contactId?: string
+  type: FilterTypeModel
+  organizationId: string
+  projectId?: string
+  subProjectId?: string
+  subSubProjectId?: string
+  subSubSubProjectId?: string
 }
 
 export const DeleteOneContactMutation = ({
@@ -147,7 +199,7 @@ export const CreateOrUpdateOneContactMutation = ({
   const result = useMutation(
     async (payload: ContactRequestModel): Promise<any> => {
       const {contactId} = payload
-      const {data} = contactId ? await createOneContact(payload) : await updateOneContact(payload)
+      const {data} = contactId ? await updateOneContact(payload) : await createOneContact(payload)
       return data
     },
     {
@@ -165,6 +217,45 @@ export const CreateOrUpdateOneContactMutation = ({
       },
       onError: async (error: any) => {
         await queryClient.invalidateQueries({queryKey})
+        if (onError) {
+          onError(error)
+        }
+      },
+    }
+  )
+
+  return result
+}
+
+export const CreateOneContactProjectMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+} = {}) => {
+  const queryKey = ['contacts']
+  const queryClient = useQueryClient()
+  const result = useMutation(
+    async (payload: ContactInviteRequestModel): Promise<any> => {
+      const data = await createOneContactProject(payload)
+      return data
+    },
+    {
+      onSettled: async () => {
+        await queryClient.invalidateQueries({queryKey})
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries()
+        if (onSuccess) {
+          onSuccess()
+        }
+      },
+      onError: async (error: any) => {
+        await queryClient.invalidateQueries()
         if (onError) {
           onError(error)
         }

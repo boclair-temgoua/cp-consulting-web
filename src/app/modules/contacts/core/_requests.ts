@@ -1,13 +1,33 @@
 import {PageType, makeApiCall} from '../../utils/get-url-end-point'
 import {PaginationRequest} from '../../utils/pagination-item'
-import {ContactModel, ContactRequestModel, ResponseContactModel} from './_models'
+import {
+  ContactInviteRequestModel,
+  ContactModel,
+  ContactProjectModel,
+  ContactRequestModel,
+  ResponseContactModel,
+  ResponseContactProjectModel,
+} from './_models'
+
+export const getContactProjectsBy = async (
+  payload: {
+    type: PageType
+    organizationId: string
+    projectId?: string
+    subProjectId?: string
+    subSubProjectId?: string
+    subSubSubProjectId?: string
+  } & PaginationRequest
+): Promise<{data: ResponseContactProjectModel}> => {
+  return await makeApiCall({
+    action: 'getContactProjectsBy',
+    queryParams: payload,
+  })
+}
 
 export const getContactsBy = async (
   payload: {
-    type: PageType
-    organizationId?: string
-    projectId?: string
-    subProjectId?: string
+    organizationId: string
   } & PaginationRequest
 ): Promise<{data: ResponseContactModel}> => {
   return await makeApiCall({
@@ -27,6 +47,15 @@ export const getOneContact = async (payload: {contactId: string}): Promise<Conta
 export const createOneContact = async (payload: ContactRequestModel): Promise<ContactModel> => {
   return await makeApiCall({
     action: 'createOneContact',
+    body: payload,
+  })
+}
+
+export const createOneContactProject = async (
+  payload: ContactInviteRequestModel
+): Promise<ContactProjectModel> => {
+  return await makeApiCall({
+    action: 'createOneContactProject',
     body: payload,
   })
 }

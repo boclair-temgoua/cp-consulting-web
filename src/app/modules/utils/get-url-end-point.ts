@@ -264,12 +264,20 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/categories`,
     method: GET,
   },
+  getContactProjectsBy: {
+    endpoint: `${baseUrl}/contact_projects`,
+    method: GET,
+  },
   getOneCategory: {
     endpoint: `${baseUrl}/categories/show/:categoryId`,
     method: GET,
   },
   createOneCategory: {
     endpoint: `${baseUrl}/categories`,
+    method: POST,
+  },
+  createOneContactProject: {
+    endpoint: `${baseUrl}/contact_projects`,
     method: POST,
   },
   updateOneCategory: {

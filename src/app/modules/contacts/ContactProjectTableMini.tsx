@@ -6,9 +6,9 @@ import { ContributorModel } from '../contributors/core/_models';
 import { ProjectModel } from '../projects/core/_models';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
-import { getContactsBy } from './core/_requests';
+import { getContactProjectsBy, getContactsBy } from './core/_requests';
 import ContactList from './hook/ContactList';
-import { DeleteMultipleContactMutation, ContactModel } from './core/_models';
+import { DeleteMultipleContactMutation, ContactModel, ContactProjectModel } from './core/_models';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,6 +17,7 @@ import { AlertDangerNotification, AlertSuccessNotification } from '../utils';
 import { useDebounce } from '../utils/use-debounce';
 import { PaginationItem } from '../utils/pagination-item';
 import { SearchInput } from '../utils/forms/SearchInput';
+import { InviteContactFormModal } from './hook/InviteContactFormModal';
 
 type Props = {
     takeValue: number
@@ -30,6 +31,7 @@ const schema = yup.object().shape({
 })
 
 const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
+    const [openModal, setOpenModal] = useState<boolean>(false)
 
     const { register, handleSubmit,
         formState: { errors, isDirty, isValid }
@@ -43,13 +45,14 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
     const debouncedFilter = useDebounce(filter, 500);
     const isEnabled = Boolean(debouncedFilter)
     const fetchData = async (pageItem = 1, debouncedFilter: string) => await
-        getContactsBy({
+        getContactProjectsBy({
             search: debouncedFilter,
             take: 6,
             page: Number(pageItem || 1),
             sort: 'DESC',
             projectId: String(project?.id),
             type: 'PROJECT',
+            organizationId: String(project?.organizationId)
         })
     const {
         isLoading: isLoadingContact,
@@ -82,8 +85,8 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
         isErrorContact ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
                 (
-                    dataContact?.data?.value?.map((item: ContactModel, index: number) => (
-                        <ContactList roleItem={project?.role} item={item} key={index} register={register} value={item?.id} errors={errors} />
+                    dataContact?.data?.value?.map((item: ContactProjectModel, index: number) => (
+                        <ContactList roleItem={project?.role} item={item?.contact} key={index} register={register} value={item?.contact?.id} errors={errors} />
                     )))
 
     const actionDeleteMultipleContactMutation = DeleteMultipleContactMutation({
@@ -146,8 +149,8 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
 
-                                    <button type="button" className="btn btn-sm btn-primary me-1">
-                                        {/* <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' /> */}
+                                    <button type="button" onClick={() => { setOpenModal(true) }} className="btn btn-sm btn-light-primary me-1">
+                                        <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
                                         New Contact
                                     </button>
 
@@ -217,6 +220,13 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
 
                 </div>
             </div>
+
+            {openModal && (<InviteContactFormModal
+                type='PROJECT'
+                setOpenModal={setOpenModal}
+                organizationId={String(project?.organizationId)}
+                projectId={project?.id}
+            />)}
 
 
         </>

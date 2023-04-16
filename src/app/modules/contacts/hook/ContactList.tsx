@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { KTSVG } from '../../../../_metronic/helpers'
 import { Link } from 'react-router-dom'
-import { DeleteOneContactMutation, ContactModel } from '../core/_models'
+import { DeleteOneContactMutation, ContactModel, ContactProjectModel } from '../core/_models'
 import { AlertDangerNotification, AlertSuccessNotification, capitalizeFirstLetter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import Swal from 'sweetalert2';
@@ -10,12 +10,13 @@ import { UseFormRegister } from 'react-hook-form'
 import { TextInput } from '../../utils/forms'
 import { ProjectModel } from '../../projects/core/_models'
 import { ContactCreateFormModal } from './ContactCreateFormModal'
+import { arrayAuthorized } from '../../contributors/core/_models'
 
 type Props = {
     errors: { [key: string]: any };
     register: UseFormRegister<any>;
     value: string;
-    item?: ContactModel;
+    item?: any;
     roleItem?: { name: string }
 }
 
@@ -132,7 +133,7 @@ const ContactList: React.FC<Props> = ({ item, register, value, errors, roleItem 
                     </a>
                 </td>
                 <td>
-                    {roleItem?.name === 'ADMIN' && (
+                    {arrayAuthorized.includes(`${roleItem?.name}`) && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
                             <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/general/gen055.svg' className='svg-icon-3' />
