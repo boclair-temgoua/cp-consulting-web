@@ -55,7 +55,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
-    }, [dataSubProject, pageItem, queryClient, project?.id])
+    }, [dataSubProject?.data, pageItem, queryClient, project?.id, debouncedFilter])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)

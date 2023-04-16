@@ -7,6 +7,7 @@ export type OrganizationModel = {
   image: string
   userId: string
   contributorTotal: number
+  categoryTotal: number
   projectTotal: number
   userAddress: string
   createdAt: Date

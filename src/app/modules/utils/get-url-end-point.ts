@@ -97,7 +97,7 @@ export const apiEndpoints: ClientApiMethods = {
     method: GET,
   },
   getOneOrganization: {
-    endpoint: `${baseUrl}/organizations/:organizationId`,
+    endpoint: `${baseUrl}/organizations/show`,
     method: GET,
   },
   getOneContributor: {
@@ -255,5 +255,25 @@ export const apiEndpoints: ClientApiMethods = {
   getDocumentsBy: {
     endpoint: `${baseUrl}/documents`,
     method: GET,
+  },
+  getCategoriesBy: {
+    endpoint: `${baseUrl}/categories`,
+    method: GET,
+  },
+  getOneCategory: {
+    endpoint: `${baseUrl}/categories/show/:categoryId`,
+    method: GET,
+  },
+  createOneCategory: {
+    endpoint: `${baseUrl}/categories`,
+    method: POST,
+  },
+  updateOneCategory: {
+    endpoint: `${baseUrl}/categories/:categoryId`,
+    method: PUT,
+  },
+  deleteOneCategory: {
+    endpoint: `${baseUrl}/categories/delete/:categoryId`,
+    method: DELETE,
   },
 }

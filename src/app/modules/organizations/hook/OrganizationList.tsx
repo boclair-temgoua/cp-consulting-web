@@ -12,9 +12,10 @@ type Props = {
 }
 
 const OrganizationList: React.FC<Props> = ({ item }) => {
+    const takeItem: number = 6
     const navigate = useNavigate();
 
-    const fetchDataContributorMini = async () => await getContributorsOrganization({ take: 5, page: 1, sort: 'ASC', type: 'ORGANIZATION', organizationId: String(item?.organizationId) })
+    const fetchDataContributorMini = async () => await getContributorsOrganization({ take: takeItem, page: 1, sort: 'ASC', type: 'ORGANIZATION', organizationId: String(item?.organizationId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
         queryKey: ['contributorsOrganizationMini', item?.organizationId],
         queryFn: () => fetchDataContributorMini(),
@@ -49,13 +50,13 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
 
                         {datataContributorMiniTable}
 
-                        <Link to={`/organizations/${item?.organizationId}/contributors`} className="symbol symbol-30px symbol-circle">
-                            {calculatedContributors > Number(dataContributorMini?.data?.total_value) &&
-                                <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
+                        {calculatedContributors > 0 && (
+                            <span className='symbol symbol-35px symbol-circle'>
+                                <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
                                     +{calculatedContributors}
                                 </span>
-                            }
-                        </Link>
+                            </span>
+                        )}
                     </div>
                 </td>
                 <td>

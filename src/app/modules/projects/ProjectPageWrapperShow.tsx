@@ -61,7 +61,6 @@ const ProjectPageWrapperShow: FC = () => {
   const calculatedContributors: number = Number(
     Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value)
   )
-  console.log('navigate ========>',navigate)
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />

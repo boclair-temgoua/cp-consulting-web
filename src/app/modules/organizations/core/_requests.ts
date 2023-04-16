@@ -15,9 +15,8 @@ export const getOrganizationsContributes = async (
 export const getOneOrganization = async (payload: {
   organizationId: string
 }): Promise<{data: OrganizationModel}> => {
-  const {organizationId} = payload
   return await makeApiCall({
     action: 'getOneOrganization',
-    urlParams: {organizationId},
+    queryParams: payload,
   })
 }

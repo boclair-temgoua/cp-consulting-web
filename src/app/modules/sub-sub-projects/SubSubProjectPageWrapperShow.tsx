@@ -6,14 +6,16 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../auth'
 import { getOneSubSubProject } from './core/_requests'
-import { arrayAuthorized } from '../contributors/core/_models'
+import { ContributorModel, arrayAuthorized } from '../contributors/core/_models'
 import { SubSubSubProjectTableMini } from '../sub-sub-sub-projects/SubSubSubProjectTableMini'
 import { ContributorSubSubProjectTableMini } from '../contributors/ContributorSubSubProjectTableMini'
+import { getContributorsSubSubProject } from '../contributors/core/_requests'
+import ContributorMiniList from '../contributors/hook/ContributorMiniList'
 
 const SubSubProjectPageWrapperShow: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const takeValue: number = 20
+  const takeValue: number = 6
   const { role } = useAuth() as any
   const { subSubProjectId } = useParams<string>()
 
@@ -23,6 +25,36 @@ const SubSubProjectPageWrapperShow: FC = () => {
     queryFn: () => fetchOneSubSubProject(),
   })
 
+  const fetchDataContributorMini = async () =>
+    await getContributorsSubSubProject({
+      take: takeValue,
+      page: 1,
+      sort: 'ASC',
+      subSubProjectId: String(subSubProjectId),
+    })
+  const {
+    isLoading: isLoadingContributor,
+    isError: isErrorContributor,
+    data: dataContributorMini,
+  } = useQuery({
+    queryKey: ['contributorSubSubProjectMini', String(subSubProjectId), takeValue, 1, 'ASC'],
+    queryFn: () => fetchDataContributorMini(),
+  })
+  const dataContributorMiniTable = isLoadingContributor ? (
+    <strong>Loading...</strong>
+  ) : isErrorContributor ? (
+    <strong>Error find data please try again...</strong>
+  ) : dataContributorMini?.data?.total <= 0 ? (
+    ''
+  ) : (
+    dataContributorMini?.data?.value?.map((item: ContributorModel, index: number) => (
+      <ContributorMiniList item={item} key={index} />
+    ))
+  )
+
+  const calculatedContributors: number = Number(
+    Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value)
+  )
 
   return (
     <>
@@ -85,7 +117,7 @@ const SubSubProjectPageWrapperShow: FC = () => {
             </div>
             <div className='card-body d-flex flex-column justify-content-end pe-0'>
               <div className='symbol-group symbol-hover flex-nowrap'>
-                {/* {dataContributorMiniTable}
+                {dataContributorMiniTable}
 
                 {calculatedContributors > 0 && (
                   <span className='symbol symbol-35px symbol-circle'>
@@ -93,7 +125,7 @@ const SubSubProjectPageWrapperShow: FC = () => {
                       +{calculatedContributors}
                     </span>
                   </span>
-                )} */}
+                )}
               </div>
             </div>
           </Link>

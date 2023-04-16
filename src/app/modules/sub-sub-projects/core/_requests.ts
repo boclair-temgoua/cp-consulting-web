@@ -49,7 +49,6 @@ export const updateOneSubSubProject = async (
   payload: ProjectRequestModel
 ): Promise<{data: SubSubProjectModel}> => {
   const {subSubProjectId} = payload
-  console.log('datat ===============>', payload)
   return await makeApiCall({
     action: 'updateOneSubSubProject',
     urlParams: {subSubProjectId},

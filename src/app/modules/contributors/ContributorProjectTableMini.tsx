@@ -54,7 +54,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
-    }, [dataContributor, pageItem, queryClient, project?.id])
+    }, [dataContributor?.data, pageItem, queryClient, project?.id,debouncedFilter])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)

@@ -17,10 +17,11 @@ import { AlertDangerNotification, AlertSuccessNotification } from '../utils';
 import { useDebounce } from '../utils/use-debounce';
 import { PaginationItem } from '../utils/pagination-item';
 import { SearchInput } from '../utils/forms/SearchInput';
+import { OrganizationModel } from '../organizations/core/_models';
 
 type Props = {
     takeValue: number
-    project?: ProjectModel;
+    organization?: OrganizationModel;
 }
 
 const schema = yup.object().shape({
@@ -29,7 +30,7 @@ const schema = yup.object().shape({
         .required("you can't leave this blank."),
 })
 
-const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
+const ContactOrganizationTableMini: React.FC<Props> = ({ organization, takeValue }) => {
 
     const { register, handleSubmit,
         formState: { errors, isDirty, isValid }
@@ -48,8 +49,8 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
             take: 6,
             page: Number(pageItem || 1),
             sort: 'DESC',
-            projectId: String(project?.id),
-            type: 'PROJECT',
+            organizationId: String(organization?.id),
+            type: 'ORGANIZATION',
         })
     const {
         isLoading: isLoadingContact,
@@ -57,7 +58,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
         data: dataContact,
         isPreviousData,
     } = useQuery({
-        queryKey: ['contacts', pageItem, debouncedFilter, project?.id],
+        queryKey: ['organizations', pageItem, debouncedFilter, organization?.id],
         queryFn: () => fetchData(pageItem, debouncedFilter),
         enabled: filter ? isEnabled : !isEnabled,
         keepPreviousData: true,
@@ -67,11 +68,11 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
     useEffect(() => {
         if (dataContact?.data?.total_page !== pageItem) {
             queryClient.prefetchQuery
-                (['contacts', pageItem + 1], () =>
+                (['organizations', pageItem + 1], () =>
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
-    }, [dataContact?.data, pageItem, queryClient, debouncedFilter, project?.id])
+    }, [dataContact?.data, pageItem, queryClient, organization?.id])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)
@@ -83,7 +84,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
             (dataContact?.data?.total <= 0) ? (<EmptyTable name='contact' />) :
                 (
                     dataContact?.data?.value?.map((item: OneContactModel, index: number) => (
-                        <ContactList roleItem={project?.role} item={item} key={index} register={register} value={item?.id} errors={errors} />
+                        <ContactList roleItem={organization?.role} item={item} key={index} register={register} value={item?.id} errors={errors} />
                     )))
 
     const actionDeleteMultipleContactMutation = DeleteMultipleContactMutation({
@@ -142,7 +143,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
                             <span className='text-muted mt-1 fw-semibold fs-7'>Over {dataContact?.data?.total || 0} contacts</span>
                         </h3>
 
-                        {project?.role?.name === 'ADMIN' && (
+                        {organization?.role?.name === 'ADMIN' && (
                             <div className="card-toolbar">
                                 <div className="d-flex justify-content-end">
 
@@ -182,7 +183,7 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
                             <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
                                 <thead>
                                     <tr className="fw-bolder fs-6 text-gray-800">
-                                        {project?.role?.name === 'ADMIN' && (
+                                        {organization?.role?.name === 'ADMIN' && (
                                             <th className="w-25px">
                                             </th>
                                         )}
@@ -223,4 +224,4 @@ const ContactProjectTableMini: React.FC<Props> = ({ project }) => {
     )
 }
 
-export { ContactProjectTableMini }
+export { ContactOrganizationTableMini }

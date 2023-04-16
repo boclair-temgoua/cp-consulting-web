@@ -60,7 +60,7 @@ const ContributorsProjectWrapper: FC = () => {
           fetchData(pageItem + 1, debouncedFilter)
         )
     }
-  }, [data, pageItem, queryClient])
+  }, [data?.data, pageItem, queryClient,debouncedFilter])
 
   const paginate = (pageItem: number) => {
     setPageItem(pageItem)

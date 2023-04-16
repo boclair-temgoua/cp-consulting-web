@@ -14,6 +14,7 @@ import ContributorsProjectWrapper from '../modules/contributors/ContributorsProj
 import SubProjectPageWrapperShow from '../modules/sub-projects/SubProjectPageWrapperShow'
 import SubSubProjectPageWrapperShow from '../modules/sub-sub-projects/SubSubProjectPageWrapperShow'
 import SubSubSubProjectPageWrapperShow from '../modules/sub-sub-sub-projects/SubSubSubProjectPageWrapperShow'
+import OrganizationWrapperShow from '../modules/organizations/OrganizationWrapperShow'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -37,6 +38,7 @@ const PrivateRoutes = () => {
         <Route path='builder' element={<BuilderPageWrapper />} />
         {/* <Route path='organizations' element={<OrganizationWrapper />} /> */}
         {/* <Route path='projects' element={<ProjectsWrapper />} /> */}
+        <Route path='organizations/:organizationId' element={<OrganizationWrapperShow />} />
         <Route path='organizations/:organizationId/contributors' element={<ContributorsOrganizationWrapper />} />
         <Route path='projects/:projectId/contributors' element={<ContributorsProjectWrapper />} />
         <Route path='projects/:projectId' element={<ProjectPageWrapperShow />} />

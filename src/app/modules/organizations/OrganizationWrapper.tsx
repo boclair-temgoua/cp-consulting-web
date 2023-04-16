@@ -1,21 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {useEffect, useState} from 'react'
-import {PageTitle} from '../../../_metronic/layout/core'
-import {useSearchParams} from 'react-router-dom'
-import {HelmetSite} from '../utils'
-import {useQuery, useQueryClient} from '@tanstack/react-query'
-import {getOrganizationsContributes} from './core/_requests'
-import {useDebounce} from '../utils/use-debounce'
-import {PaginationItem} from '../utils/pagination-item'
+import React, { useEffect, useState } from 'react'
+import { PageTitle } from '../../../_metronic/layout/core'
+import { useSearchParams } from 'react-router-dom'
+import { HelmetSite } from '../utils'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getOrganizationsContributes } from './core/_requests'
+import { useDebounce } from '../utils/use-debounce'
+import { PaginationItem } from '../utils/pagination-item'
 import OrganizationList from './hook/OrganizationList'
-import {useAuth} from '../auth'
-import {ContributorModel} from '../contributors/core/_models'
-import {EmptyTable} from '../utils/empty-table'
-import {SearchInput} from '../utils/forms/SearchInput'
-import {KTSVG} from '../../../_metronic/helpers'
+import { useAuth } from '../auth'
+import { ContributorModel } from '../contributors/core/_models'
+import { EmptyTable } from '../utils/empty-table'
+import { SearchInput } from '../utils/forms/SearchInput'
+import { KTSVG } from '../../../_metronic/helpers'
 
 const OrganizationWrapper: React.FC = () => {
-  const {organization} = useAuth() as any
+  const takeValue: number = 6
+  const { organization } = useAuth() as any
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
   const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
@@ -30,7 +31,7 @@ const OrganizationWrapper: React.FC = () => {
       page: Number(pageItem || 1),
       sort: 'DESC',
     })
-  const {isLoading, isError, data, isPreviousData} = useQuery(
+  const { isLoading, isError, data, isPreviousData } = useQuery(
     ['organizations', pageItem, debouncedFilter],
     () => fetchData(pageItem, debouncedFilter),
     {
@@ -47,7 +48,7 @@ const OrganizationWrapper: React.FC = () => {
         fetchData(pageItem + 1, debouncedFilter)
       )
     }
-  }, [data, pageItem, queryClient])
+  }, [data?.data, pageItem, queryClient, debouncedFilter])
 
   const paginate = (pageItem: number) => {
     setPageItem(pageItem)
