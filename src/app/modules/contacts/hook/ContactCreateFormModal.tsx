@@ -45,6 +45,7 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
         'email',
         'address',
         'phone',
+        'otherPhone',
         'organizationId',
         'projectId',
         'categoryId',
@@ -87,7 +88,7 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
     try {
       await saveMutation.mutateAsync({ ...data, contactId: contact?.id, organizationId })
       AlertSuccessNotification({
-        text: 'Category save successfully',
+        text: 'Contact save successfully',
         className: 'info',
         position: 'center',
       })
@@ -107,7 +108,7 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
         aria-modal='true'
       >
         {/* begin::Modal dialog */}
-        <div className='modal-dialog modal-dialog-centered mw-750px modal-dialog-scrollable'>
+        <div className='modal-dialog modal-dialog-centered mw-650px'>
           {/* begin::Modal content */}
           <div className='modal-content'>
             <div className="modal-header pb-0 border-0 justify-content-end">
@@ -121,7 +122,7 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
             {/* begin::Modal body */}
             <div className="mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
-                <h1 className="mb-3">{contact?.id ? `${contact?.firstName || ''}` : 'Create Contact'}</h1>
+                <h1 className="mb-3">{contact?.id ? `${contact?.firstName} ${contact?.lastName}` : 'Create Contact'}</h1>
                 {hasErrors && (
                   <div className="text-center alert alert-danger">
                     <div className="d-flex flex-column">
@@ -240,6 +241,9 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
                     isValueInt={true}
                     required="required"
                   />
+                  <small className="text-muted fw-semibold fs-5">
+                    Categories don't exist? <a href="#" className="fw-bold link-primary">Create</a>.
+                  </small>
                 </div>
 
                 <div className="d-flex flex-column mb-6">

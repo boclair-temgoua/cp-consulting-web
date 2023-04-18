@@ -68,7 +68,6 @@ export const ContributorUpdateFormModal: React.FC<Props> = ({ setOpenModal, cont
             >
                 {/* begin::Modal dialog */}
                 <div className='modal-dialog modal-dialog-centered mw-600px'>
-                    {/* <div className='modal-dialog modal-dialog-centered mw-600px modal-dialog-scrollable'> */}
                     {/* begin::Modal content */}
                     <div className='modal-content'>
                         <div className="modal-header pb-0 border-0 justify-content-end">

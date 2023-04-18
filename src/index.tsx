@@ -11,7 +11,6 @@ import { MetronicI18nProvider } from './_metronic/i18n/Metronici18n'
  *
  * import './_metronic/assets/css/style.rtl.css'
  **/
-import { Provider } from "react-redux";
 import './_metronic/assets/sass/style.scss'
 import './_metronic/assets/sass/plugins.scss'
 import './_metronic/assets/sass/style.react.scss'
@@ -21,7 +20,6 @@ import 'toastify-js/src/toastify.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from './app/routing/AppRoutes'
 import { AuthProvider, setupAxios } from './app/modules/auth'
-import { store } from "./app/redux/store";
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -41,13 +39,11 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-      <MetronicI18nProvider>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
-      </MetronicI18nProvider>
-    </Provider>
+    <MetronicI18nProvider>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </MetronicI18nProvider>
     {Boolean(process.env.REACT_APP_QUERY_DEV_TOOLS) && (<ReactQueryDevtools initialIsOpen={false} />)}
   </QueryClientProvider>
 )

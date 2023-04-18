@@ -68,8 +68,6 @@ const CategoryList: React.FC<Props> = ({ item, register, value, errors, roleItem
 
     }
 
-    console.log('roleItem?.name ======>',roleItem)
-
     return (
         <>
             <tr key={item?.id}>

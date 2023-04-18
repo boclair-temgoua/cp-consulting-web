@@ -81,7 +81,7 @@ export const SubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrU
         aria-modal='true'
       >
         {/* begin::Modal dialog */}
-        <div className='modal-dialog modal-dialog-centered mw-550px modal-dialog-scrollable'>
+        <div className='modal-dialog modal-dialog-centered mw-550px'>
           {/* begin::Modal content */}
           <div className='modal-content'>
             <div className="modal-header pb-0 border-0 justify-content-end">
