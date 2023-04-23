@@ -1,27 +1,27 @@
-import {FC, useEffect, useState} from 'react'
-import {PageTitle} from '../../../_metronic/layout/core'
-import {HelmetSite} from '../utils'
-import {Link, useLocation, useNavigate, useParams, useSearchParams} from 'react-router-dom'
-import {useQuery} from '@tanstack/react-query'
-import {getOneProject} from './core/_requests'
-import {useAuth} from '../auth'
-import {SubProjectTableMini} from '../sub-projects/SubProjectTableMini'
-import {ContactProjectTableMini} from '../contacts/ContactProjectTableMini'
-import {ContributorProjectTableMini} from '../contributors/ContributorProjectTableMini'
-import {KTSVG, toAbsoluteUrl} from '../../../_metronic/helpers'
-import {DocumentTableMini} from '../documents/DocumentTableMini'
-import {Dropdown1} from '../../../_metronic/partials'
+import { FC, useEffect, useState } from 'react'
+import { PageTitle } from '../../../_metronic/layout/core'
+import { HelmetSite } from '../utils'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getOneProject } from './core/_requests'
+import { useAuth } from '../auth'
+import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
+import { ContactProjectTableMini } from '../contacts/ContactProjectTableMini'
+import { ContributorProjectTableMini } from '../contributors/ContributorProjectTableMini'
+import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
+import { DocumentTableMini } from '../documents/DocumentTableMini'
+import { Dropdown1 } from '../../../_metronic/partials'
 import ContributorMiniList from '../contributors/hook/ContributorMiniList'
-import {getContributorsProject} from '../contributors/core/_requests'
-import {ContributorModel} from '../contributors/core/_models'
+import { getContributorsProject } from '../contributors/core/_requests'
+import { ContributorModel } from '../contributors/core/_models'
 
 const ProjectPageWrapperShow: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams()
   const takeValue: number = 6
-  const {projectId} = useParams<string>()
+  const { projectId } = useParams<string>()
 
-  const fetchOneProject = async () => await getOneProject({projectId: String(projectId)})
+  const fetchOneProject = async () => await getOneProject({ projectId: String(projectId) })
   const {
     data: projectItem,
     isError,
@@ -78,96 +78,23 @@ const ProjectPageWrapperShow: FC = () => {
         Project
       </PageTitle>
 
-      <div className="app-toolbar py-3 py-lg-6">
-          <button type="button" className={`btn btn-sm btn-light`} onClick={() => navigate(-1)} >
-            <KTSVG path='/media/icons/duotune/arrows/arr002.svg' className='svg-icon-3' />
-          </button>
-          <button type="button" className="btn btn-sm btn-light" onClick={() => navigate(1)}>
-            <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-3' />
-          </button>
-      </div>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
+      </a>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
+      </a>
 
-      <div className='row g-5 g-xl-8'>
-
-        <div className='col-xl-3'>
-          <Link to={`/projects/${projectId}?tab=${'projects'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
-            <div className='card-header pt-5'>
-              <div className='card-title d-flex flex-column'>
-                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.subProjectTotal || 0}</span>
-                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Projects</span>
-              </div>
-            </div>
-            <div className='card-body d-flex flex-column justify-content-end pe-0'>
-              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>{projectItem?.data?.name}</div>
-              <div className='fw-semibold text-dark'>{projectItem?.data?.description}</div>
-            </div>
-          </Link>
-        </div>
-
-        <div className='col-xl-3'>
-          <Link to={`/projects/${projectId}?tab=${'documents'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
-            <div className='card-header pt-5'>
-              <div className='card-title d-flex flex-column'>
-                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.documentTotal || 0}</span>
-                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Documents</span>
-              </div>
-            </div>
-            <div className='card-body d-flex flex-column justify-content-end pe-0'>
-              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Documents</div>
-              <div className='fw-semibold text-dark'>Documents {projectItem?.data?.name}</div>
-            </div>
-          </Link>
-        </div>
-
-        <div className='col-xl-3'>
-          <Link to={`/projects/${projectId}?tab=${'contributors'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
-            <div className='card-header pt-5'>
-              <div className='card-title d-flex flex-column'>
-                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.contributorTotal || 0}</span>
-                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Contributors</span>
-              </div>
-            </div>
-            <div className='card-body d-flex flex-column justify-content-end pe-0'>
-              <div className='symbol-group symbol-hover flex-nowrap'>
-                {dataContributorMiniTable}
-
-                {calculatedContributors > 0 && (
-                  <span className='symbol symbol-35px symbol-circle'>
-                    <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
-                      +{calculatedContributors}
-                    </span>
-                  </span>
-                )}
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div className='col-xl-3'>
-          <Link to={`/projects/${projectId}?tab=${'contacts'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
-            <div className='card-header pt-5'>
-              <div className='card-title d-flex flex-column'>
-                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.contactTotal || 0}</span>
-                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Contacts</span>
-              </div>
-            </div>
-            <div className='card-body d-flex flex-column justify-content-end pe-0'>
-              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Contacts</div>
-              <div className='fw-semibold text-dark'>Contacts {projectItem?.data?.name}</div>
-            </div>
-          </Link>
-        </div>
-
-      </div>
-
-      {/* <div className='card mb-5 mb-xl-10'>
+      <div className='card mb-5 mb-xl-10'>
         <div className='card-body pt-9 pb-0'>
           <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
             <div className='me-7 mb-4'>
               <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
                 <img
-                  src='https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg'
-                  alt='Metornic'
+                  src={toAbsoluteUrl('/media/svg/files/folder-document.svg')}
+                  alt={projectItem?.data?.name}
                 />
               </div>
             </div>
@@ -284,13 +211,99 @@ const ProjectPageWrapperShow: FC = () => {
               </Link>
             </li>
             <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (searchParams.get('tab') === `contributors` && 'active')
+                }
+                to={`/projects/${projectId}?tab=${'groups'}`}
+              >
+                Groups
+              </Link>
+            </li>
+            <li className='nav-item'>
               <a className='nav-link text-active-primary py-5 me-6' href='#'>
                 Settings
               </a>
             </li>
           </ul>
         </div>
-      </div> */}
+      </div>
+
+      <div className='row g-5 g-xl-8'>
+
+        <div className='col-xl-3'>
+          <Link to={`/projects/${projectId}?tab=${'projects'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
+            <div className='card-header pt-5'>
+              <div className='card-title d-flex flex-column'>
+                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.subProjectTotal || 0}</span>
+                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Projects</span>
+              </div>
+            </div>
+            <div className='card-body d-flex flex-column justify-content-end pe-0'>
+              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>{projectItem?.data?.name}</div>
+              <div className='fw-semibold text-dark'>{projectItem?.data?.description}</div>
+            </div>
+          </Link>
+        </div>
+
+        <div className='col-xl-3'>
+          <Link to={`/projects/${projectId}?tab=${'documents'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
+            <div className='card-header pt-5'>
+              <div className='card-title d-flex flex-column'>
+                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.documentTotal || 0}</span>
+                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Documents</span>
+              </div>
+            </div>
+            <div className='card-body d-flex flex-column justify-content-end pe-0'>
+              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Documents</div>
+              <div className='fw-semibold text-dark'>Documents {projectItem?.data?.name}</div>
+            </div>
+          </Link>
+        </div>
+
+        <div className='col-xl-3'>
+          <Link to={`/projects/${projectId}?tab=${'contributors'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
+            <div className='card-header pt-5'>
+              <div className='card-title d-flex flex-column'>
+                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.contributorTotal || 0}</span>
+                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Contributors</span>
+              </div>
+            </div>
+            <div className='card-body d-flex flex-column justify-content-end pe-0'>
+              <div className='symbol-group symbol-hover flex-nowrap'>
+                {dataContributorMiniTable}
+
+                {calculatedContributors > 0 && (
+                  <span className='symbol symbol-35px symbol-circle'>
+                    <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
+                      +{calculatedContributors}
+                    </span>
+                  </span>
+                )}
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        <div className='col-xl-3'>
+          <Link to={`/projects/${projectId}?tab=${'contacts'}`} className='card hoverable card-xl-stretch mb-5 mb-xl-8'>
+            <div className='card-header pt-5'>
+              <div className='card-title d-flex flex-column'>
+                <span className='fs-2hx fw-bold text-dark me-2 lh-1 ls-n2'>{projectItem?.data?.contactTotal || 0}</span>
+                <span className='text-gray-400 pt-1 fw-semibold fs-6'>Contacts</span>
+              </div>
+            </div>
+            <div className='card-body d-flex flex-column justify-content-end pe-0'>
+              <div className='text-dark fw-bold fs-2 mb-2 mt-5'>Contacts</div>
+              <div className='fw-semibold text-dark'>Contacts {projectItem?.data?.name}</div>
+            </div>
+          </Link>
+        </div>
+
+      </div>
+
+
 
       {projectItem?.data?.id && (
         <>

@@ -13,6 +13,8 @@ import { ContactModel } from '../core/_models';
 import { useQuery } from '@tanstack/react-query';
 import { getCategoriesBy } from '../../categories/core/_requests';
 import { SelectValueNameInput } from '../../utils/forms/SelectValueNameInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadAllCategories } from '../../../redux/actions/category.action';
 
 interface Props {
   setOpenCreateOrUpdateModal: any,
@@ -29,13 +31,13 @@ const schema = yup.object({
 });
 
 export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, contact, organizationId }) => {
-  const [categories, setCategories] = useState<any>()
+  // const [categories, setCategories] = useState<any>()
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | string | undefined>(undefined)
   const { register, handleSubmit, setValue, reset,
     formState: { errors }
   } = useForm<ContactRequestModel>({ resolver: yupResolver(schema), mode: "onChange" });
-
+  const dispatch = useDispatch<any>()
 
   useEffect(() => {
     if (contact) {
@@ -55,20 +57,19 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
     }
   }, [contact, setValue]);
 
-
   useEffect(() => {
-    const loadItem = async () => {
-      const { data } = await getCategoriesBy({
+    const loadItems = async () => {
+      await dispatch(loadAllCategories({
         take: 10,
         page: 1,
         sort: 'DESC',
         is_paginate: false,
         organizationId: String(organizationId),
-      });
-      setCategories(data);
-    };
-    loadItem();
-  }, [organizationId]);
+      }))
+    }
+    loadItems()
+  }, [organizationId, dispatch])
+  const { categories } = useSelector((state: any) => state?.categories)
 
   const saveMutation = CreateOrUpdateOneContactMutation({
     onSuccess: () => {

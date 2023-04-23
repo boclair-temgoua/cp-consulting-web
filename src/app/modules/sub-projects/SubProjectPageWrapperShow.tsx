@@ -67,14 +67,14 @@ const SubProjectPageWrapperShow: FC = () => {
         isActive: false,
       }]}>Project</PageTitle>
 
-      <div className="app-toolbar py-3 py-lg-6">
-          <button type="button" className="btn btn-sm btn-light" onClick={() => navigate(-1)}>
-            <KTSVG path='/media/icons/duotune/arrows/arr002.svg' className='svg-icon-3' />
-          </button>
-          <button type="button" className="btn btn-sm btn-light" onClick={() => navigate(1)}>
-            <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-3' />
-          </button>
-      </div>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
+      </a>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
+      </a>
 
       <div className='row g-5 g-xl-8'>
 
