@@ -23,6 +23,7 @@ const SubSubProjectPageWrapperShow: FC = () => {
   const { data: subSubProjectItem, isError: isErrorSubSubProject, isLoading: isLoadingProject } = useQuery({
     queryKey: ['subSubProject', subSubProjectId],
     queryFn: () => fetchOneSubSubProject(),
+    enabled: Boolean(subSubProjectId),
   })
 
   const fetchDataContributorMini = async () =>

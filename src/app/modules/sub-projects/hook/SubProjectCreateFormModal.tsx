@@ -93,9 +93,6 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
             <div className="mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
                 <h1 className="mb-3">{subProject?.id ? `${subProject?.name || ''}` : 'Create Project'}</h1>
-                <div className="text-muted fw-bold fs-5">If you need more info, please check
-                  <a href="#" className="link-primary fw-bolder"></a>.
-                </div>
                 {hasErrors && (
                   <div className="text-center alert alert-danger">
                     <div className="d-flex flex-column">
@@ -130,14 +127,14 @@ export const SubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpda
                     errors={errors}
                     inputName="description"
                     rows={2}
-                    placeholder="Description coupon (optional)"
+                    placeholder="Description (optional)"
                     validation={{ required: false }}
                   />
                 </div>
                 <div className="text-center">
                   <button type="button" onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-light me-3">Close</button>
                   <button type='submit' className='btn btn-lg btn-primary fw-bolder'
-                    disabled={!isDirty || !isValid || loading}
+                    disabled={!isDirty || !isValid || loading || saveMutation.isLoading}
                   >
                     {!loading && <span className='indicator-label'>Save</span>}
                     {loading && (

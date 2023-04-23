@@ -133,7 +133,7 @@ export const SubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrU
                     errors={errors}
                     inputName="description"
                     rows={2}
-                    placeholder="Description coupon (optional)"
+                    placeholder="Description (optional)"
                     validation={{ required: false }}
                   />
                 </div>

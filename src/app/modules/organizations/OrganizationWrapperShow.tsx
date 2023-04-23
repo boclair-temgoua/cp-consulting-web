@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
-import { HelmetSite } from '../utils'
+import { HelmetSite, capitalizeOneFirstLetter } from '../utils'
 import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getOneOrganization } from './core/_requests'
@@ -22,6 +22,7 @@ const OrganizationWrapperShow: FC = () => {
   const { data: organizationItem, isError: isErrorOrganization, isLoading: isLoadingOrganization } = useQuery({
     queryKey: ['organization', organizationId],
     queryFn: () => fetchOneOrganization(),
+    enabled: Boolean(organizationId),
   })
 
 
@@ -81,10 +82,11 @@ const OrganizationWrapperShow: FC = () => {
           <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
             <div className='me-7 mb-4'>
               <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
-                <img
-                  src='https://berivo.s3.eu-central-1.amazonaws.com/svg/files/folder-document.svg'
-                  alt='Metornic'
-                />
+
+                <div className={`symbol-label fs-2 bg-light-${organizationItem?.data?.color} text-${organizationItem?.data?.color}`}>
+                  {capitalizeOneFirstLetter(String(organizationItem?.data?.name))}
+                </div>
+
               </div>
             </div>
             <div className='flex-grow-1'>

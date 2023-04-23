@@ -33,7 +33,7 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
       const fields = ['name', 'description', 'organizationId'];
       fields?.forEach((field: any) => setValue(field, project[field]));
     }
-  }, [project,setValue]);
+  }, [project, setValue]);
 
   const saveMutation = CreateOrUpdateOneProjectMutation({
     onSuccess: () => {
@@ -126,14 +126,14 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
                     errors={errors}
                     inputName="description"
                     rows={2}
-                    placeholder="Description coupon (optional)"
+                    placeholder="Description (optional)"
                     validation={{ required: false }}
                   />
                 </div>
                 <div className="text-center">
                   <button type="button" onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-light me-3">Close</button>
                   <button type='submit' className='btn btn-lg btn-primary fw-bolder'
-                    disabled={!isDirty || !isValid || loading}
+                    disabled={!isDirty || !isValid || loading || saveMutation.isLoading}
                   >
                     {!loading && <span className='indicator-label'>Save</span>}
                     {loading && (

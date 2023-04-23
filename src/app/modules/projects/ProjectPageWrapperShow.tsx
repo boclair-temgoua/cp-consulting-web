@@ -29,6 +29,7 @@ const ProjectPageWrapperShow: FC = () => {
   } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => fetchOneProject(),
+    enabled: Boolean(projectId),
   })
 
   const fetchDataContributorMini = async () =>

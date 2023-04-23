@@ -37,7 +37,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
       const fields = ['name', 'description', 'organizationId', 'projectId', 'subProjectId','subSubProjectId'];
       fields?.forEach((field: any) => setValue(field, subSubSubProject[field]));
     }
-  }, [subSubSubProject]);
+  }, [subSubSubProject,setValue]);
 
   const saveMutation = CreateOrUpdateOneSubSubSubProjectMutation({
     onSuccess: () => {
@@ -130,7 +130,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
                     errors={errors}
                     inputName="description"
                     rows={2}
-                    placeholder="Description coupon (optional)"
+                    placeholder="Description (optional)"
                     validation={{ required: false }}
                   />
                 </div>
