@@ -1,11 +1,11 @@
-import { lazy, FC, Suspense } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
-import { MasterLayout } from '../../_metronic/layout/MasterLayout'
+import {lazy, FC, Suspense} from 'react'
+import {Route, Routes, Navigate} from 'react-router-dom'
+import {MasterLayout} from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
-import { DashboardWrapper } from '../pages/dashboard/DashboardWrapper'
-import { MenuTestPage } from '../pages/MenuTestPage'
-import { getCSSVariableValue } from '../../_metronic/assets/ts/_utils'
-import { WithChildren } from '../../_metronic/helpers'
+import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
+import {MenuTestPage} from '../pages/MenuTestPage'
+import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
+import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import ProjectPageWrapperShow from '../modules/projects/ProjectPageWrapperShow'
 import ProjectPageWrapperCreate from '../modules/projects/ProjectPageWrapperCreate'
@@ -15,12 +15,14 @@ import SubProjectPageWrapperShow from '../modules/sub-projects/SubProjectPageWra
 import SubSubProjectPageWrapperShow from '../modules/sub-sub-projects/SubSubProjectPageWrapperShow'
 import SubSubSubProjectPageWrapperShow from '../modules/sub-sub-sub-projects/SubSubSubProjectPageWrapperShow'
 import OrganizationWrapperShow from '../modules/organizations/OrganizationWrapperShow'
+import GroupPageWrapperShow from '../modules/groups/GroupPageWrapperShow'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
   const OrganizationWrapper = lazy(() => import('../modules/organizations/OrganizationWrapper'))
   const ApplicationsWrapper = lazy(() => import('../pages/applications/ApplicationsWrapper'))
   const ProjectsWrapper = lazy(() => import('../modules/projects/ProjectsWrapper'))
+  const GroupsWrapper = lazy(() => import('../modules/groups/GroupsWrapper'))
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
@@ -39,15 +41,33 @@ const PrivateRoutes = () => {
         {/* <Route path='organizations' element={<OrganizationWrapper />} /> */}
         {/* <Route path='projects' element={<ProjectsWrapper />} /> */}
         <Route path='organizations/:organizationId' element={<OrganizationWrapperShow />} />
-        <Route path='organizations/:organizationId/contributors' element={<ContributorsOrganizationWrapper />} />
+        <Route
+          path='organizations/:organizationId/contributors'
+          element={<ContributorsOrganizationWrapper />}
+        />
         <Route path='projects/:projectId/contributors' element={<ContributorsProjectWrapper />} />
         <Route path='projects/:projectId' element={<ProjectPageWrapperShow />} />
+        <Route path='groups/:groupId' element={<GroupPageWrapperShow />} />
         <Route path='projects/sb-p/:subProjectId' element={<SubProjectPageWrapperShow />} />
-        <Route path='projects/sb-sb-p/:subSubProjectId' element={<SubSubProjectPageWrapperShow />} />
-        <Route path='projects/sb-sb-sb-p/:subSubSubProjectId' element={<SubSubSubProjectPageWrapperShow />} />
+        <Route
+          path='projects/sb-sb-p/:subSubProjectId'
+          element={<SubSubProjectPageWrapperShow />}
+        />
+        <Route
+          path='projects/sb-sb-sb-p/:subSubSubProjectId'
+          element={<SubSubSubProjectPageWrapperShow />}
+        />
         <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}
+        <Route
+          path='groups/*'
+          element={
+            <SuspensedView>
+              <GroupsWrapper />
+            </SuspensedView>
+          }
+        />
         <Route
           path='projects/*'
           element={
@@ -127,7 +147,7 @@ const PrivateRoutes = () => {
   )
 }
 
-const SuspensedView: FC<WithChildren> = ({ children }) => {
+const SuspensedView: FC<WithChildren> = ({children}) => {
   const baseColor = getCSSVariableValue('--bs-primary')
   TopBarProgress.config({
     barColors: {
@@ -139,4 +159,4 @@ const SuspensedView: FC<WithChildren> = ({ children }) => {
   return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
 }
 
-export { PrivateRoutes }
+export {PrivateRoutes}

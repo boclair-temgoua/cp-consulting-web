@@ -192,6 +192,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contributors/sub-sub-sub-project`,
     method: POST,
   },
+  createOneContributorGroup: {
+    endpoint: `${baseUrl}/contributors/group`,
+    method: POST,
+  },
   deleteOneSubProject: {
     endpoint: `${baseUrl}/sub-projects/:subProjectId`,
     method: DELETE,
@@ -220,6 +224,10 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/contributors/sub-sub-sub-project`,
     method: GET,
   },
+  getContributorsGroup: {
+    endpoint: `${baseUrl}/contributors/group`,
+    method: GET,
+  },
   getUsers: {
     endpoint: `${baseUrl}/users`,
     method: GET,
@@ -242,6 +250,18 @@ export const apiEndpoints: ClientApiMethods = {
   },
   deleteOneSubSubSubProject: {
     endpoint: `${baseUrl}/sub-sub-sub-projects/:subSubSubProjectId`,
+    method: DELETE,
+  },
+  createOneGroup: {
+    endpoint: `${baseUrl}/groups`,
+    method: POST,
+  },
+  updateOneGroup: {
+    endpoint: `${baseUrl}/groups/:groupId`,
+    method: PUT,
+  },
+  deleteOneGroup: {
+    endpoint: `${baseUrl}/groups/:groupId`,
     method: DELETE,
   },
   updateRoleContributor: {

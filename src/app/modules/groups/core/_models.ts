@@ -1,8 +1,9 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {createOneProject, updateOneProject} from './_requests'
+import {createOneGroup, updateOneGroup} from './_requests'
 import {ContributorRoleModel} from '../../contributors/core/_models'
+import { ProjectRequestModel } from '../../projects/core/_models'
 
-export type ProjectModel = {
+export type GroupModel = {
   id: string
   slug: string
   name: string
@@ -10,9 +11,6 @@ export type ProjectModel = {
   image: string
   organizationId: string
   contributorTotal: number
-  subProjectTotal: number
-  contactTotal: number
-  documentTotal: string
   description: string
   organization: {
     id: string
@@ -23,31 +21,21 @@ export type ProjectModel = {
   role: {name: ContributorRoleModel}
 }
 
-export type ProjectRequestModel = {
-  name: string
-  groupId?: string
-  projectId?: string
-  subProjectId?: string
-  subSubProjectId?: string
-  subSubSubProjectId?: string
-  description: string
-}
-
-export const CreateOrUpdateOneProjectMutation = ({
+export const CreateOrUpdateOneGroupMutation = ({
   onSuccess,
   onError,
 }: {
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['projects']
+  const queryKey = ['groups']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (payload: ProjectRequestModel): Promise<any> => {
-      const {projectId, name, description} = payload
-      const {data} = projectId
-        ? await updateOneProject({projectId, name, description})
-        : await createOneProject({name, description})
+      const {groupId, name, description} = payload
+      const {data} = groupId
+        ? await updateOneGroup({groupId, name, description})
+        : await createOneGroup({name, description})
       return data
     },
     {

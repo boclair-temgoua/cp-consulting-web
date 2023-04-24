@@ -58,6 +58,17 @@ export const getContributorsSubSubSubProject = async (
   })
 }
 
+export const getContributorsGroup = async (
+  payload: {
+    groupId: string
+  } & PaginationRequest
+): Promise<{data: ResponseContributorModel}> => {
+  return await makeApiCall({
+    action: 'getContributorsGroup',
+    queryParams: payload,
+  })
+}
+
 export const getOneContributor = async (payload: {
   contributorId: string
 }): Promise<OneContributorModel> => {
@@ -136,6 +147,16 @@ export const createOneContributorSubSubSubProject = async (payload: {
 }): Promise<{data: OneContributorModel}> => {
   return await makeApiCall({
     action: 'createOneContributorSubSubSubProject',
+    queryParams: payload,
+  })
+}
+
+export const createOneContributorGroup = async (payload: {
+  userId: string
+  groupId: string
+}): Promise<{data: OneContributorModel}> => {
+  return await makeApiCall({
+    action: 'createOneContributorGroup',
     queryParams: payload,
   })
 }
