@@ -15,6 +15,8 @@ import { ContributorModel } from '../contributors/core/_models'
 // import { ProjectCreateFormModal } from './hook/ProjectCreateFormModal'
 import { SearchInput } from '../utils/forms/SearchInput'
 import { getGroupsContributes } from './core/_requests'
+import { GroupCreateFormModal } from './hook/GroupCreateFormModal'
+import GroupList from './hook/GroupList'
 
 const GroupsWrapper: FC = () => {
   const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
@@ -58,13 +60,13 @@ const GroupsWrapper: FC = () => {
     setPageItem(pageItem)
   }
 
-  // const dataTable = isLoading ? (<tr><td><strong>Loading...</strong></td></tr>) :
-  //   isError ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
-  //     (data?.data?.total <= 0) ? (<EmptyTable name='group' />) :
-  //       (
-  //         data?.data?.value?.map((item: ContributorModel, index: number) => (
-  //           <ProjectList item={item} key={index} />
-  //         )))
+  const dataTable = isLoading ? (<tr><td><strong>Loading...</strong></td></tr>) :
+    isError ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
+      (data?.data?.total <= 0) ? (<EmptyTable name='group' />) :
+        (
+          data?.data?.value?.map((item: ContributorModel, index: number) => (
+            <GroupList item={item} key={index} />
+          )))
 
   return (
     <>
@@ -88,16 +90,9 @@ const GroupsWrapper: FC = () => {
             className='card-toolbar'
             title='Click to add a user'
           >
-            {/* <a
-              href='#'
-              className='btn btn-sm btn-light-primary'
-            >
-              <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-              New Project
-            </a> */}
             <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
               <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
-              New Project
+              New Group
             </button>
           </div>
         </div>
@@ -116,9 +111,8 @@ const GroupsWrapper: FC = () => {
             <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4'>
               {/* begin::Table head */}
               <thead>
-                <tr className="fw-bolder fs-6 text-gray-800">
+                <tr className="fw-bolder fs-6 text-muted">
                   <th>Name</th>
-                  <th></th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -128,14 +122,14 @@ const GroupsWrapper: FC = () => {
               {/* end::Table head */}
               {/* begin::Table body */}
               <tbody>
-                {/* {dataTable} */}
+                {dataTable}
               </tbody>
               {/* end::Table body */}
             </table>
             {/* end::Table */}
           </div>
 
-          {/* <PaginationItem
+          <PaginationItem
             data={data}
             setPageItem={setPageItem}
             setPreviewPageItem={(old: number) => Math.max(old - 1, 1)}
@@ -143,9 +137,9 @@ const GroupsWrapper: FC = () => {
             paginate={paginate}
             isPreviousData={isPreviousData}
             pageItem={pageItem}
-          /> */}
+          />
 
-          {/* {openCreateOrUpdateModal && (<ProjectCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)} */}
+          {openCreateOrUpdateModal && (<GroupCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} />)}
           {/* end::Table container */}
         </div>
         {/* begin::Body */}

@@ -22,6 +22,7 @@ import { AppRoutes } from './app/routing/AppRoutes'
 import { AuthProvider, setupAxios } from './app/modules/auth'
 import { Provider } from 'react-redux'
 import { store } from './app/redux/indesx'
+import 'react-quill/dist/quill.snow.css'
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.

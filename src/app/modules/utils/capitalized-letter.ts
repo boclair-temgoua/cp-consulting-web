@@ -1,3 +1,5 @@
+import parse from 'html-react-parser'
+
 export const capitalizeName = (s: string) => {
   if (typeof s !== 'string') return ''
   const v = s.toLowerCase()
@@ -11,4 +13,9 @@ export const capitalizeFirstLetter = (firstItem: string, secondItem: string) => 
 /** Fix date */
 export const capitalizeOneFirstLetter = (fullItem: string) => {
   return capitalizeName(fullItem).charAt(0).toUpperCase()
+}
+
+/** Fix truncate */
+export const truncateText = (input: string) => {
+  return input?.length > 60 ? `${input.substring(0, 47)}...` : parse(input)
 }

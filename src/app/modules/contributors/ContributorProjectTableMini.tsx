@@ -105,7 +105,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
 
                             <table className="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
                                 <thead>
-                                    <tr className="fw-bolder fs-6 text-gray-800">
+                                    <tr className="fw-bolder fs-6 text-muted">
                                         <th>Profile</th>
                                         <th></th>
                                         <th></th>

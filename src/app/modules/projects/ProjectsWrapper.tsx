@@ -115,7 +115,7 @@ const ProjectsWrapper: FC = () => {
             <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4'>
               {/* begin::Table head */}
               <thead>
-                <tr className="fw-bolder fs-6 text-gray-800">
+                <tr className="fw-bolder fs-6 text-muted">
                   <th>Name</th>
                   <th></th>
                   <th></th>

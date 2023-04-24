@@ -138,8 +138,8 @@ export const SubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrU
                   />
                 </div>
                 <div className="text-center">
-                  <button type="button" onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-light me-3">Close</button>
-                  <button type='submit' className='btn btn-lg btn-primary fw-bolder'
+                  <button type="button" onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-sm btn-light me-3">Close</button>
+                  <button type='submit' className='btn btn-sm btn-lg btn-primary fw-bolder'
                     disabled={!isDirty || !isValid || loading}
                   >
                     {!loading && <span className='indicator-label'>Save</span>}

@@ -13,6 +13,7 @@ type Props =   {
 
 export const InviteContributorFormModal: React.FC<Props> = ({
     setOpenModal,
+    groupId,
     projectId,
     subProjectId,
     subSubProjectId,
@@ -48,6 +49,7 @@ export const InviteContributorFormModal: React.FC<Props> = ({
                         <ContributorUserInviteList
                             contributor={item}
                             key={index}
+                            groupId={groupId}
                             projectId={projectId}
                             subProjectId={subProjectId}
                             subSubProjectId={subSubProjectId}

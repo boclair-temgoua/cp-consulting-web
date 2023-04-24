@@ -116,6 +116,14 @@ export const apiEndpoints: ClientApiMethods = {
     endpoint: `${baseUrl}/projects/:projectId`,
     method: GET,
   },
+  getOneGroup: {
+    endpoint: `${baseUrl}/groups/show`,
+    method: GET,
+  },
+  getGroupsContributes: {
+    endpoint: `${baseUrl}/groups/contributes`,
+    method: GET,
+  },
   getProjectsContributes: {
     endpoint: `${baseUrl}/projects/contributes`,
     method: GET,
@@ -306,6 +314,26 @@ export const apiEndpoints: ClientApiMethods = {
   },
   deleteOneCategory: {
     endpoint: `${baseUrl}/categories/delete/:categoryId`,
+    method: DELETE,
+  },
+  getPostsBy: {
+    endpoint: `${baseUrl}/posts`,
+    method: GET,
+  },
+  getOnePost: {
+    endpoint: `${baseUrl}/posts/show`,
+    method: GET,
+  },
+  createOnePost: {
+    endpoint: `${baseUrl}/posts`,
+    method: POST,
+  },
+  updateOnePost: {
+    endpoint: `${baseUrl}/posts/:postId`,
+    method: PUT,
+  },
+  deleteOnePost: {
+    endpoint: `${baseUrl}/posts/:postId`,
     method: DELETE,
   },
 }

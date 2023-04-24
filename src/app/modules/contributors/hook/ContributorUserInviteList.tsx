@@ -10,6 +10,7 @@ type Props = {
 
 export const ContributorUserInviteList: React.FC<Props> = ({
     contributor,
+    groupId,
     projectId,
     subProjectId,
     subSubProjectId,
@@ -25,6 +26,7 @@ export const ContributorUserInviteList: React.FC<Props> = ({
         try {
             const payload = {
                 userId: contributor?.id,
+                groupId,
                 projectId,
                 subProjectId,
                 subSubProjectId,

@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SortModel} from '../../utils/pagination-item'
 import {
+  createOneContributorGroup,
   createOneContributorOrganization,
   createOneContributorProject,
   createOneContributorSubProject,
@@ -33,6 +34,7 @@ export type ContributorModel = {
   id: string
   userId: string
   type: string
+  groupId: string
   organizationId: string
   projectId: string
   subProjectId: string
@@ -45,6 +47,17 @@ export type ContributorModel = {
     color: string
     email: string
     userId: string
+  }
+  group: {
+    id: string
+    name: string
+    slug: string
+    color: string
+    projectId: string
+    description: string
+    subProjectId: string
+    organizationId: string
+    subSubProjectId: string
   }
   project: {
     id: string
@@ -96,6 +109,7 @@ export type ContributorModel = {
 }
 
 export type ContributorRequestModel = {
+  groupId?: string
   projectId?: string
   subProjectId?: string
   subSubProjectId?: string
@@ -212,6 +226,7 @@ export const CreateOneContributorMutation = ({
   onError?: (error: any) => void
 } = {}) => {
   const queryKeyContributors = ['contributors']
+  const queryKeyContributorsGroupMini = ['contributorsGroupMini']
   const queryKeyContributorsProjectMini = ['contributorsProjectMini']
   const queryKeyContributorSubProjectMini = ['contributorSubProjectMini']
   const queryKeyContributorSubSubProjectMini = ['contributorSubSubProjectMini']
@@ -223,8 +238,18 @@ export const CreateOneContributorMutation = ({
         userId: string
       } & ContributorRequestModel
     ): Promise<any> => {
-      const {userId, projectId, subProjectId, subSubProjectId, subSubSubProjectId, organizationId} =
-        payload
+      const {
+        userId,
+        groupId,
+        projectId,
+        subProjectId,
+        subSubProjectId,
+        subSubSubProjectId,
+        organizationId,
+      } = payload
+      if (groupId) {
+        await createOneContributorGroup({userId, groupId})
+      }
       if (organizationId) {
         await createOneContributorOrganization({userId, organizationId})
       }
@@ -245,6 +270,7 @@ export const CreateOneContributorMutation = ({
     {
       onSettled: async () => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
         await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
@@ -255,6 +281,7 @@ export const CreateOneContributorMutation = ({
       },
       onSuccess: async () => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
         await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
@@ -265,6 +292,7 @@ export const CreateOneContributorMutation = ({
       },
       onError: async (error: any) => {
         await queryClient.invalidateQueries(queryKeyContributors)
+        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
         await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
         await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)

@@ -7,24 +7,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { TextInput } from '../../utils/forms';
 import { TextareaInput } from '../../utils/forms/TextareaInput';
-// import { CreateOrUpdateOneSubProjectMutation, SubProjectModel, SubProjectRequestModel } from '../core/_models';
+import { CreateOrUpdateOneGroupMutation } from '../core/_models';
 import { AlertDangerNotification, AlertSuccessNotification } from '../../utils';
-import { ProjectModel, ProjectRequestModel } from '../../projects/core/_models';
-import { CreateOrUpdateOneSubSubSubProjectMutation } from '../core/_models';
-import { SubSubProjectModel } from '../../sub-sub-projects/core/_models';
+import { ProjectRequestModel } from '../../projects/core/_models';
 
 interface Props {
   setOpenCreateOrUpdateModal: any,
-  project?: ProjectModel
-  subSubSubProject?: any,
-  subSubProject?: SubSubProjectModel
+  group?: any
 }
 
 const schema = yup.object({
   name: yup.string().min(3, 'Minimum 3 symbols').required(),
 });
 
-export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, subSubSubProject, subSubProject }) => {
+export const GroupCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, group }) => {
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | string | undefined>(undefined)
   const { register, handleSubmit, setValue, reset,
@@ -33,16 +29,16 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
 
 
   useEffect(() => {
-    if (subSubSubProject) {
-      const fields = ['name', 'description', 'organizationId', 'projectId', 'subProjectId','subSubProjectId'];
-      fields?.forEach((field: any) => setValue(field, subSubSubProject[field]));
+    if (group) {
+      const fields = ['name', 'description', 'organizationId'];
+      fields?.forEach((field: any) => setValue(field, group[field]));
     }
-  }, [subSubSubProject,setValue]);
+  }, [group, setValue]);
 
-  const saveMutation = CreateOrUpdateOneSubSubSubProjectMutation({
+  const saveMutation = CreateOrUpdateOneGroupMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!subSubSubProject) { reset() }
+      if (!group) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -56,7 +52,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
     setLoading(true);
     setHasErrors(undefined)
     try {
-      await saveMutation.mutateAsync({ ...data, subSubProjectId: String(subSubProject?.id), subSubSubProjectId: subSubSubProject?.id })
+      await saveMutation.mutateAsync({ ...data, groupId: group?.id })
       AlertSuccessNotification({
         text: 'Project save successfully',
         className: 'info',
@@ -82,7 +78,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
           {/* begin::Modal content */}
           <div className='modal-content'>
             <div className="modal-header pb-0 border-0 justify-content-end">
-              <div onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal">
+              <div onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-icon btn-sm btn-active-light-primary ms-2">
                 <KTSVG
                   path="/media/icons/duotune/arrows/arr061.svg"
                   className="svg-icon svg-icon-2x"
@@ -90,12 +86,9 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
               </div>
             </div>
             {/* begin::Modal body */}
-            <div className="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+            <div className="mx-5 mx-xl-18 pt-0 pb-15">
               <div className="mb-13 text-center">
-                <h1 className="mb-3">{subSubSubProject?.id ? `${subSubSubProject?.name || ''}` : 'Create Project'}</h1>
-                <div className="text-muted fw-bold fs-5">If you need more info, please check
-                  <a href="#" className="link-primary fw-bolder"></a>.
-                </div>
+                <h1 className="mb-3">{group?.id ? `${group?.name || ''}` : 'Create Group'}</h1>
                 {hasErrors && (
                   <div className="text-center alert alert-danger">
                     <div className="d-flex flex-column">
@@ -116,7 +109,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
                     inputName={'name'}
                     type="text"
                     autoComplete="one"
-                    placeholder="Enter name project"
+                    placeholder="Enter name group"
                     validation={{ required: true }}
                     isRequired={true}
                   />
@@ -136,8 +129,8 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
                 </div>
                 <div className="text-center">
                   <button type="button" onClick={() => { setOpenCreateOrUpdateModal(false) }} className="btn btn-sm btn-light me-3">Close</button>
-                  <button type='submit' className='btn btn-sm btn-lg btn-primary fw-bolder'
-                    disabled={!isDirty || !isValid || loading}
+                  <button type='submit' className='btn btn-lg btn-sm btn-primary fw-bolder'
+                    disabled={!isDirty || !isValid || loading || saveMutation.isLoading}
                   >
                     {!loading && <span className='indicator-label'>Save</span>}
                     {loading && (

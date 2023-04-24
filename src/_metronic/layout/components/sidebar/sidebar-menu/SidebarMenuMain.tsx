@@ -46,6 +46,12 @@ const SidebarMenuMain = () => {
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
         </div>
       </div>
+      <SidebarMenuItem
+        to='/groups'
+        icon='/media/icons/duotune/communication/com006.svg'
+        title='Groups'
+        fontIcon='bi-layers'
+      />
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

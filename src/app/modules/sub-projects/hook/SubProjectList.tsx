@@ -9,7 +9,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getContributorsSubProject } from '../../contributors/core/_requests'
 import { ProjectModel } from '../../projects/core/_models'
 import Swal from 'sweetalert2';
-import { deleteOneSubProject } from '../core/_requests'
 import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
 import { DeleteOneSubProjectMutation } from '../core/_models'
 import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
