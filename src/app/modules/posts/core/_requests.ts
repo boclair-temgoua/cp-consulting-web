@@ -3,7 +3,9 @@ import {PaginationRequest} from '../../utils/pagination-item'
 import {PostModel, PostRequestModel, ResponsePostModel} from './_models'
 
 export const getPostsBy = async (
-  payload: PaginationRequest
+  payload: {
+    groupId: string
+  } & PaginationRequest
 ): Promise<{data: ResponsePostModel}> => {
   return await makeApiCall({
     action: 'getPostsBy',
@@ -11,11 +13,11 @@ export const getPostsBy = async (
   })
 }
 
-export const getOnePost = async (payload: {postId: string}): Promise<{data: PostModel}> => {
-  const {postId} = payload
+export const getOnePost = async (payload: {postSlug: string}): Promise<{data: PostModel}> => {
+  const {postSlug} = payload
   return await makeApiCall({
     action: 'getOnePost',
-    queryParams: {postId},
+    queryParams: {postSlug},
   })
 }
 

@@ -9,7 +9,7 @@ const ProjectPageWrapperCreate: FC = () => {
       <PageTitle breadcrumbs={[]}>Projects create</PageTitle>
 
 
-      <div className="mb-5 mb-xl-8 ">
+      <div className="mb-5 mb-xl-8">
 
         <form className="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework">
 

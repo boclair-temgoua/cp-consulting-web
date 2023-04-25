@@ -8,12 +8,13 @@ import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
 import ContactMiniList from '../../contacts/hook/ContactMiniList'
 import { ContactModel } from '../../contacts/core/_models'
 import { getContactsBy } from '../../contacts/core/_requests'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../auth'
 import { capitalizeOneFirstLetter, colorRole, truncateText } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { GroupCreateFormModal } from './GroupCreateFormModal'
 import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
+import { getOneGroup } from '../core/_requests'
 
 type Props = {
     item?: ContributorModel;
@@ -22,6 +23,7 @@ type Props = {
 const GroupList: React.FC<Props> = ({ item }) => {
     const takeItem: number = 6
     const pageItem: number = 1
+    const queryClient = useQueryClient()
     const { organization, role } = useAuth() as any
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
@@ -44,7 +46,12 @@ const GroupList: React.FC<Props> = ({ item }) => {
     const calculatedContributors: number = Number(Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value))
     return (
         <>
-            <tr key={item?.id}>
+            <tr key={item?.id} onMouseEnter={() => {
+                queryClient.prefetchQuery({
+                    queryKey: ['group', String(item?.id)],
+                    queryFn: () => getOneGroup({ groupId: String(item?.id) }),
+                })
+            }}>
                 <td>
                     <div className='d-flex align-items-center' onClick={() => navigate(`/groups/${item?.groupId}`, { replace: true })}>
                         <div className='symbol symbol-circle symbol-40px overflow-hidden me-3'>
@@ -92,7 +99,7 @@ const GroupList: React.FC<Props> = ({ item }) => {
                 <td>
                     {role?.name === 'ADMIN' && organization?.id === item?.organizationId && (
                         <div className='d-flex justify-content-end flex-shrink-0'>
-                             <button onClick={() => { setOpenModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                            <button onClick={() => { setOpenModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                                 <KTSVG path='/media/icons/duotune/communication/com006.svg' className='svg-icon-3' />
                             </button>
                             <button onClick={() => { setOpenCreateOrUpdateModal(true) }} className='btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1'>

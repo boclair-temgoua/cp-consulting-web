@@ -19,3 +19,8 @@ export const capitalizeOneFirstLetter = (fullItem: string) => {
 export const truncateText = (input: string) => {
   return input?.length > 60 ? `${input.substring(0, 47)}...` : parse(input)
 }
+
+/** Fix truncate */
+export const truncateDescription = (input: string) => {
+  return input?.length > 300 ? `${input.substring(0, 250)}...` : parse(input)
+}

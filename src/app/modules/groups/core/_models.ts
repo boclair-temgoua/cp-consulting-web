@@ -1,10 +1,11 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {createOneGroup, updateOneGroup} from './_requests'
 import {ContributorRoleModel} from '../../contributors/core/_models'
-import { ProjectRequestModel } from '../../projects/core/_models'
+import {ProjectRequestModel} from '../../projects/core/_models'
 
 export type GroupModel = {
   id: string
+  createdAt: Date
   slug: string
   name: string
   color: string
@@ -12,6 +13,7 @@ export type GroupModel = {
   organizationId: string
   contributorTotal: number
   description: string
+  postTotal: number
   organization: {
     id: string
     name: string

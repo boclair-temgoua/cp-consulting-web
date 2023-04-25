@@ -7,6 +7,8 @@ export type ResponsePostModel = {
   per_page: number
   current_page: number
   last_next: number
+  next_page: number
+  prev_page: number
   skip: number
   sort: SortModel
   total_page: number
@@ -46,7 +48,7 @@ export const CreateOrUpdateOnePostMutation = ({
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['groups']
+  const queryKey = ['posts']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (payload: PostRequestModel): Promise<any> => {

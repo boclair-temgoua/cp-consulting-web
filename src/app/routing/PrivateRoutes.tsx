@@ -16,7 +16,7 @@ import SubSubProjectPageWrapperShow from '../modules/sub-sub-projects/SubSubProj
 import SubSubSubProjectPageWrapperShow from '../modules/sub-sub-sub-projects/SubSubSubProjectPageWrapperShow'
 import OrganizationWrapperShow from '../modules/organizations/OrganizationWrapperShow'
 import GroupPageWrapperShow from '../modules/groups/GroupPageWrapperShow'
-import PostPageWrapperCreateOrUpdate from '../modules/posts/PostPageWrapperCreateOrUpdate'
+import PostPageWrapperShow from '../modules/posts/PostPageWrapperShow'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -59,7 +59,7 @@ const PrivateRoutes = () => {
           element={<SubSubSubProjectPageWrapperShow />}
         />
         <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
-        <Route path='groups/post/:groupId/create' element={<PostPageWrapperCreateOrUpdate />} />
+        <Route path='posts/:postSlug' element={<PostPageWrapperShow />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}
         <Route
