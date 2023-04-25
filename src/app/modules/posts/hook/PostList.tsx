@@ -41,11 +41,11 @@ const PostList: React.FC<PostList> = ({ item }) => {
                     </div>
                 </div>
 
-                <div className="card-body" onClick={() => navigate(`/posts/${item?.slug}`)}>
-                    <div className="text-gray-800 fw-bold text-hover-primary fs-4">
+                <div className="card-body">
+                    <div style={{cursor: 'pointer'}} className="text-gray-800 fw-bold text-hover-primary fs-4" onClick={() => navigate(`/posts/${item?.slug}`)}>
                         {item?.title}
                     </div>
-                    <div className="fs-6 fw-normal text-gray-700" dangerouslySetInnerHTML={{ __html: truncateDescription(item?.description as string) as string }} />
+                    <div className="fs-6 fw-normal text-gray-700" dangerouslySetInnerHTML={{ __html: String(item?.description) }} />
                 </div>
                 <div className="card-footer pt-0">
                     <div className="mb-6">

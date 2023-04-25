@@ -250,10 +250,6 @@ const GroupPageWrapperShow: FC = () => {
 
             {dataPostTable}
 
-
-          </div>
-
-          
             <PaginationItem
               data={dataPosts}
               setPageItem={setPageItem}
@@ -266,6 +262,7 @@ const GroupPageWrapperShow: FC = () => {
           {openCreateOrUpdateModal && (<PostCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} groupId={String(groupId)} />)}
           {/* end::Table container */}
 
+          </div>
         </div>
       </div>
 

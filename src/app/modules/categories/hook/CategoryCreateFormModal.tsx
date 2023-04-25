@@ -39,7 +39,6 @@ export const CategoryCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdate
   const saveMutation = CreateOrUpdateOneCategoryMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!category) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -54,6 +53,7 @@ export const CategoryCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdate
     setHasErrors(undefined)
     try {
       await saveMutation.mutateAsync({ ...data, categoryId: category?.id, organizationId })
+      if (!category) { reset() }
       AlertSuccessNotification({
         text: 'Contact save successfully',
         className: 'info',

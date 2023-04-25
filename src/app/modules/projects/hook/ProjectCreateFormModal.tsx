@@ -38,7 +38,6 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
   const saveMutation = CreateOrUpdateOneProjectMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!project) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -53,6 +52,7 @@ export const ProjectCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
     setHasErrors(undefined)
     try {
       await saveMutation.mutateAsync({ ...data, projectId: project?.id })
+      if (!project) { reset() }
       AlertSuccessNotification({
         text: 'Project save successfully',
         className: 'info',

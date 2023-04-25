@@ -40,7 +40,6 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
   const saveMutation = CreateOrUpdateOnePostMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!post) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -54,6 +53,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
     setHasErrors(undefined)
     try {
       await saveMutation.mutateAsync({ ...data, groupId, postId: post?.id })
+      if (!post) { reset() }
       AlertSuccessNotification({
         text: 'Post save successfully',
         className: 'info',
@@ -140,6 +140,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
                               [{ 'align': [] }],
                               [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                               [{ 'color': [] }, { 'background': [] }],
+                              ['link']
                             ],
                           },
                         }}

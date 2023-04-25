@@ -42,7 +42,6 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
   const saveMutation = CreateOrUpdateOneSubSubSubProjectMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!subSubSubProject) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -57,6 +56,7 @@ export const SubSubSubProjectCreateFormModal: React.FC<Props> = ({ setOpenCreate
     setHasErrors(undefined)
     try {
       await saveMutation.mutateAsync({ ...data, subSubProjectId: String(subSubProject?.id), subSubSubProjectId: subSubSubProject?.id })
+      if (!subSubSubProject) { reset() }
       AlertSuccessNotification({
         text: 'Project save successfully',
         className: 'info',

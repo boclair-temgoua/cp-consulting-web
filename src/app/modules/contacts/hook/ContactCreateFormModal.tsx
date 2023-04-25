@@ -74,7 +74,6 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
   const saveMutation = CreateOrUpdateOneContactMutation({
     onSuccess: () => {
       setHasErrors(false);
-      if (!contact) { reset() }
       setLoading(false)
     },
     onError: (error?: any) => {
@@ -88,6 +87,7 @@ export const ContactCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateM
     setHasErrors(undefined)
     try {
       await saveMutation.mutateAsync({ ...data, contactId: contact?.id, organizationId })
+      if (!contact) { reset() }
       AlertSuccessNotification({
         text: 'Contact save successfully',
         className: 'info',
