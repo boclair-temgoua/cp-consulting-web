@@ -94,7 +94,7 @@ const OrganizationWrapper: React.FC = () => {
         {/* begin::Header */}
         <div className='card-header border-0 pt-5'>
           <h3 className='card-title align-items-start flex-column'>
-            <span className='card-label fw-bold fs-3 mb-1'>Contributors</span>
+            <span className='card-label fw-bold fs-3 mb-1'>Organizations</span>
             <span className='text-muted mt-1 fw-semibold fs-7'>
               Over {data?.data?.total || 0} organizations
             </span>
@@ -128,7 +128,7 @@ const OrganizationWrapper: React.FC = () => {
             <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4'>
               {/* begin::Table head */}
               <thead>
-                <tr className='fw-bolder fs-6 text-gray-800'>
+                <tr className="fw-bolder fs-6 text-muted">
                   <th>Name</th>
                   <th>Contributors</th>
                   <th className='text-end min-w-100px'></th>

@@ -32,7 +32,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
 
   useEffect(() => {
     if (post) {
-      const fields = ['title', 'description'];
+      const fields = ['title', 'description', 'groupId'];
       fields?.forEach((field: any) => setValue(field, post[field]));
     }
   }, [post, setValue]);

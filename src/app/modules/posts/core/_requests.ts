@@ -29,11 +29,11 @@ export const createOnePost = async (payload: PostRequestModel): Promise<{data: P
 }
 
 export const updateOnePost = async (payload: PostRequestModel): Promise<{data: PostModel}> => {
-  const {postId, title, description} = payload
+  const {postId} = payload
   return await makeApiCall({
     action: 'updateOnePost',
     urlParams: {postId},
-    body: {title, description},
+    body: payload,
   })
 }
 

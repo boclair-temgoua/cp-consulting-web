@@ -22,5 +22,5 @@ export const truncateText = (input: string) => {
 
 /** Fix truncate */
 export const truncateDescription = (input: string) => {
-  return input?.length > 300 ? `${input.substring(0, 250)}...` : parse(input)
+  return input?.length > 300 ? `${input.substring(0, 250)}...` : input
 }

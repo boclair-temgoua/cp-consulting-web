@@ -23,7 +23,10 @@ export type PostModel = {
   slug: string
   description: string
   groupId: string
+  userId: string
   commentTotal: number
+  likeTotal: number
+  isLike: number
   profile: {
     color: string
     email: string
@@ -54,7 +57,7 @@ export const CreateOrUpdateOnePostMutation = ({
     async (payload: PostRequestModel): Promise<any> => {
       const {groupId, title, postId, description} = payload
       const {data} = postId
-        ? await updateOnePost({postId, title, description})
+        ? await updateOnePost({postId, title, groupId, description})
         : await createOnePost({groupId, title, description})
       return data
     },
