@@ -18,18 +18,17 @@ import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
 
 type Props = {
-    takeValue?: number
     item?: ContributorModel;
     subProject?: SubProjectModel;
 }
 
-const SubSubProjectList: React.FC<Props> = ({ item, subProject, takeValue }) => {
+const SubSubProjectList: React.FC<Props> = ({ item, subProject }) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
-    const fetchDataContributorMini = async () => await getContributorsSubSubProject({ take: Number(takeValue), page: 1, sort: 'ASC', subSubProjectId: String(item?.subSubProjectId) })
+    const fetchDataContributorMini = async () => await getContributorsSubSubProject({ take: 10, page: 1, sort: 'ASC', subSubProjectId: String(item?.subSubProjectId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
         queryKey: ['contributorSubSubProjectMini', item?.subSubProjectId, 1, 'ASC'],
         queryFn: () => fetchDataContributorMini(),

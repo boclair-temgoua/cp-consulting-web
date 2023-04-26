@@ -10,7 +10,7 @@ import { ContactModel } from '../../contacts/core/_models'
 import { getContactsBy } from '../../contacts/core/_requests'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../auth'
-import { capitalizeOneFirstLetter, colorRole, truncateText } from '../../utils'
+import { capitalizeOneFirstLetter, colorRole, dataCountFormatter, truncateText } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { GroupCreateFormModal } from './GroupCreateFormModal'
 import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
@@ -75,9 +75,9 @@ const GroupList: React.FC<Props> = ({ item }) => {
                         {dataContributorMiniTable}
 
                         {calculatedContributors > 0 && (
-                            <span className="symbol symbol-35px symbol-circle">
+                            <span className="symbol symbol-30px symbol-circle">
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
-                                    +{calculatedContributors}
+                                    +{dataCountFormatter(calculatedContributors)}
                                 </span>
                             </span>
                         )}

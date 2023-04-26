@@ -13,6 +13,10 @@ import { ProjectRequestModel } from '../../projects/core/_models';
 
 interface Props {
   setOpenCreateOrUpdateModal: any,
+  projectId?: string,
+  subProjectId?: string,
+  subSubProjectId?: string,
+  subSubSubProjectId?: string,
   group?: any
 }
 
@@ -20,7 +24,14 @@ const schema = yup.object({
   name: yup.string().min(3, 'Minimum 3 symbols').required(),
 });
 
-export const GroupCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModal, group }) => {
+export const GroupCreateFormModal: React.FC<Props> = ({
+  setOpenCreateOrUpdateModal,
+  group,
+  projectId,
+  subProjectId,
+  subSubProjectId,
+  subSubSubProjectId,
+}) => {
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | string | undefined>(undefined)
   const { register, handleSubmit, setValue, reset,
@@ -52,7 +63,14 @@ export const GroupCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateMod
     setLoading(true);
     setHasErrors(undefined)
     try {
-      await saveMutation.mutateAsync({ ...data, groupId: group?.id })
+      await saveMutation.mutateAsync({
+        ...data,
+        groupId: group?.id,
+        projectId,
+        subProjectId,
+        subSubProjectId,
+        subSubSubProjectId,
+      })
       AlertSuccessNotification({
         text: 'Project save successfully',
         className: 'info',

@@ -11,14 +11,13 @@ import { getSubSubProjectsContributes } from './core/_requests';
 import { SubSubProjectCreateFormModal } from './hook/SubSubProjectCreateFormModal';
 
 type Props = {
-    takeValue: number
     subProject?: SubProjectModel;
 }
 
-const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
+const SubSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
 
-    const fetchDataSubSubProject = async () => await getSubSubProjectsContributes({ take: takeValue, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
+    const fetchDataSubSubProject = async () => await getSubSubProjectsContributes({ take: 10, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
     const { isLoading: isLoadingSubSubProject, isError: isErrorSubSubProject, data: dataSubSubProject } = useQuery({
         queryKey: ['subSubProjects', subProject?.id],
         queryFn: () => fetchDataSubSubProject(),
@@ -28,7 +27,7 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
             (dataSubSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
                 (
                     dataSubSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <SubSubProjectList item={item} key={index} subProject={subProject} takeValue={takeValue} />
+                        <SubSubProjectList item={item} key={index} subProject={subProject} />
                     )))
 
 
@@ -90,11 +89,11 @@ const SubSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
                         </table>
                     </div>
 
-                    {Number(dataSubSubProject?.data?.total) > takeValue && (
+                    {/* {Number(dataSubSubProject?.data?.total) > takeValue && (
                         <Link to={`/projects/sb-sb-p/${subProject?.id}`} className="btn btn-light-primary w-100 py-3">
                             Show More
                         </Link>
-                    )}
+                    )} */}
 
                 </div>
             </div>

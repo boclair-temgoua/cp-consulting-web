@@ -7,12 +7,9 @@ import { HelmetSite } from '../utils'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../auth'
 import { useDebounce } from '../utils/use-debounce'
-// import { getProjectsContributes } from './core/_requests'
 import { PaginationItem } from '../utils/pagination-item'
 import { EmptyTable } from '../utils/empty-table'
-// import ProjectList from './hook/ProjectList'
 import { ContributorModel } from '../contributors/core/_models'
-// import { ProjectCreateFormModal } from './hook/ProjectCreateFormModal'
 import { SearchInput } from '../utils/forms/SearchInput'
 import { getGroupsContributes } from './core/_requests'
 import { GroupCreateFormModal } from './hook/GroupCreateFormModal'
@@ -20,7 +17,7 @@ import GroupList from './hook/GroupList'
 
 const GroupsWrapper: FC = () => {
   const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
-  const { organization } = useAuth() as any
+  const userItem = useAuth() as any
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams();
   const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
@@ -33,7 +30,8 @@ const GroupsWrapper: FC = () => {
       search: debouncedFilter,
       take: 10,
       page: Number(pageItem || 1),
-      sort: 'DESC'
+      sort: 'DESC',
+      type: 'GROUP'
     })
   const {
     isLoading,
@@ -70,9 +68,9 @@ const GroupsWrapper: FC = () => {
 
   return (
     <>
-      <HelmetSite title={`${organization?.name || ''}`} />
+      <HelmetSite title={`${userItem?.organization?.name || ''}`} />
       <PageTitle breadcrumbs={[{
-        title: `${organization?.name || 'Groups'} |`,
+        title: `${userItem?.organization?.name || 'Groups'} |`,
         path: '/groups',
         isSeparator: false,
         isActive: false,

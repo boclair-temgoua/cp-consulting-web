@@ -18,6 +18,11 @@ import OrganizationWrapperShow from '../modules/organizations/OrganizationWrappe
 import GroupPageWrapperShow from '../modules/groups/GroupPageWrapperShow'
 import GroupPageWrapperContributor from '../modules/groups/GroupPageWrapperContributor'
 import PostPageWrapperShow from '../modules/posts/PostPageWrapperShow'
+import ProjectPageWrapperContributor from '../modules/projects/ProjectPageWrapperContributor'
+import ProjectPageWrapperProject from '../modules/projects/ProjectPageWrapperProject'
+import ProjectPageWrapperContact from '../modules/projects/ProjectPageWrapperContact'
+import ProjectPageWrapperDocument from '../modules/projects/ProjectPageWrapperDocument'
+import ProjectPageWrapperGroup from '../modules/projects/ProjectPageWrapperGroup'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -47,10 +52,24 @@ const PrivateRoutes = () => {
           path='organizations/:organizationId/contributors'
           element={<ContributorsOrganizationWrapper />}
         />
-        <Route path='projects/:projectId/contributors' element={<ContributorsProjectWrapper />} />
+        {/* <Route path='projects/:projectId/contributors' element={<ContributorsProjectWrapper />} /> */}
+
+        {/* Projects Routes */}
         <Route path='projects/:projectId' element={<ProjectPageWrapperShow />} />
+        <Route path='projects/:projectId/project' element={<ProjectPageWrapperProject />} />
+        <Route path='projects/:projectId/contributor' element={<ProjectPageWrapperContributor />} />
+        <Route path='projects/:projectId/contact' element={<ProjectPageWrapperContact />} />
+        <Route path='projects/:projectId/group' element={<ProjectPageWrapperGroup />} />
+        <Route path='projects/:projectId/document' element={<ProjectPageWrapperDocument />} />
+        
+        <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
+
+        {/* Groups Routes */}
         <Route path='groups/:groupId' element={<GroupPageWrapperShow />} />
         <Route path='groups/:groupId/contributors' element={<GroupPageWrapperContributor />} />
+        
+
+
         <Route path='projects/sb-p/:subProjectId' element={<SubProjectPageWrapperShow />} />
         <Route
           path='projects/sb-sb-p/:subSubProjectId'
@@ -60,7 +79,6 @@ const PrivateRoutes = () => {
           path='projects/sb-sb-sb-p/:subSubSubProjectId'
           element={<SubSubSubProjectPageWrapperShow />}
         />
-        <Route path='projects/:projectId/new-file' element={<ProjectPageWrapperCreate />} />
         <Route path='posts/:postSlug' element={<PostPageWrapperShow />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         {/* Lazy Modules */}

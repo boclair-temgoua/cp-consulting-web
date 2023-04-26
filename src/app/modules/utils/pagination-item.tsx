@@ -10,6 +10,15 @@ interface Props {
 
 export type SortModel = 'ASC' | 'DESC'
 
+export type FilterKeyId = {
+    organizationId?: string
+    projectId?: string
+    subProjectId?: string
+    subSubProjectId?: string
+    subSubSubProjectId?: string
+    type: FilterTypeModel
+  }
+
 export type FilterTypeModel = 'ORGANIZATION' | 'PROJECT' | 'SUBPROJECT' | 'SUBSUBPROJECT' | 'SUBSUBSUBPROJECT' | 'GROUP'
 
 export type PaginationRequest = {

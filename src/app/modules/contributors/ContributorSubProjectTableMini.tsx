@@ -10,14 +10,13 @@ import { SubProjectModel } from '../sub-projects/core/_models';
 import { InviteContributorFormModal } from './hook/InviteContributorFormModal';
 
 type Props = {
-    takeValue: number
     subProject?: SubProjectModel;
 }
 
-const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject, takeValue }) => {
+const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
 
-    const fetchDataContributor = async () => await getContributorsSubProject({ take: takeValue, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
+    const fetchDataContributor = async () => await getContributorsSubProject({ take: 6, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
         queryKey: ['contributors', subProject?.id],
         queryFn: () => fetchDataContributor(),

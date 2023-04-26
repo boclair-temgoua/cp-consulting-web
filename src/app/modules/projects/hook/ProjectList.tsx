@@ -11,7 +11,7 @@ import { getContactsBy } from '../../contacts/core/_requests'
 import { useQuery } from '@tanstack/react-query'
 import { ProjectCreateFormModal } from './ProjectCreateFormModal'
 import { useAuth } from '../../auth'
-import { colorRole } from '../../utils'
+import { colorRole, dataCountFormatter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 
 type Props = {
@@ -44,12 +44,12 @@ const ProjectList: React.FC<Props> = ({ item }) => {
         <>
             <tr key={item?.id}>
                 <td>
-                    <div className='d-flex align-items-center' onClick={() => navigate(`/projects/${item?.projectId}?tab=${'home'}`, { replace: true })}>
+                    <div className='d-flex align-items-center' onClick={() => navigate(`/projects/${item?.projectId}`, { replace: true })}>
                         <div className='symbol symbol-35px me-5'>
                             <img src={toAbsoluteUrl('/media/svg/files/folder-document.svg')} alt={item?.project?.name} />
                         </div>
                         <div className='d-flex justify-content-start flex-column'>
-                            <Link to={`/projects/${item?.projectId}?tab=${'home'}`} className='text-dark fw-bold text-hover-primary fs-6'>
+                            <Link to={`/projects/${item?.projectId}`} className='text-dark fw-bold text-hover-primary fs-6'>
                                 {item?.project?.name}
                             </Link>
                             <span className='text-muted fw-semibold text-muted d-block fs-7'>
@@ -69,9 +69,9 @@ const ProjectList: React.FC<Props> = ({ item }) => {
                         {dataContributorMiniTable}
 
                         {calculatedContributors > 0 && (
-                            <span className="symbol symbol-35px symbol-circle">
+                            <span className="symbol symbol-30px symbol-circle">
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
-                                    +{calculatedContributors}
+                                    +{dataCountFormatter(calculatedContributors)}
                                 </span>
                             </span>
                         )}

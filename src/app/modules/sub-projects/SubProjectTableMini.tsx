@@ -14,11 +14,10 @@ import { SearchInput } from '../utils/forms/SearchInput';
 import { PaginationItem } from '../utils/pagination-item';
 
 type Props = {
-    takeValue: number
     project?: ProjectModel;
 }
 
-const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
+const SubProjectTableMini: React.FC<Props> = ({ project }) => {
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams();
@@ -30,7 +29,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
     const fetchData = async (pageItem = 1, debouncedFilter: string) => await
         getSubProjectsContributes({
             search: debouncedFilter,
-            take: 6,
+            take: 10,
             page: Number(pageItem || 1),
             sort: 'DESC',
             projectId: String(project?.id)
@@ -66,7 +65,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project, takeValue }) => {
             (dataSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
                 (
                     dataSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <SubsubProjectList item={item} key={index} project={project} takeValue={takeValue} />
+                        <SubsubProjectList item={item} key={index} project={project}  />
                     )))
 
 

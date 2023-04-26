@@ -154,7 +154,7 @@ const SubProjectPageWrapperShow: FC = () => {
       {subProjectItem?.data?.id && (
         <>
           {searchParams.get('tab') === 'projects' && (
-            <SubSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+            <SubSubProjectTableMini subProject={subProjectItem?.data} />
           )}
 
           {searchParams.get('tab') === 'documents' && (
@@ -162,7 +162,7 @@ const SubProjectPageWrapperShow: FC = () => {
           )}
 
           {searchParams.get('tab') === 'contributors' && (
-            <ContributorSubProjectTableMini subProject={subProjectItem?.data} takeValue={takeValue} />
+            <ContributorSubProjectTableMini subProject={subProjectItem?.data} />
           )}
         </>
       )}

@@ -9,25 +9,24 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getContributorsSubProject } from '../../contributors/core/_requests'
 import { ProjectModel } from '../../projects/core/_models'
 import Swal from 'sweetalert2';
-import { AlertDangerNotification, AlertSuccessNotification, colorRole } from '../../utils'
+import { AlertDangerNotification, AlertSuccessNotification, colorRole, dataCountFormatter } from '../../utils'
 import { DeleteOneSubProjectMutation } from '../core/_models'
 import { SubProjectCreateFormModal } from './SubProjectCreateFormModal'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
 import { InviteContributorFormModal } from '../../contributors/hook/InviteContributorFormModal'
 
 type Props = {
-    takeValue?: number
     item?: ContributorModel;
     project?: ProjectModel;
 }
 
-const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
+const SubsubProjectList: React.FC<Props> = ({ item, project }) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
 
 
-    const fetchDataContributorMini = async () => await getContributorsSubProject({ take: Number(takeValue), page: 1, sort: 'ASC', subProjectId: String(item?.subProjectId) })
+    const fetchDataContributorMini = async () => await getContributorsSubProject({ take: 6, page: 1, sort: 'ASC', subProjectId: String(item?.subProjectId) })
     const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributorMini } = useQuery({
         queryKey: ['contributorSubProjectMini', item?.subProjectId],
         queryFn: () => fetchDataContributorMini(),
@@ -112,9 +111,9 @@ const SubsubProjectList: React.FC<Props> = ({ item, project, takeValue }) => {
                         {dataContributorMiniTable}
 
                         {calculatedContributors > 0 && (
-                            <span className="symbol symbol-35px symbol-circle">
+                            <span className="symbol symbol-30px symbol-circle">
                                 <span className="symbol-label fs-8 fw-bold bg-dark text-gray-300">
-                                    +{calculatedContributors}
+                                    +{dataCountFormatter(calculatedContributors)}
                                 </span>
                             </span>
 

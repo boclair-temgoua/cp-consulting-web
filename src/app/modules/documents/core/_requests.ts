@@ -1,16 +1,9 @@
 import {makeApiCall} from '../../utils/get-url-end-point'
-import {FilterTypeModel, PaginationRequest} from '../../utils/pagination-item'
+import {FilterKeyId, FilterTypeModel, PaginationRequest} from '../../utils/pagination-item'
 import {DocumentModel, ResponseDocumentModel} from './_models'
 
 export const getDocumentsBy = async (
-  payload: {
-    organizationId?: string
-    projectId?: string
-    subProjectId?: string
-    subSubProjectId?: string
-    subSubSubProjectId?: string
-    type: FilterTypeModel
-  } & PaginationRequest
+  payload: FilterKeyId & PaginationRequest
 ): Promise<{data: ResponseDocumentModel}> => {
   return await makeApiCall({
     action: 'getDocumentsBy',

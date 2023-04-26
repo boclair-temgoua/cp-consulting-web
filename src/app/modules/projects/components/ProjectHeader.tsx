@@ -1,20 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import {useLocation} from 'react-router-dom'
-import {capitalizeOneFirstLetter} from '../../utils'
+import { useLocation } from 'react-router-dom'
+import { capitalizeOneFirstLetter } from '../../utils'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
-import {ContributorModel} from '../../contributors/core/_models'
-import {useQuery} from '@tanstack/react-query'
-import {getContributorsProject} from '../../contributors/core/_requests'
-import {ProjectModel} from '../core/_models'
+import { ContributorModel } from '../../contributors/core/_models'
+import { useQuery } from '@tanstack/react-query'
+import { getContributorsProject } from '../../contributors/core/_requests'
+import { ProjectModel } from '../core/_models'
+import { KTSVG } from '../../../../_metronic/helpers'
 
 interface Props {
-  project: any
+  project: ProjectModel
 }
 
-const ProjectHeader: React.FC<Props> = ({project}) => {
+const ProjectHeader: React.FC<Props> = ({ project }) => {
+  const navigate = useNavigate()
   const takeValue: number = 6
   const location = useLocation()
 
@@ -50,6 +52,15 @@ const ProjectHeader: React.FC<Props> = ({project}) => {
   )
   return (
     <>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
+      </a>
+      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
+        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
+        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
+      </a>
+
       <div className='card mb-5 mb-xl-10'>
         <div className='card-body pt-9 pb-0'>
           <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
@@ -167,9 +178,9 @@ const ProjectHeader: React.FC<Props> = ({project}) => {
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
-                  (location.pathname === `/projects/${project?.id}/projects` && 'active')
+                  (location.pathname === `/projects/${project?.id}/project` && 'active')
                 }
-                to={`/projects/${project?.id}/projects`}
+                to={`/projects/${project?.id}/project`}
               >
                 Projects
               </Link>
@@ -178,11 +189,44 @@ const ProjectHeader: React.FC<Props> = ({project}) => {
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
-                  (location.pathname === `/projects/${project?.id}/contributors` && 'active')
+                  (location.pathname === `/projects/${project?.id}/contributor` && 'active')
                 }
-                to={`/projects/${project?.id}/contributors`}
+                to={`/projects/${project?.id}/contributor`}
               >
                 Members
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/projects/${project?.id}/document` && 'active')
+                }
+                to={`/projects/${project?.id}/document`}
+              >
+                Documents
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/projects/${project?.id}/group` && 'active')
+                }
+                to={`/projects/${project?.id}/group`}
+              >
+                Groups
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/projects/${project?.id}/contact` && 'active')
+                }
+                to={`/projects/${project?.id}/contact`}
+              >
+                Contacts
               </Link>
             </li>
             <li className='nav-item'>
@@ -203,4 +247,4 @@ const ProjectHeader: React.FC<Props> = ({project}) => {
   )
 }
 
-export {ProjectHeader}
+export { ProjectHeader }

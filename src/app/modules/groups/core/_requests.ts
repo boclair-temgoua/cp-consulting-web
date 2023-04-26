@@ -1,11 +1,11 @@
 import {ResponseContributorModel} from '../../contributors/core/_models'
 import {ProjectRequestModel} from '../../projects/core/_models'
 import {makeApiCall} from '../../utils/get-url-end-point'
-import {PaginationRequest} from '../../utils/pagination-item'
+import {FilterKeyId, PaginationRequest} from '../../utils/pagination-item'
 import {GroupModel} from './_models'
 
 export const getGroupsContributes = async (
-  payload: PaginationRequest
+  payload: FilterKeyId & PaginationRequest
 ): Promise<{data: ResponseContributorModel}> => {
   return await makeApiCall({
     action: 'getGroupsContributes',

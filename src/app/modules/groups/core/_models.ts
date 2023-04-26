@@ -34,10 +34,25 @@ export const CreateOrUpdateOneGroupMutation = ({
   const queryClient = useQueryClient()
   const result = useMutation(
     async (payload: ProjectRequestModel): Promise<any> => {
-      const {groupId, name, description} = payload
+      const {
+        groupId,
+        name,
+        description,
+        projectId,
+        subProjectId,
+        subSubProjectId,
+        subSubSubProjectId,
+      } = payload
       const {data} = groupId
         ? await updateOneGroup({groupId, name, description})
-        : await createOneGroup({name, description})
+        : await createOneGroup({
+            name,
+            description,
+            projectId,
+            subProjectId,
+            subSubProjectId,
+            subSubSubProjectId,
+          })
       return data
     },
     {
