@@ -109,7 +109,7 @@ export const GroupCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateMod
                     inputName={'name'}
                     type="text"
                     autoComplete="one"
-                    placeholder="Enter name group"
+                    placeholder="Enter name"
                     validation={{ required: true }}
                     isRequired={true}
                   />

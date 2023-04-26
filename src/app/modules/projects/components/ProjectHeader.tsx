@@ -1,40 +1,36 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import {Link} from 'react-router-dom'
 
-import { useLocation } from 'react-router-dom'
-import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
-import { capitalizeOneFirstLetter } from '../../utils'
+import {useLocation} from 'react-router-dom'
+import {capitalizeOneFirstLetter} from '../../utils'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
-import { ContributorModel } from '../../contributors/core/_models'
-import { useQuery } from '@tanstack/react-query'
-import { getContributorsGroup } from '../../contributors/core/_requests'
-import { GroupModel } from '../core/_models'
-import { PostCreateFormModal } from '../../posts/hook/PostCreateFormModal'
-import { getOneGroup } from '../core/_requests'
+import {ContributorModel} from '../../contributors/core/_models'
+import {useQuery} from '@tanstack/react-query'
+import {getContributorsProject} from '../../contributors/core/_requests'
+import {ProjectModel} from '../core/_models'
 
 interface Props {
-  group?: GroupModel
+  project: any
 }
 
-const GroupHeader: React.FC<Props> = ({ group }) => {
-  const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
+const ProjectHeader: React.FC<Props> = ({project}) => {
   const takeValue: number = 6
   const location = useLocation()
 
   const fetchDataContributorMini = async () =>
-    await getContributorsGroup({
+    await getContributorsProject({
       take: takeValue,
       page: 1,
       sort: 'ASC',
-      groupId: String(group?.id),
+      projectId: String(project?.id),
     })
   const {
     isLoading: isLoadingContributor,
     isError: isErrorContributor,
     data: dataContributorMini,
   } = useQuery({
-    queryKey: ['contributorGroupMini', String(group?.id), takeValue, 1, 'ASC'],
+    queryKey: ['contributorProjectMini', String(project?.id), takeValue, 1, 'ASC'],
     queryFn: () => fetchDataContributorMini(),
   })
   const dataContributorMiniTable = isLoadingContributor ? (
@@ -59,11 +55,11 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
           <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
             <div className='me-7 mb-4'>
               <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
-
-                <div className={`symbol-label fs-2 bg-light-${group?.color} text-${group?.color}`}>
-                  {capitalizeOneFirstLetter(String(group?.name))}
+                <div
+                  className={`symbol-label fs-2 bg-light-${project?.color} text-${project?.color}`}
+                >
+                  {capitalizeOneFirstLetter(String(project?.name))}
                 </div>
-
               </div>
             </div>
             <div className='flex-grow-1'>
@@ -71,15 +67,12 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
                 <div className='d-flex flex-column'>
                   <div className='d-flex align-items-center mb-1'>
                     <span className='text-gray-800 text-hover-primary fs-2 fw-bold me-3'>
-                      {group?.name || 'Group'}
+                      {project?.name || 'Group'}
                     </span>
                   </div>
                   <div className='d-flex flex-wrap fw-bold fs-6 mb-4 pe-2'>
-                    <p
-
-                      className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
-                    >
-                      {group?.description}
+                    <p className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'>
+                      {project?.description}
                     </p>
                     {/* <p
                       className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
@@ -110,35 +103,37 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
                     </p> */}
                   </div>
                 </div>
-
-
-                <div className='d-flex my-4'>
-                  <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
-                    <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
-                    New Post
-                  </button>
-                </div>
-
               </div>
 
               <div className='d-flex flex-wrap justify-content-start'>
                 <div className='d-flex flex-wrap'>
                   <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                     <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>{group?.postTotal || 0}</div>
-                    </div>
-                    <div className='fw-bold fs-6 text-gray-400'>Posts</div>
-                  </div>
-                </div>
-                <div className='d-flex flex-wrap'>
-                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
-                    <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>{group?.contributorTotal || 0}</div>
+                      <div className='fs-2 fw-bolder'>{project?.contributorTotal || 0}</div>
                     </div>
                     <div className='fw-bold fs-6 text-gray-400'>Members</div>
                   </div>
                 </div>
-
+                {Number(project?.subProjectTotal) > 0 && (
+                  <div className='d-flex flex-wrap'>
+                    <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                      <div className='d-flex align-items-center'>
+                        <div className='fs-2 fw-bolder'>{project?.subProjectTotal || 0}</div>
+                      </div>
+                      <div className='fw-bold fs-6 text-gray-400'>Projects</div>
+                    </div>
+                  </div>
+                )}
+                {Number(project?.documentTotal) > 0 && (
+                  <div className='d-flex flex-wrap'>
+                    <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                      <div className='d-flex align-items-center'>
+                        <div className='fs-2 fw-bolder'>{project?.documentTotal || 0}</div>
+                      </div>
+                      <div className='fw-bold fs-6 text-gray-400'>Documents</div>
+                    </div>
+                  </div>
+                )}
                 <div className='symbol-group symbol-hover mb-3'>
                   {dataContributorMiniTable}
 
@@ -161,9 +156,9 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
-                  (location.pathname === `/groups/${group?.id}` && 'active')
+                  (location.pathname === `/projects/${project?.id}` && 'active')
                 }
-                to={`/groups/${group?.id}`}
+                to={`/projects/${project?.id}`}
               >
                 Home
               </Link>
@@ -172,20 +167,31 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
-                  (location.pathname === `/groups/${group?.id}/contributors` && 'active')
+                  (location.pathname === `/projects/${project?.id}/projects` && 'active')
                 }
-                to={`/groups/${group?.id}/contributors`}
+                to={`/projects/${project?.id}/projects`}
+              >
+                Projects
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/projects/${project?.id}/contributors` && 'active')
+                }
+                to={`/projects/${project?.id}/contributors`}
               >
                 Members
               </Link>
             </li>
             <li className='nav-item'>
               <Link
-               className={
-                `nav-link text-active-primary me-6 ` +
-                (location.pathname === `/groups/${group?.id}/settings` && 'active')
-              }
-                to={`/groups/${group?.id}/setting`}
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/projects/${project?.id}/settings` && 'active')
+                }
+                to={`/projects/${project?.id}/setting`}
               >
                 Setting
               </Link>
@@ -193,10 +199,8 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
           </ul>
         </div>
       </div>
-      {openCreateOrUpdateModal && (<PostCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} groupId={String(group?.id)} />)}
-
     </>
   )
 }
 
-export { GroupHeader }
+export {ProjectHeader}

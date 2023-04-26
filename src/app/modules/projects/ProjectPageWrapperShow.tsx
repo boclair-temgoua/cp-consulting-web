@@ -14,6 +14,7 @@ import { Dropdown1 } from '../../../_metronic/partials'
 import ContributorMiniList from '../contributors/hook/ContributorMiniList'
 import { getContributorsProject } from '../contributors/core/_requests'
 import { ContributorModel } from '../contributors/core/_models'
+import { ProjectHeader } from './components/ProjectHeader'
 
 const ProjectPageWrapperShow: FC = () => {
   const navigate = useNavigate();
@@ -86,8 +87,10 @@ const ProjectPageWrapperShow: FC = () => {
         onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
         <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
       </a>
+      
+      <ProjectHeader project={projectItem?.data} />
 
-      <div className='card mb-5 mb-xl-10'>
+      {/* <div className='card mb-5 mb-xl-10'>
         <div className='card-body pt-9 pb-0'>
           <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
             <div className='me-7 mb-4'>
@@ -228,7 +231,7 @@ const ProjectPageWrapperShow: FC = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
 
       <div className='row g-5 g-xl-8'>
 
