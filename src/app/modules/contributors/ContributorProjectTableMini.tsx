@@ -18,6 +18,7 @@ type Props = {
 }
 
 const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
+    const takeNumber = 10
     const [openModal, setOpenModal] = useState<boolean>(false)
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
     const fetchData = async (pageItem = 1, debouncedFilter: string) => await
         getContributorsProject({
             search: debouncedFilter,
-            take: 6,
+            take: takeNumber,
             page: Number(pageItem || 1),
             sort: 'DESC',
             projectId: String(project?.id)
@@ -40,7 +41,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
         data: dataContributor,
         isPreviousData,
     } = useQuery({
-        queryKey: ['contributors', pageItem, debouncedFilter, project?.id],
+        queryKey: ['contributors', pageItem, debouncedFilter, project?.id, takeNumber],
         queryFn: () => fetchData(pageItem, debouncedFilter),
         enabled: filter ? isEnabled : !isEnabled,
         keepPreviousData: true,
@@ -54,7 +55,7 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
-    }, [dataContributor?.data, pageItem, queryClient, project?.id,debouncedFilter])
+    }, [dataContributor?.data, pageItem, takeNumber, queryClient, project?.id, debouncedFilter])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)

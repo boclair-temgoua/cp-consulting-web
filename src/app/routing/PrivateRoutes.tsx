@@ -23,6 +23,10 @@ import ProjectPageWrapperProject from '../modules/projects/ProjectPageWrapperPro
 import ProjectPageWrapperContact from '../modules/projects/ProjectPageWrapperContact'
 import ProjectPageWrapperDocument from '../modules/projects/ProjectPageWrapperDocument'
 import ProjectPageWrapperGroup from '../modules/projects/ProjectPageWrapperGroup'
+import SubProjectPageWrapperProject from '../modules/sub-projects/SubProjectPageWrapperProject'
+import SubProjectPageWrapperContributor from '../modules/sub-projects/SubProjectPageWrapperContributor'
+import SubProjectPageWrapperDocument from '../modules/sub-projects/SubProjectPageWrapperDocument'
+import SubProjectPageWrapperGroup from '../modules/sub-projects/SubProjectPageWrapperGroup'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -69,8 +73,15 @@ const PrivateRoutes = () => {
         <Route path='groups/:groupId/contributors' element={<GroupPageWrapperContributor />} />
         
 
-
+        {/* SubProjects Routes */}
         <Route path='projects/sb-p/:subProjectId' element={<SubProjectPageWrapperShow />} />
+        <Route path='projects/sb-p/:subProjectId/group' element={<SubProjectPageWrapperGroup />} />
+        <Route path='projects/sb-p/:subProjectId/project' element={<SubProjectPageWrapperProject />} />
+        <Route path='projects/sb-p/:subProjectId/document' element={<SubProjectPageWrapperDocument />} />
+        <Route path='projects/sb-p/:subProjectId/contributor' element={<SubProjectPageWrapperContributor />} />
+        
+
+
         <Route
           path='projects/sb-sb-p/:subSubProjectId'
           element={<SubSubProjectPageWrapperShow />}

@@ -158,7 +158,13 @@ const GroupTableMini: React.FC<FilterKeyId> = ({
                         pageItem={pageItem}
                     />
 
-                    {openCreateOrUpdateModal && (<GroupCreateFormModal setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} projectId={projectId}/>)}
+                    {openCreateOrUpdateModal && (<GroupCreateFormModal 
+                    setOpenCreateOrUpdateModal={setOpenCreateOrUpdateModal} 
+                    projectId={projectId}
+                    subProjectId={subProjectId}
+                    subSubProjectId={subSubProjectId}
+                    subSubSubProjectId={subSubSubProjectId}
+                    />)}
                     {/* end::Table container */}
                 </div>
                 {/* begin::Body */}

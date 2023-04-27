@@ -12,7 +12,7 @@ export const capitalizeFirstLetter = (firstItem: string, secondItem: string) => 
 
 /** Fix date */
 export const capitalizeOneFirstLetter = (fullItem: string) => {
-  return capitalizeName(fullItem).charAt(0).toUpperCase()
+  return capitalizeName(fullItem).substring(0, 2).toUpperCase()
 }
 
 /** Fix truncate */

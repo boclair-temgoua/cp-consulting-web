@@ -1,26 +1,72 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KTSVG } from '../../../_metronic/helpers';
 import { ContributorModel } from './core/_models';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EmptyTable } from '../utils/empty-table';
 import ContributorList from './hook/ContributorList';
 import { getContributorsSubProject } from './core/_requests';
 import { SubProjectModel } from '../sub-projects/core/_models';
 import { InviteContributorFormModal } from './hook/InviteContributorFormModal';
+import { PaginationItem } from '../utils/pagination-item';
+import { useSearchParams } from 'react-router-dom';
+import { useDebounce } from '../utils/use-debounce';
+import { SearchInput } from '../utils/forms/SearchInput';
 
 type Props = {
     subProject?: SubProjectModel;
 }
 
 const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
+    const takeNumber = 10
     const [openModal, setOpenModal] = useState<boolean>(false)
+    const queryClient = useQueryClient()
+    const [searchParams] = useSearchParams();
+    const [pageItem, setPageItem] = useState(Number(searchParams.get('page')) || 1)
+    const [filter, setFilter] = useState<string>('')
 
-    const fetchDataContributor = async () => await getContributorsSubProject({ take: 6, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
-    const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
-        queryKey: ['contributors', subProject?.id],
-        queryFn: () => fetchDataContributor(),
+    const debouncedFilter = useDebounce(filter, 500);
+    const isEnabled = Boolean(debouncedFilter)
+    const fetchData = async (pageItem = 1, debouncedFilter: string) => await
+        getContributorsSubProject({
+            search: debouncedFilter,
+            take: takeNumber,
+            page: Number(pageItem || 1),
+            sort: 'DESC',
+            subProjectId: String(subProject?.id)
+        })
+    const {
+        isLoading: isLoadingContributor,
+        isError: isErrorContributor,
+        data: dataContributor,
+        isPreviousData,
+    } = useQuery({
+        queryKey: ['contributors', pageItem, debouncedFilter, subProject?.id, takeNumber],
+        queryFn: () => fetchData(pageItem, debouncedFilter),
+        enabled: filter ? isEnabled : !isEnabled,
+        keepPreviousData: true,
     })
+
+    // Prefetch the next page!
+    useEffect(() => {
+        if (dataContributor?.data?.total_page !== pageItem) {
+            queryClient.prefetchQuery
+                (['contributors', pageItem + 1], () =>
+                    fetchData(pageItem + 1, debouncedFilter)
+                )
+        }
+    }, [dataContributor?.data, pageItem, takeNumber, queryClient, subProject?.id, debouncedFilter])
+
+    const paginate = (pageItem: number) => {
+        setPageItem(pageItem)
+    }
+    // const [openModal, setOpenModal] = useState<boolean>(false)
+
+    // const fetchDataContributor = async () => await getContributorsSubProject({ take: 6, page: 1, sort: 'DESC', subProjectId: String(subProject?.id) })
+    // const { isLoading: isLoadingContributor, isError: isErrorContributor, data: dataContributor } = useQuery({
+    //     queryKey: ['contributors', subProject?.id],
+    //     queryFn: () => fetchDataContributor(),
+    // })
     const dataTableContributor = isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :
         isErrorContributor ? (<tr><td><strong>Error find data please try again...</strong></td></tr>) :
             (dataContributor?.data?.total <= 0) ? (<EmptyTable name='contributor' />) :
@@ -54,9 +100,15 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
 
                                 </div>
                             </div>
-
                         )}
+                    </div>
 
+
+                    <div className="card-header border-0 pt-5">
+                        <SearchInput className='d-flex align-items-center position-relative my-1'
+                            classNameInput='form-control w-250px ps-14'
+                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(e.target.value)}
+                            placeholder='Search by email, first name or last name' />
                     </div>
 
                     <div className='card-body py-3'>
@@ -67,7 +119,7 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
                                 <thead>
                                     <tr className="fw-bolder fs-6 text-muted">
                                         <th>Profile</th>
-                                        <th></th> 
+                                        <th></th>
                                         <th></th>
                                         <th className="text-end min-w-100px"></th>
                                     </tr>
@@ -78,11 +130,15 @@ const ContributorSubProjectTableMini: React.FC<Props> = ({ subProject }) => {
                             </table>
                         </div>
 
-                        {/* {Number(dataContributor?.data?.total) > takeValue && (
-                            <Link to={`/projects/${project?.id}/contributors`} className="btn btn-light-primary w-100 py-3">
-                                Show More
-                            </Link>
-                        )} */}
+                        <PaginationItem
+                            data={dataContributor}
+                            setPageItem={setPageItem}
+                            setPreviewPageItem={(old: number) => Math.max(old - 1, 1)}
+                            setNextPageItem={(old: number) => old + 1}
+                            paginate={paginate}
+                            isPreviousData={isPreviousData}
+                            pageItem={pageItem}
+                        />
 
                     </div>
 

@@ -67,15 +67,6 @@ const SubSubProjectPageWrapperShow: FC = () => {
         isActive: false,
       }]}>Project</PageTitle>
 
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
-      </a>
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
-      </a>
-
       <div className='row g-5 g-xl-8'>
 
         <div className='col-xl-3'>

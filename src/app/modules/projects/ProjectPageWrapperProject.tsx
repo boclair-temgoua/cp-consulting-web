@@ -10,9 +10,6 @@ import { ProjectHeader } from './components/ProjectHeader'
 import { ProjectModel } from './core/_models'
 
 const ProjectPageWrapperProject: FC = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams()
-  const takeValue: number = 6
   const { projectId } = useParams<string>()
 
   const fetchOneProject = async () => await getOneProject({ projectId: String(projectId) })

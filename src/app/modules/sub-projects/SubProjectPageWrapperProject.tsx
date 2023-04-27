@@ -10,7 +10,7 @@ import { DocumentTableMini } from '../documents/DocumentTableMini'
 import { SubProjectHeader } from './components/SubProjectHeader'
 import { SubProjectModel } from './core/_models'
 
-const SubProjectPageWrapperShow: FC = () => {
+const SubProjectPageWrapperProject: FC = () => {
   const [searchParams] = useSearchParams();
   const { subProjectId } = useParams<string>()
 
@@ -33,26 +33,10 @@ const SubProjectPageWrapperShow: FC = () => {
 
       <SubProjectHeader subProject={subProjectItem?.data as SubProjectModel} />
 
-
-
-      {subProjectItem?.data?.id && (
-        <>
-          {searchParams.get('tab') === 'projects' && (
-            <SubSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-
-          {searchParams.get('tab') === 'documents' && (
-            <DocumentTableMini type='SUBPROJECT' subProjectId={subProjectItem?.data?.id} />
-          )}
-
-          {searchParams.get('tab') === 'contributors' && (
-            <ContributorSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-        </>
-      )}
+      <SubSubProjectTableMini subProject={subProjectItem?.data} />
 
     </>
   )
 }
 
-export default SubProjectPageWrapperShow
+export default SubProjectPageWrapperProject

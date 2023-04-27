@@ -18,6 +18,7 @@ type Props = {
 }
 
 const SubProjectTableMini: React.FC<Props> = ({ project }) => {
+    const takeNumber = 10
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project }) => {
     const fetchData = async (pageItem = 1, debouncedFilter: string) => await
         getSubProjectsContributes({
             search: debouncedFilter,
-            take: 10,
+            take: takeNumber,
             page: Number(pageItem || 1),
             sort: 'DESC',
             projectId: String(project?.id)
@@ -54,7 +55,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project }) => {
                     fetchData(pageItem + 1, debouncedFilter)
                 )
         }
-    }, [dataSubProject?.data, pageItem, queryClient, project?.id, debouncedFilter])
+    }, [dataSubProject?.data, pageItem, takeNumber, queryClient, project?.id, debouncedFilter])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)
@@ -65,7 +66,7 @@ const SubProjectTableMini: React.FC<Props> = ({ project }) => {
             (dataSubProject?.data?.total <= 0) ? (<EmptyTable name='project' />) :
                 (
                     dataSubProject?.data?.value?.map((item: ContributorModel, index: number) => (
-                        <SubsubProjectList item={item} key={index} project={project}  />
+                        <SubsubProjectList item={item} key={index} project={project} />
                     )))
 
 

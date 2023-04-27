@@ -49,15 +49,6 @@ const ProjectPageWrapperShow: FC = () => {
       >
         Project
       </PageTitle>
-
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
-      </a>
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
-      </a>
       
       <ProjectHeader project={projectItem?.data as ProjectModel} />
 
@@ -142,7 +133,7 @@ const ProjectPageWrapperShow: FC = () => {
             <SubProjectTableMini project={projectItem?.data} />
           )}
 
-          {searchParams.get('tab') === 'documents' && (
+          {/* {searchParams.get('tab') === 'documents' && (
             <DocumentTableMini type='PROJECT' projectItem={projectItem?.data} projectId={projectItem?.data?.id} />
           )}
 
@@ -152,7 +143,7 @@ const ProjectPageWrapperShow: FC = () => {
 
           {searchParams.get('tab') === 'contacts' && (
             <ContactProjectTableMini project={projectItem?.data} takeValue={takeValue} />
-          )}
+          )} */}
         </>
       )}
 

@@ -4,14 +4,11 @@ import { HelmetSite } from '../utils'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getOneSubProject } from './core/_requests'
-import { SubSubProjectTableMini } from '../sub-sub-projects/SubSubProjectTableMini'
 import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
-import { DocumentTableMini } from '../documents/DocumentTableMini'
 import { SubProjectHeader } from './components/SubProjectHeader'
 import { SubProjectModel } from './core/_models'
 
-const SubProjectPageWrapperShow: FC = () => {
-  const [searchParams] = useSearchParams();
+const SubProjectPageWrapperContributor: FC = () => {
   const { subProjectId } = useParams<string>()
 
   const fetchOneSubProject = async () => await getOneSubProject({ subProjectId: String(subProjectId) })
@@ -33,26 +30,10 @@ const SubProjectPageWrapperShow: FC = () => {
 
       <SubProjectHeader subProject={subProjectItem?.data as SubProjectModel} />
 
-
-
-      {subProjectItem?.data?.id && (
-        <>
-          {searchParams.get('tab') === 'projects' && (
-            <SubSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-
-          {searchParams.get('tab') === 'documents' && (
-            <DocumentTableMini type='SUBPROJECT' subProjectId={subProjectItem?.data?.id} />
-          )}
-
-          {searchParams.get('tab') === 'contributors' && (
-            <ContributorSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-        </>
-      )}
+      <ContributorSubProjectTableMini subProject={subProjectItem?.data} />
 
     </>
   )
 }
 
-export default SubProjectPageWrapperShow
+export default SubProjectPageWrapperContributor

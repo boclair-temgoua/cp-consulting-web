@@ -1,17 +1,14 @@
 import { FC } from 'react'
 import { PageTitle } from '../../../_metronic/layout/core'
 import { HelmetSite } from '../utils'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getOneSubProject } from './core/_requests'
-import { SubSubProjectTableMini } from '../sub-sub-projects/SubSubProjectTableMini'
-import { ContributorSubProjectTableMini } from '../contributors/ContributorSubProjectTableMini'
 import { DocumentTableMini } from '../documents/DocumentTableMini'
 import { SubProjectHeader } from './components/SubProjectHeader'
 import { SubProjectModel } from './core/_models'
 
-const SubProjectPageWrapperShow: FC = () => {
-  const [searchParams] = useSearchParams();
+const SubProjectPageWrapperDocument: FC = () => {
   const { subProjectId } = useParams<string>()
 
   const fetchOneSubProject = async () => await getOneSubProject({ subProjectId: String(subProjectId) })
@@ -26,33 +23,17 @@ const SubProjectPageWrapperShow: FC = () => {
       <HelmetSite title={`${subProjectItem?.data?.name || 'Project'}`} />
       <PageTitle breadcrumbs={[{
         title: `${subProjectItem?.data?.name || 'Project'} |`,
-        path: `/projects/sb-p/${subProjectId}`,
+        path: `/projects/sb-p/${subProjectId}/document`,
         isSeparator: false,
         isActive: false,
       }]}>Project</PageTitle>
 
       <SubProjectHeader subProject={subProjectItem?.data as SubProjectModel} />
 
-
-
-      {subProjectItem?.data?.id && (
-        <>
-          {searchParams.get('tab') === 'projects' && (
-            <SubSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-
-          {searchParams.get('tab') === 'documents' && (
-            <DocumentTableMini type='SUBPROJECT' subProjectId={subProjectItem?.data?.id} />
-          )}
-
-          {searchParams.get('tab') === 'contributors' && (
-            <ContributorSubProjectTableMini subProject={subProjectItem?.data} />
-          )}
-        </>
-      )}
+      <DocumentTableMini type='SUBPROJECT' subProjectId={subProjectItem?.data?.id} />
 
     </>
   )
 }
 
-export default SubProjectPageWrapperShow
+export default SubProjectPageWrapperDocument
