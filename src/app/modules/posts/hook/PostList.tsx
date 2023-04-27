@@ -75,9 +75,9 @@ const PostList: React.FC<Props> = ({ item }) => {
                     {/* begin::Post */}
                     <div className='mb-5'>
                         {/* begin::Text */}
-                        <p style={{ cursor: 'pointer' }} className="text-gray-800 fw-bold text-hover-primary fs-1" onClick={() => navigate(`/posts/${item?.slug}`)}>
+                        {/* <p style={{ cursor: 'pointer' }} className="text-gray-800 fw-bold text-hover-primary fs-1" onClick={() => navigate(`/posts/${item?.slug}`)}>
                             {item?.title} {item?.description?.length}
-                        </p>
+                        </p> */}
                         <p className='text-gray-800 fw-normal mb-5' dangerouslySetInnerHTML={{ __html: String(truncateDescription(String(item?.description))) }} />
                         {/* <p className='text-gray-800 fw-normal mb-5'>
                             {truncateDescription(String(item?.description))}

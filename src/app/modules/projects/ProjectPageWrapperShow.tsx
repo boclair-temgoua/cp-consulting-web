@@ -34,6 +34,8 @@ const ProjectPageWrapperShow: FC = () => {
     enabled: Boolean(projectId),
   })
 
+
+
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Project'}`} />

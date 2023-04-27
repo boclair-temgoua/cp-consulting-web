@@ -1,18 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { FC } from 'react'
-import { PageTitle } from '../../../_metronic/layout/core'
-import { HelmetSite } from '../utils'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { getOneProject } from './core/_requests'
-import { SubProjectTableMini } from '../sub-projects/SubProjectTableMini'
-import { ProjectHeader } from './components/ProjectHeader'
-import { ProjectModel } from './core/_models'
+import {FC} from 'react'
+import {PageTitle} from '../../../_metronic/layout/core'
+import {HelmetSite} from '../utils'
+import {useNavigate, useParams, useSearchParams} from 'react-router-dom'
+import {useQuery} from '@tanstack/react-query'
+import {getOneProject} from './core/_requests'
+import {SubProjectTableMini} from '../sub-projects/SubProjectTableMini'
+import {ProjectHeader} from './components/ProjectHeader'
+import {ProjectModel} from './core/_models'
 
 const ProjectPageWrapperProject: FC = () => {
-  const { projectId } = useParams<string>()
+  const navigate = useNavigate()
+  const {projectId} = useParams<string>()
 
-  const fetchOneProject = async () => await getOneProject({ projectId: String(projectId) })
+  const fetchOneProject = async () => await getOneProject({projectId: String(projectId)})
   const {
     data: projectItem,
     isError,
@@ -23,6 +24,9 @@ const ProjectPageWrapperProject: FC = () => {
     enabled: Boolean(projectId),
   })
 
+  if (isError) {
+    navigate(`/error/404`, {replace: true})
+  }
   return (
     <>
       <HelmetSite title={`${projectItem?.data?.name || 'Projects'}`} />
@@ -39,10 +43,13 @@ const ProjectPageWrapperProject: FC = () => {
         Project
       </PageTitle>
 
-      <ProjectHeader project={projectItem?.data as ProjectModel} />
+      {projectItem?.data?.id && (
+        <>
+          <ProjectHeader project={projectItem?.data as ProjectModel} />
 
-
-      <SubProjectTableMini project={projectItem?.data} />
+          <SubProjectTableMini project={projectItem?.data} />
+        </>
+      )}
     </>
   )
 }

@@ -33,6 +33,8 @@ const GroupPageWrapperShow: FC = () => {
 
   const fetchOneGroup = async () => await getOneGroup({ groupId: String(groupId) })
   const {
+    isLoading: isLoadingGroup,
+    isError: isErrorGroup,
     data: groupItem,
   } = useQuery({
     queryKey: ['group', groupId],
@@ -88,6 +90,10 @@ const GroupPageWrapperShow: FC = () => {
       <PostList item={item} key={index} />
     ))
   )
+
+  if (isErrorGroup) {
+    navigate(`/error/404`, {replace: true})
+  }
 
   return (
     <>

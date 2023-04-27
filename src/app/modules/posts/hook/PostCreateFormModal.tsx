@@ -18,7 +18,6 @@ interface Props {
 }
 
 const schema = yup.object({
-  title: yup.string().min(3, 'Minimum 3 symbols').required(),
   description: yup.string().min(10, 'Minimum 3 symbols').required(),
 });
 
@@ -32,7 +31,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
 
   useEffect(() => {
     if (post) {
-      const fields = ['title', 'description', 'groupId'];
+      const fields = ['description', 'groupId'];
       fields?.forEach((field: any) => setValue(field, post[field]));
     }
   }, [post, setValue]);
@@ -102,7 +101,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
               <form className="w-100 position-relative mb-5" onSubmit={handleSubmit(onSubmit)}>
 
 
-                <div className="d-flex flex-column mb-6">
+                {/* <div className="d-flex flex-column mb-6">
                   <TextInput
                     className="form-control form-control-lg"
                     labelFlex="Title post"
@@ -115,7 +114,7 @@ export const PostCreateFormModal: React.FC<Props> = ({ setOpenCreateOrUpdateModa
                     validation={{ required: true }}
                     isRequired={true}
                   />
-                </div>
+                </div> */}
 
 
 
