@@ -8,11 +8,12 @@ import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
 import ContactMiniList from '../../contacts/hook/ContactMiniList'
 import { ContactModel } from '../../contacts/core/_models'
 import { getContactsBy } from '../../contacts/core/_requests'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ProjectCreateFormModal } from './ProjectCreateFormModal'
 import { useAuth } from '../../auth'
 import { colorRole, dataCountFormatter } from '../../utils'
 import { formateDateDayjs } from '../../utils/formate-date-dayjs'
+import { getOneProject } from '../core/_requests'
 
 type Props = {
     item?: ContributorModel;
@@ -24,6 +25,7 @@ const ProjectList: React.FC<Props> = ({ item }) => {
     const { organization, role } = useAuth() as any
     const [openCreateOrUpdateModal, setOpenCreateOrUpdateModal] = useState<boolean>(false)
     const navigate = useNavigate();
+    const queryClient = useQueryClient()
 
 
     const fetchDataContributorMini = async () => await getContributorsProject({ take: takeItem, page: pageItem, sort: 'ASC', projectId: String(item?.projectId) })
@@ -42,7 +44,12 @@ const ProjectList: React.FC<Props> = ({ item }) => {
     const calculatedContributors: number = Number(Number(dataContributorMini?.data.total) - Number(dataContributorMini?.data?.total_value))
     return (
         <>
-            <tr key={item?.id}>
+            <tr key={item?.id} onMouseEnter={() => {
+                queryClient.prefetchQuery({
+                    queryKey: ['project', String(item?.id)],
+                    queryFn: () => getOneProject({ projectId: String(item?.id) }),
+                })
+            }}>
                 <td>
                     <div className='d-flex align-items-center' onClick={() => navigate(`/projects/${item?.projectId}`, { replace: true })}>
                         <div className='symbol symbol-35px me-5'>

@@ -47,18 +47,23 @@ const ContributorProjectTableMini: React.FC<Props> = ({ project }) => {
         keepPreviousData: true,
     })
 
+    const prefetchItem = () => {
+        queryClient.prefetchQuery({
+            queryKey: ['contributors', pageItem, debouncedFilter, project?.id, takeNumber],
+            queryFn: () => fetchData(pageItem + 1, debouncedFilter),
+        })
+    }
+
     // Prefetch the next page!
     useEffect(() => {
         if (dataContributor?.data?.total_page !== pageItem) {
-            queryClient.prefetchQuery
-                (['contributors', pageItem + 1], () =>
-                    fetchData(pageItem + 1, debouncedFilter)
-                )
+            prefetchItem()
         }
     }, [dataContributor?.data, pageItem, takeNumber, queryClient, project?.id, debouncedFilter])
 
     const paginate = (pageItem: number) => {
         setPageItem(pageItem)
+        prefetchItem()
     }
 
     const dataTableContributor = isLoadingContributor ? (<tr><td><strong>Loading...</strong></td></tr>) :

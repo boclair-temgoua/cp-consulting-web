@@ -143,7 +143,7 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
                   {dataContributorMiniTable}
 
                   {calculatedContributors > 0 && (
-                    <span className='symbol symbol-35px symbol-circle'>
+                    <span className='symbol symbol-30px symbol-circle'>
                       <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
                         +{calculatedContributors}
                       </span>
@@ -177,6 +177,17 @@ const GroupHeader: React.FC<Props> = ({ group }) => {
                 to={`/groups/${group?.id}/contributors`}
               >
                 Members
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname === `/groups/${group?.id}/messages` && 'active')
+                }
+                to={`/groups/${group?.id}/messages`}
+              >
+                Messages
               </Link>
             </li>
             <li className='nav-item'>

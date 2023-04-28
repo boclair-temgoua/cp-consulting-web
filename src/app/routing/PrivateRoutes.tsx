@@ -27,6 +27,7 @@ import SubProjectPageWrapperProject from '../modules/sub-projects/SubProjectPage
 import SubProjectPageWrapperContributor from '../modules/sub-projects/SubProjectPageWrapperContributor'
 import SubProjectPageWrapperDocument from '../modules/sub-projects/SubProjectPageWrapperDocument'
 import SubProjectPageWrapperGroup from '../modules/sub-projects/SubProjectPageWrapperGroup'
+import GroupPageWrapperMessage from '../modules/groups/GroupPageWrapperMessage'
 // import { OrganizationWrapper } from '../pages/organizations/OrganizationWrapper'
 
 const PrivateRoutes = () => {
@@ -70,6 +71,7 @@ const PrivateRoutes = () => {
 
         {/* Groups Routes */}
         <Route path='groups/:groupId' element={<GroupPageWrapperShow />} />
+        <Route path='groups/:groupId/messages' element={<GroupPageWrapperMessage />} />
         <Route path='groups/:groupId/contributors' element={<GroupPageWrapperContributor />} />
         
 

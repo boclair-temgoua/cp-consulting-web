@@ -87,13 +87,6 @@ const ProjectsWrapper: FC = () => {
             className='card-toolbar'
             title='Click to add a user'
           >
-            {/* <a
-              href='#'
-              className='btn btn-sm btn-light-primary'
-            >
-              <KTSVG path='/media/icons/duotune/files/fil012.svg' className='svg-icon-3' />
-              New Project
-            </a> */}
             <button type="button" onClick={() => { setOpenCreateOrUpdateModal(true) }} className="btn btn-sm btn-light-primary me-1">
               <KTSVG path='/media/icons/duotune/abstract/abs011.svg' className='svg-icon-3' />
               New Project

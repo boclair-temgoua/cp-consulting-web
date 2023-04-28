@@ -16,6 +16,7 @@ import { getContributorsProject } from '../contributors/core/_requests'
 import { ContributorModel } from '../contributors/core/_models'
 import { ProjectHeader } from './components/ProjectHeader'
 import { ProjectModel } from './core/_models'
+import { IsLoadingHeader } from '../utils/is-loading/is-loading-header'
 
 const ProjectPageWrapperShow: FC = () => {
   const navigate = useNavigate();
@@ -51,8 +52,16 @@ const ProjectPageWrapperShow: FC = () => {
       >
         Project
       </PageTitle>
-      
-      <ProjectHeader project={projectItem?.data as ProjectModel} />
+
+      {isLoading ?
+        <>
+          <IsLoadingHeader />
+        </> :
+        <>
+
+          <ProjectHeader project={projectItem?.data as ProjectModel} />
+        </>}
+
 
       {/* <div className='row g-5 g-xl-8'>
 

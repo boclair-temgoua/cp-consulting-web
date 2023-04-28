@@ -51,12 +51,13 @@ const OrganizationList: React.FC<Props> = ({ item }) => {
                         {datataContributorMiniTable}
 
                         {calculatedContributors > 0 && (
-                            <span className='symbol symbol-35px symbol-circle'>
+                            <span className='symbol symbol-30px symbol-circle'>
                                 <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
                                     +{calculatedContributors}
                                 </span>
                             </span>
                         )}
+                        
                     </div>
                 </td>
                 <td>
