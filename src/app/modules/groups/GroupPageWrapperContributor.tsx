@@ -80,9 +80,6 @@ const GroupPageWrapperContributor: FC = () => {
           )))
 
 
-
-  console.log('dataContributor =======>', dataContributor?.data)
-
   return (
     <>
       {/* <HelmetSite title={`${group?.name || 'Group'}`} /> */}
