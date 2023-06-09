@@ -1,4 +1,4 @@
-import {getCategoriesBy} from '../../modules/categories/core/_requests'
+import {getCategoriesBy} from '../../modules/categoriess/core/_requests'
 import {SortModel} from '../../modules/utils/pagination-item'
 import {GET_CATEGORIES} from './index'
 

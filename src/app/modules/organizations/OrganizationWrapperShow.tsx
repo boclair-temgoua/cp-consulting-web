@@ -9,8 +9,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getContributorsOrganization } from '../contributors/core/_requests'
 import ContributorMiniList from '../contributors/hook/ContributorMiniList'
 import { ContributorModel } from '../contributors/core/_models'
-import { ContactOrganizationTableMini } from '../contacts/ContactOrganizationTableMini'
-import { CategoryOrganizationTableMini } from '../categories/CategoryOrganizationTableMini'
+import { CategoryOrganizationTableMini } from '../categoriess/CategoryOrganizationTableMini'
+import { OrganizationHeader } from './components/OrganizationHeader'
+import { OrganizationModel } from './core/_models'
 
 const OrganizationWrapperShow: FC = () => {
   const navigate = useNavigate();
@@ -69,146 +70,7 @@ const OrganizationWrapperShow: FC = () => {
         isActive: false,
       }]}>Organization</PageTitle>
 
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(-1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr063.svg' className='svg-icon-2' />
-      </a>
-      <a href={void (0)} className='btn-flex btn-light-primary fw-bolder'
-        onClick={() => { navigate(1) }} style={{ cursor: 'pointer' }}>
-        <KTSVG path='/media/icons/duotune/arrows/arr001.svg' className='svg-icon-2' />
-      </a>
-
-      <div className='card mb-5 mb-xl-10'>
-        <div className='card-body pt-9 pb-0'>
-          <div className='d-flex flex-wrap flex-sm-nowrap mb-6'>
-            <div className='me-7 mb-4'>
-              <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
-
-                <div className={`symbol-label fs-2 bg-light-${organizationItem?.data?.color} text-${organizationItem?.data?.color}`}>
-                  {capitalizeOneFirstLetter(String(organizationItem?.data?.name))}
-                </div>
-
-              </div>
-            </div>
-            <div className='flex-grow-1'>
-              <div className='d-flex justify-content-between align-items-start flex-wrap mb-2'>
-                <div className='d-flex flex-column'>
-                  <div className='d-flex align-items-center mb-1'>
-                    <span className='text-gray-800 text-hover-primary fs-2 fw-bold me-3'>
-                      {organizationItem?.data?.name || 'Project'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='d-flex flex-wrap justify-content-start'>
-                <div className='d-flex flex-wrap'>
-                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
-                    <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>{organizationItem?.data?.contributorTotal || 0}</div>
-                    </div>
-                    <div className='fw-bold fs-6 text-gray-400'>Contributors</div>
-                  </div>
-
-                  <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
-                    <div className='d-flex align-items-center'>
-                      <div className='fs-2 fw-bolder'>{organizationItem?.data?.categoryTotal || 0}</div>
-                    </div>
-                    <div className='fw-bold fs-6 text-gray-400'>Categories</div>
-                  </div>
-                </div>
-
-                <div className='symbol-group symbol-hover mb-3'>
-                  {dataContributorMiniTable}
-
-                  {calculatedContributors > 0 && (
-                    <span className='symbol symbol-35px symbol-circle'>
-                      <span className='symbol-label bg-dark text-inverse-dark fs-8 fw-bold'>
-                        +{calculatedContributors}
-                      </span>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='separator'></div>
-
-          <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold'>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === 'home' && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'home'}`}
-              >
-                Home
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === `contributors` && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'contributors'}`}
-              >
-                Contributors
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === `contacts` && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'contacts'}`}
-              >
-                Contacts
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === `categories` && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'categories'}`}
-              >
-                Categories
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === `slugs` && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'slugs'}`}
-              >
-                Slug
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                className={
-                  `nav-link text-active-primary me-6 ` +
-                  (searchParams.get('tab') === `documents` && 'active')
-                }
-                to={`/organizations/${organizationId}?tab=${'documents'}`}
-              >
-                Documents
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link text-active-primary py-5 me-6' href='#'>
-                Settings
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <OrganizationHeader organization={organizationItem?.data as OrganizationModel}/>
 
       <div className='row g-5 g-xl-8'>
 
@@ -304,9 +166,6 @@ const OrganizationWrapperShow: FC = () => {
             <CategoryOrganizationTableMini organization={organizationItem?.data} />
           )}
 
-          {searchParams.get('tab') === 'contacts' && (
-            <ContactOrganizationTableMini organization={organizationItem?.data} takeValue={takeValue} />
-          )}
         </>
       )}
     </>

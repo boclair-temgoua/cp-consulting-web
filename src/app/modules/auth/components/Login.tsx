@@ -1,15 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react'
-import * as Yup from 'yup'
-import clsx from 'clsx'
 import { Link, useNavigate } from 'react-router-dom'
-import { getUserByToken, loginUser } from '../core/_requests'
-import { toAbsoluteUrl } from '../../../../_metronic/helpers'
-import { useAuth } from '../core/Auth'
+import { loginUser } from '../core/_requests'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Toastify from 'toastify-js'
 import { LoginModel } from '../core/_models'
 import { TextInput } from '../../utils/forms'
 import { HelmetSite } from '../../utils/helmet-site';
@@ -139,7 +134,7 @@ export function Login() {
             type='submit'
             id='kt_sign_in_submit'
             className='btn btn-lg btn-primary w-100 mb-5'
-            disabled={loading}
+            disabled={!isDirty || !isValid || loading}
           >
             {!loading && <span className='indicator-label'>Continue</span>}
             {loading && (

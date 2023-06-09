@@ -1,7 +1,7 @@
 import {ResponseContributorModel} from '../../contributors/core/_models'
 import {makeApiCall} from '../../utils/get-url-end-point'
 import {PaginationRequest} from '../../utils/pagination-item'
-import {OrganizationModel} from './_models'
+import {OrganizationModel, OrganizationRequestModel} from './_models'
 
 export const getOrganizationsContributes = async (
   payload: PaginationRequest
@@ -18,5 +18,14 @@ export const getOneOrganization = async (payload: {
   return await makeApiCall({
     action: 'getOneOrganization',
     queryParams: payload,
+  })
+}
+
+export const updateOneOrganization = async (payload: OrganizationRequestModel): Promise<any> => {
+  const {organizationId} = payload
+  return await makeApiCall({
+    action: 'updateOneOrganization',
+    urlParams: {organizationId},
+    body: payload,
   })
 }

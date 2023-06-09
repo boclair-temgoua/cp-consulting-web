@@ -52,6 +52,18 @@ const SidebarMenuMain = () => {
         title='Groups'
         fontIcon='bi-layers'
       />
+      <SidebarMenuItem
+        to='/categories'
+        icon='/media/icons/duotune/communication/com008.svg'
+        title='Categories'
+        fontIcon='bi-layers'
+      />
+      <SidebarMenuItem
+        to='/discounts'
+        icon='/media/icons/duotune/coding/cod004.svg'
+        title='Discounts'
+        fontIcon='bi-layers'
+      />
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

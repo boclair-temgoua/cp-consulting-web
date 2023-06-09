@@ -185,7 +185,6 @@ export const DeleteOneContributorMutation = ({
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKey = ['contributors']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (payload: {password: string; contributorId: string}): Promise<any> => {
@@ -195,19 +194,19 @@ export const DeleteOneContributorMutation = ({
     },
     {
       onSettled: async () => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries()
         if (onSuccess) {
           onSuccess()
         }
       },
       onSuccess: async () => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries()
         if (onSuccess) {
           onSuccess()
         }
       },
       onError: async (error: any) => {
-        await queryClient.invalidateQueries({queryKey})
+        await queryClient.invalidateQueries()
         if (onError) {
           onError(error)
         }
@@ -225,12 +224,6 @@ export const CreateOneContributorMutation = ({
   onSuccess?: () => void
   onError?: (error: any) => void
 } = {}) => {
-  const queryKeyContributors = ['contributors']
-  const queryKeyContributorsGroupMini = ['contributorsGroupMini']
-  const queryKeyContributorsProjectMini = ['contributorsProjectMini']
-  const queryKeyContributorSubProjectMini = ['contributorSubProjectMini']
-  const queryKeyContributorSubSubProjectMini = ['contributorSubSubProjectMini']
-  const queryKeyContributorSubSubSubProjectMini = ['contributorSubSubSubProjectMini']
   const queryClient = useQueryClient()
   const result = useMutation(
     async (
@@ -238,65 +231,27 @@ export const CreateOneContributorMutation = ({
         userId: string
       } & ContributorRequestModel
     ): Promise<any> => {
-      const {
-        userId,
-        groupId,
-        projectId,
-        subProjectId,
-        subSubProjectId,
-        subSubSubProjectId,
-        organizationId,
-      } = payload
-      if (groupId) {
-        await createOneContributorGroup({userId, groupId})
-      }
+      const {userId, organizationId} = payload
       if (organizationId) {
         await createOneContributorOrganization({userId, organizationId})
-      }
-      if (projectId) {
-        await createOneContributorProject({userId, projectId})
-      }
-      if (subProjectId) {
-        await createOneContributorSubProject({userId, subProjectId})
-      }
-      if (subSubProjectId) {
-        await createOneContributorSubSubProject({userId, subSubProjectId})
-      }
-      if (subSubSubProjectId) {
-        await createOneContributorSubSubSubProject({userId, subSubSubProjectId})
       }
       return 'contributor save'
     },
     {
       onSettled: async () => {
-        await queryClient.invalidateQueries(queryKeyContributors)
-        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
-        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
+        await queryClient.invalidateQueries()
         if (onSuccess) {
           onSuccess()
         }
       },
       onSuccess: async () => {
-        await queryClient.invalidateQueries(queryKeyContributors)
-        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
-        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
+        await queryClient.invalidateQueries()
         if (onSuccess) {
           onSuccess()
         }
       },
       onError: async (error: any) => {
-        await queryClient.invalidateQueries(queryKeyContributors)
-        await queryClient.invalidateQueries(queryKeyContributorsGroupMini)
-        await queryClient.invalidateQueries(queryKeyContributorsProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubProjectMini)
-        await queryClient.invalidateQueries(queryKeyContributorSubSubSubProjectMini)
+        await queryClient.invalidateQueries()
         if (onError) {
           onError(error)
         }
