@@ -7,7 +7,7 @@ import { capitalizeOneFirstLetter } from '../../utils'
 import ContributorMiniList from '../../contributors/hook/ContributorMiniList'
 import { ContributorModel } from '../../contributors/core/_models'
 import { useQuery } from '@tanstack/react-query'
-import { getContributorsOrganization, getContributorsProject } from '../../contributors/core/_requests'
+import { getContributorsOrganization } from '../../contributors/core/_requests'
 import { OrganizationModel } from '../core/_models'
 import { KTSVG } from '../../../../_metronic/helpers'
 
