@@ -8,11 +8,12 @@ import { TextInput } from '../../utils/forms';
 import { ResetPasswordModel } from '../core/_models';
 import { resetPassword } from '../core/_requests';
 
+
 const schema = yup
     .object({
-        password: yup.string().required().min(8).max(200),
+        password: yup.string().min(8).max(200).required(),
         passwordConfirm: yup.string()
-            .oneOf([yup.ref('password')], 'Passwords must match')
+            .oneOf([yup.ref('password')], 'Passwords must match').required()
     })
     .required();
 

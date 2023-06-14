@@ -32,8 +32,9 @@ export type OrganizationModel = {
 
 export type OrganizationRequestModel = {
   name: string
-  phone: string
-  firstAddress: string
-  secondAddress: string
-  organizationId: string
+  phone?: string
+  email: string
+  firstAddress?: string
+  secondAddress?: string
+  organizationId?: string
 }

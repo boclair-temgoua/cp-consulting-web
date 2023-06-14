@@ -29,8 +29,8 @@ export type CategoryModel = {
 export type CategoryRequestModel = {
   name: string
   categoryId?: string
-  organizationId: string
-  description: string
+  organizationId?: string
+  description?: string
 }
 
 export const DeleteOneCategoryMutation = ({

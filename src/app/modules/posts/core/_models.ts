@@ -38,7 +38,7 @@ export type PostModel = {
 }
 
 export type PostRequestModel = {
-  title: string
+  title?: string
   postId?: string
   groupId?: string
   description: string

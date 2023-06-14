@@ -7,18 +7,18 @@ export interface LoginModel {
 
 export type ResetPasswordModel = {
   password: string
+  passwordConfirm: string
   newPassword?: string
-  passwordConfirm?: string
   token?: string
 }
 
 export type RegisterModel = {
   firstName: string
   lastName: string
+  email: string
   password: string
   passwordConfirm: string
-  email: string
-  confirm?: boolean
+  confirm: boolean
 }
 
 export interface UserAddressModel {

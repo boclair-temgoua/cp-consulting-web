@@ -32,7 +32,7 @@ const CategoryOrganizationTableMini: React.FC<Props> = ({ organization }) => {
 
     const { register, handleSubmit,
         formState: { errors, isDirty, isValid }
-    } = useForm<string[]>({ resolver: yupResolver(schema), mode: "onChange" });
+    } = useForm<{ categories: string[] }>({ resolver: yupResolver(schema), mode: "onChange" });
 
     const queryClient = useQueryClient()
     const [searchParams] = useSearchParams();

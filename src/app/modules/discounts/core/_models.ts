@@ -29,12 +29,12 @@ export type DiscountModel = {
 }
 
 export type DiscountRequestModel = {
-  name?: string
+  name: string
   discountId?: string
   description?: string
   isActive?: boolean
-  startedAt?: Date
-  expiredAt?: Date
+  startedAt: Date
+  expiredAt: Date
   percent?: number
 }
 

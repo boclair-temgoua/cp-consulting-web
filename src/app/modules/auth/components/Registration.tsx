@@ -32,14 +32,12 @@ const schema = yup.object().shape({
     .max(50, 'Maximum 50 symbols')
     .required('Password is required'),
   passwordConfirm: yup.string()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+    .oneOf([yup.ref('password')], 'Passwords must match').required(),
   confirm: yup.boolean().oneOf([true], 'Please check the box to deactivate your account').required(),
 })
 
 
 export function Registration() {
-  // eslint-disable-next-line no-restricted-globals
-  //const { codeVoucher } = queryString.parse(location.search);
   const intl = useIntl()
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | string | undefined>(undefined)
@@ -52,9 +50,9 @@ export function Registration() {
   const onSubmit = async (data: RegisterModel) => {
     setLoading(true);
     setHasErrors(undefined)
-    const { email, firstName, lastName, password, passwordConfirm } = data
+    const { email, firstName, lastName, password, passwordConfirm, confirm } = data
     try {
-      await registerUser({ email, firstName, lastName, password, passwordConfirm })
+      await registerUser({ email, firstName, lastName, password, passwordConfirm, confirm })
       setHasErrors(false)
       setLoading(false)
       navigate(`/login`, { replace: true });
